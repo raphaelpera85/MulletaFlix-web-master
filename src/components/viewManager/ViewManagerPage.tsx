@@ -51,9 +51,22 @@ const defaultControllers = import.meta.glob([
     '../../controllers/**/*.html'
 ]);
 
+// Separate glob for raw HTML views
+const dashboardViews = import.meta.glob([
+    '../../apps/dashboard/controllers/**/*.html'
+], { query: '?raw', import: 'default' });
+
+const wizardViews = import.meta.glob([
+    '../../apps/wizard/controllers/**/*.html'
+], { query: '?raw', import: 'default' });
+
+const defaultViews = import.meta.glob([
+    '../../controllers/**/*.html'
+], { query: '?raw', import: 'default' });
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const resolveModule = (glob: Record<string, () => Promise<any>>, basePath: string, name: string) => {
-    const extensions = ['.html', '.js', '.ts', ''];
+    const extensions = ['', '.js', '.ts', '.html'];
     for (const ext of extensions) {
         const path = `${basePath}/${name}${ext}`;
         const loadFn = glob[path];
@@ -69,24 +82,32 @@ const importController = (
     controller: string,
     view: string
 ) => {
+    const resolveView = (htmlModule: any) => {
+        const html = htmlModule?.default !== undefined ? htmlModule.default : htmlModule;
+        if (typeof html === 'string') {
+            return globalize.translateHtml(html);
+        }
+        console.warn('[ViewManagerPage] view module is not a string', controller, view, html);
+        return '';
+    };
     switch (appType) {
         case AppType.Dashboard:
             return Promise.all([
                 resolveModule(dashboardControllers, '../../apps/dashboard/controllers', controller),
-                resolveModule(dashboardControllers, '../../apps/dashboard/controllers', view)
-                    .then(html => globalize.translateHtml(html))
+                resolveModule(dashboardViews, '../../apps/dashboard/controllers', view)
+                    .then(resolveView)
             ]);
         case AppType.Wizard:
             return Promise.all([
                 resolveModule(wizardControllers, '../../apps/wizard/controllers', controller),
-                resolveModule(wizardControllers, '../../apps/wizard/controllers', view)
-                    .then(html => globalize.translateHtml(html))
+                resolveModule(wizardViews, '../../apps/wizard/controllers', view)
+                    .then(resolveView)
             ]);
         default:
             return Promise.all([
                 resolveModule(defaultControllers, '../../controllers', controller),
-                resolveModule(defaultControllers, '../../controllers', view)
-                    .then(html => globalize.translateHtml(html))
+                resolveModule(defaultViews, '../../controllers', view)
+                    .then(resolveView)
             ]);
     }
 };
