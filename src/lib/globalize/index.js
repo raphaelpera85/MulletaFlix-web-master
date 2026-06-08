@@ -166,6 +166,8 @@ export function loadStrings(options) {
     return Promise.all(promises);
 }
 
+const stringModules = import.meta.glob('../../strings/*.json');
+
 function loadTranslation(translations, lang) {
     lang = normalizeLocaleName(lang);
 
@@ -194,12 +196,18 @@ function loadTranslation(translations, lang) {
         }
 
         const url = filtered[0].path;
+        const globPath = `../../strings/${url}`;
+        const loadFn = stringModules[globPath];
 
-        import(/* webpackChunkName: "[request]" */ `../../strings/${url}`).then((fileContent) => {
-            resolve(fileContent);
-        }).catch(() => {
+        if (loadFn) {
+            loadFn().then((fileContent) => {
+                resolve(fileContent.default || fileContent);
+            }).catch(() => {
+                resolve({});
+            });
+        } else {
             resolve({});
-        });
+        }
     });
 }
 
@@ -244,7 +252,11 @@ export function translate(key) {
 }
 
 export function translateHtml(html, module) {
-    html = html.default || html;
+    html = html && html.default !== undefined ? html.default : html;
+
+    if (typeof html !== 'string') {
+        return html;
+    }
 
     if (!module) {
         module = defaultModule();

@@ -6,3 +6,4 @@ export interface Section {
     items: BaseItemDto[];
     cardOptions?: CardOptions;
 };
+

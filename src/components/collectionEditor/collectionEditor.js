@@ -264,3 +264,4 @@ class CollectionEditor {
 }
 
 export default CollectionEditor;
+

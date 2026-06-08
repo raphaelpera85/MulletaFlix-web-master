@@ -1,4 +1,4 @@
-# Jellyfin Contributors
+﻿# MulletaFlix Contributors
 
 - [JoshuaBoniface](https://github.com/joshuaboniface)
 - [nvllsvm](https://github.com/nvllsvm)
@@ -46,7 +46,7 @@
 - [danieladov](https://github.com/danieladov)
 - [Stephane Senart](https://github.com/ssenart)
 - [imchasingshadows](https://github.com/imchasingshadows)
-- [Ömer Erdinç Yağmurlu](https://github.com/omeryagmurlu)
+- [Ã–mer ErdinÃ§ YaÄŸmurlu](https://github.com/omeryagmurlu)
 - [Keegan Dahm](https://github.com/keegandahm)
 - [GodTamIt](https://github.com/GodTamIt)
 - [MinecraftPlaye](https://github.com/MinecraftPlaye)
@@ -77,10 +77,10 @@
 - [Grady Hallenbeck](https://github.com/grhallenbeck)
 - [DinuD](https://github.com/DinuD)
 - [Kevin Tan (Valius)](https://github.com/valius)
-- [Rasmus Krämer](https://github.com/rasmuslos)
+- [Rasmus KrÃ¤mer](https://github.com/rasmuslos)
 - [ntarelix](https://github.com/ntarelix)
 - [btopherjohnson](https://github.com/btopherjohnson)
-- [András Maróy](https://github.com/andrasmaroy)
+- [AndrÃ¡s MarÃ³y](https://github.com/andrasmaroy)
 - [Chris-Codes-It](https://github.com/Chris-Codes-It)
 - [Vedant](https://github.com/viktory36)
 - [GeorgeH005](https://github.com/GeorgeH005)
@@ -172,6 +172,7 @@
 - [SvenVandenbrande](https://github.com/SvenVandenbrande)
 <!--
     NOTE: This is the end of the list of past Emby Contributors.
-    New Jellyfin contributors should add their name to the end
-    of the list of Jellyfin Contributors above. NOT HERE ;)
+    New MulletaFlix contributors should add their name to the end
+    of the list of MulletaFlix Contributors above. NOT HERE ;)
 -->
+

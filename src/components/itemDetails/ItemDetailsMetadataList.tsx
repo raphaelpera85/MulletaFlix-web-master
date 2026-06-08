@@ -107,3 +107,4 @@ function getMetadataItems(type: BaseItemKind | PersonKind, item: BaseItemDto): N
 }
 
 export default ItemDetailsMetadataList;
+

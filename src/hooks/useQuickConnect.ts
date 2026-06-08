@@ -2,10 +2,10 @@ import { getQuickConnectApi } from '@jellyfin/sdk/lib/utils/api/quick-connect-ap
 import { useQuery } from '@tanstack/react-query';
 import type { AxiosRequestConfig } from 'axios';
 
-import { type JellyfinApiContext, useApi } from './useApi';
+import { type MulletaFlixApiContext, useApi } from './useApi';
 
 const fetchQuickConnectEnabled = async (
-    apiContext: JellyfinApiContext,
+    apiContext: MulletaFlixApiContext,
     options?: AxiosRequestConfig
 ) => {
     const { api } = apiContext;
@@ -23,3 +23,4 @@ export const useQuickConnectEnabled = () => {
         queryFn: ({ signal }) => fetchQuickConnectEnabled(currentApi, { signal })
     });
 };
+

@@ -19,3 +19,4 @@ const Password = ({ user }: PasswordProps) => {
 };
 
 export default Password;
+

@@ -73,3 +73,4 @@ const ActivityListItem = ({ item, displayShortOverview, to }: ActivityListItemPr
 };
 
 export default ActivityListItem;
+

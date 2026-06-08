@@ -237,3 +237,4 @@ const LibraryCard = ({ virtualFolder }: LibraryCardProps) => {
 };
 
 export default LibraryCard;
+

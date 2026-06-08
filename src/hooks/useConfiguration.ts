@@ -21,3 +21,4 @@ export const useConfiguration = () => {
         enabled: !!api
     });
 };
+

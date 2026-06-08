@@ -43,3 +43,4 @@ export interface ListOptions extends TextLineOpts {
     smallIcon?: boolean;
     sortBy?: ItemSortBy;
 }
+

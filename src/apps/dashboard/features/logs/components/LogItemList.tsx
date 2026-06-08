@@ -43,3 +43,4 @@ const LogItemList: FunctionComponent<LogItemProps> = ({ logs }: LogItemProps) =>
 };
 
 export default LogItemList;
+

@@ -23,3 +23,4 @@ pageClassOn('viewbeforeshow', 'page', function () {
         skinManager.setTheme(userSettings.theme());
     }
 });
+

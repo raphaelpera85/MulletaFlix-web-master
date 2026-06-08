@@ -46,3 +46,4 @@ export const useSearchSuggestions = (parentId?: string) => {
         enabled: !!api && !!userId
     });
 };
+

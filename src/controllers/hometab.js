@@ -72,3 +72,4 @@ function onHomeScreenSettingsChanged() {
 }
 
 export default HomeTab;
+

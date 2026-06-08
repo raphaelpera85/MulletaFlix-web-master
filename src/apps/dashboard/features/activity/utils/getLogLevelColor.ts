@@ -13,3 +13,4 @@ const getLogLevelColor = (level: LogLevel) => {
 };
 
 export default getLogLevelColor;
+

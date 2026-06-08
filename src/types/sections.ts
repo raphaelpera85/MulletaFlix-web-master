@@ -139,3 +139,4 @@ export const ScheduleSectionsView: SectionsView = {
     programSections: [SectionType.ActiveRecordings],
     isLiveTvUpcomingRecordings: true
 };
+

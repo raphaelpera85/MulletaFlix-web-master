@@ -275,3 +275,4 @@ export const Component = () => {
 };
 
 Component.displayName = 'TrickplayPage';
+

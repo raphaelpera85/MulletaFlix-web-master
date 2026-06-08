@@ -28,3 +28,4 @@ export const useSystemInfo = () => {
     const { api } = useApi();
     return useQuery(getSystemInfoQuery(api));
 };
+

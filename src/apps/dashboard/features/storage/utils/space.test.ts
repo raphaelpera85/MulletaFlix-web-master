@@ -34,3 +34,4 @@ describe('calculateUsedPercentage', () => {
         expect(calculateUsedPercentage({ FreeSpace: -1, UsedSpace: 1 } as FolderStorageDto)).toBe(100);
     });
 });
+

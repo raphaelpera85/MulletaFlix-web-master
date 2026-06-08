@@ -132,3 +132,4 @@ export default {
     buildChapterCards: buildChapterCards
 };
 
+

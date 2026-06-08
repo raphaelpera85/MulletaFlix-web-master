@@ -1326,3 +1326,4 @@ class ItemsView {
 }
 
 export default ItemsView;
+

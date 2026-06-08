@@ -88,3 +88,4 @@ const Movies: FC = () => {
 };
 
 export default Movies;
+

@@ -51,18 +51,18 @@ export function getDeviceIcon(info: DeviceInfo | SessionInfo) {
         case 'Kodi':
         case 'Kodi JellyCon':
             return BASE_DEVICE_IMAGE_URL + 'kodi.svg';
-        case 'Jellyfin Android':
+        case 'MulletaFlix Android':
         case 'AndroidTV':
         case 'Android TV':
-        case 'Jellyfin Android TV':
-        case 'Jellyfin for Android':
-        case 'Jellyfin for Android TV':
+        case 'MulletaFlix Android TV':
+        case 'MulletaFlix for Android':
+        case 'MulletaFlix for Android TV':
             return BASE_DEVICE_IMAGE_URL + 'android.svg';
-        case 'Jellyfin Mobile (iOS)':
-        case 'Jellyfin Mobile (iPadOS)':
-        case 'Jellyfin iOS':
-        case 'Jellyfin iPadOS':
-        case 'Jellyfin tvOS':
+        case 'MulletaFlix Mobile (iOS)':
+        case 'MulletaFlix Mobile (iPadOS)':
+        case 'MulletaFlix iOS':
+        case 'MulletaFlix iPadOS':
+        case 'MulletaFlix tvOS':
         case 'Swiftfin iPadOS':
         case 'Swiftfin iOS':
         case 'Swiftfin tvOS':
@@ -72,16 +72,16 @@ export function getDeviceIcon(info: DeviceInfo | SessionInfo) {
             return BASE_DEVICE_IMAGE_URL + 'apple.svg';
         case 'Home Assistant':
             return BASE_DEVICE_IMAGE_URL + 'home-assistant.svg';
-        case 'Jellyfin for WebOS':
+        case 'MulletaFlix for WebOS':
         case 'LG Smart TV':
             return BASE_DEVICE_IMAGE_URL + 'webos.svg';
-        case 'Jellyfin Roku':
+        case 'MulletaFlix Roku':
             return BASE_DEVICE_IMAGE_URL + 'roku.svg';
-        case 'Jellyfin for Titan OS':
+        case 'MulletaFlix for Titan OS':
             return BASE_DEVICE_IMAGE_URL + 'titanos.svg';
         case 'Finamp':
             return BASE_DEVICE_IMAGE_URL + 'finamp.svg';
-        case 'Jellyfin Web':
+        case 'MulletaFlix Web':
             return getWebDeviceIcon((info as DeviceInfo).Name || (info as SessionInfo).DeviceName);
         default:
             if (info.Capabilities?.IconUrl) {
@@ -165,3 +165,4 @@ export default {
     getLibraryIcon,
     getItemTypeIcon
 };
+

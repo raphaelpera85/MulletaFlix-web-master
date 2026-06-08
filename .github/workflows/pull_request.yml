@@ -1,4 +1,4 @@
-name: Pull Request
+﻿name: Pull Request
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
@@ -14,14 +14,14 @@ on:
 
 jobs:
   build:
-    name: Build 🏗️
+    name: Build ðŸ—ï¸
     if: ${{ always() && !cancelled() }}
     uses: ./.github/workflows/__package.yml
     with:
       commit: ${{ github.event.pull_request.head.sha }}
 
   quality_checks:
-    name: Quality checks 👌🧪
+    name: Quality checks ðŸ‘ŒðŸ§ª
     if: ${{ always() && !cancelled() }}
     uses: ./.github/workflows/__quality_checks.yml
     permissions: {}
@@ -29,7 +29,7 @@ jobs:
       commit: ${{ github.event.pull_request.head.sha }}
 
   codeql:
-    name: GitHub CodeQL 🔬
+    name: GitHub CodeQL ðŸ”¬
     if: ${{ always() && !cancelled() }}
     uses: ./.github/workflows/__codeql.yml
     permissions:
@@ -41,7 +41,7 @@ jobs:
 
   run-eslint:
     name: Run eslint suggestions
-    if: ${{ github.repository == 'jellyfin/jellyfin-web' }}
+    if: ${{ github.repository == 'MulletaFlix/MulletaFlix-web' }}
     runs-on: ubuntu-latest
     
     steps:
@@ -64,3 +64,4 @@ jobs:
         uses: CatChen/eslint-suggestion-action@efbe3942e76df120000621539d93ce7e0b54f7a7 # v4.1.27
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+

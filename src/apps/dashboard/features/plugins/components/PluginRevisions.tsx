@@ -65,3 +65,4 @@ const PluginRevisions: FC<PluginRevisionsProps> = ({
 );
 
 export default PluginRevisions;
+

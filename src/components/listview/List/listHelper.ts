@@ -175,3 +175,4 @@ export function canResume(PlaybackPositionTicks: number | undefined): boolean {
             && PlaybackPositionTicks > 0
     );
 }
+

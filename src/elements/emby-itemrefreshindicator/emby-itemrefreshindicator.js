@@ -73,3 +73,4 @@ document.registerElement('emby-itemrefreshindicator', {
     extends: 'div'
 });
 
+

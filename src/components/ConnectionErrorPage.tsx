@@ -46,7 +46,7 @@ const ConnectionErrorPage: FC<ConnectionErrorPageProps> = ({
                 setTitle(globalize.translate('HeaderUpdateRequired'));
                 setHtmlMessage(globalize.translate(
                     'ServerUpdateNeeded',
-                    '<a href="https://jellyfin.org/downloads/server/">jellyfin.org/downloads/server</a>'
+                    '<a href="https://MulletaFlix.org/downloads/server/">MulletaFlix.org/downloads/server</a>'
                 ));
                 setMessage(undefined);
                 return;
@@ -103,3 +103,4 @@ const ConnectionErrorPage: FC<ConnectionErrorPageProps> = ({
 };
 
 export default ConnectionErrorPage;
+

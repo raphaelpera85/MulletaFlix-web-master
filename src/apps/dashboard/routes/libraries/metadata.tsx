@@ -164,3 +164,4 @@ export const Component = () => {
 };
 
 Component.displayName = 'MetadataImagesPage';
+

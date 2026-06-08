@@ -59,3 +59,4 @@ const getNowPlayingName = (session: SessionInfo): NowPlayingInfo => {
 };
 
 export default getNowPlayingName;
+

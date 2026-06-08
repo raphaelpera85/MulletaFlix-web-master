@@ -102,3 +102,4 @@ const FiltersStatus: FC<FiltersStatusProps> = ({
 };
 
 export default FiltersStatus;
+

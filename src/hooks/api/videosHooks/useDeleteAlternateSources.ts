@@ -1,10 +1,10 @@
 import type { VideosApiDeleteAlternateSourcesRequest } from '@jellyfin/sdk/lib/generated-client/api/videos-api';
 import { getVideosApi } from '@jellyfin/sdk/lib/utils/api/videos-api';
 import { useMutation } from '@tanstack/react-query';
-import { type JellyfinApiContext, useApi } from 'hooks/useApi';
+import { type MulletaFlixApiContext, useApi } from 'hooks/useApi';
 
 const deleteAlternateSources = async (
-    apiContext: JellyfinApiContext,
+    apiContext: MulletaFlixApiContext,
     params: VideosApiDeleteAlternateSourcesRequest
 ) => {
     const { api } = apiContext;
@@ -22,3 +22,4 @@ export const useDeleteAlternateSources = () => {
             deleteAlternateSources(apiContext, params)
     });
 };
+

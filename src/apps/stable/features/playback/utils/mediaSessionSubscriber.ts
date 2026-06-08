@@ -189,3 +189,4 @@ export const bindMediaSessionSubscriber = (playbackManager: PlaybackManager) => 
         return new MediaSessionSubscriber(playbackManager);
     }
 };
+

@@ -82,3 +82,4 @@ const RefreshIndicator: FC<RefreshIndicatorProps> = ({ item, className }) => {
 };
 
 export default RefreshIndicator;
+

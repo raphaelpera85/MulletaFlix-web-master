@@ -45,3 +45,4 @@ const SearchResultsRow: FC<SearchResultsRowProps> = ({ title, items = [], cardOp
 };
 
 export default SearchResultsRow;
+

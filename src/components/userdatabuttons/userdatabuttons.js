@@ -177,3 +177,4 @@ export default {
     destroy: destroy,
     getIconsHtml: getIconsHtml
 };
+

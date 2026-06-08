@@ -377,3 +377,4 @@ class FavoritesTab {
 
 export default FavoritesTab;
 
+

@@ -7,7 +7,7 @@ import { useSystemInfo } from 'hooks/useSystemInfo';
 import ListItemLink from 'components/ListItemLink';
 import { getDisplayVersion } from 'utils/versions';
 
-import appIcon from '@jellyfin/ux-web/icon-transparent.png';
+import appIcon from '../../../../assets/branding/icon.png';
 
 const DrawerHeaderLink = () => {
     const { data: systemInfo } = useSystemInfo();
@@ -22,7 +22,7 @@ const DrawerHeaderLink = () => {
                 />
             </ListItemIcon>
             <ListItemText
-                primary={systemInfo?.ServerName || 'Jellyfin'}
+                primary={systemInfo?.ServerName || 'MulletaFlix'}
                 secondary={getDisplayVersion(systemInfo?.Version)}
                 slotProps={{
                     primary: { variant: 'h6' }

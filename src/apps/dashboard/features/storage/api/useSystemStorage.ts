@@ -27,3 +27,4 @@ export const useSystemStorage = () => {
     const { api } = useApi();
     return useQuery(getSystemStorageQuery(api));
 };
+

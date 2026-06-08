@@ -750,3 +750,4 @@ export const disableCustomCss = currentSettings.disableCustomCss.bind(currentSet
 export const getSavedView = currentSettings.getSavedView.bind(currentSettings);
 export const saveViewSetting = currentSettings.saveViewSetting.bind(currentSettings);
 export const getSortValuesLegacy = currentSettings.getSortValuesLegacy.bind(currentSettings);
+

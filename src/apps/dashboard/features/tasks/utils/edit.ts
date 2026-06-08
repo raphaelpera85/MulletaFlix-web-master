@@ -78,3 +78,4 @@ export function getTriggerFriendlyName(trigger: TaskTriggerInfo, locale: Locale)
             return trigger.Type;
     }
 }
+

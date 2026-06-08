@@ -7,13 +7,13 @@ import { ServerConnections } from 'lib/jellyfin-apiclient';
 import events from 'utils/events';
 import { toApi } from 'utils/jellyfin-apiclient/compat';
 
-export interface JellyfinApiContext {
+export interface MulletaFlixApiContext {
     __legacyApiClient__?: ApiClient
     api?: Api
     user?: UserDto
 }
 
-export const ApiContext = createContext<JellyfinApiContext>({});
+export const ApiContext = createContext<MulletaFlixApiContext>({});
 export const useApi = () => useContext(ApiContext);
 
 export const ApiProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
@@ -67,3 +67,4 @@ export const ApiProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
         </ApiContext.Provider>
     );
 };
+

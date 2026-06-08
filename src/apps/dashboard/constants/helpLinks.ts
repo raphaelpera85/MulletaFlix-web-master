@@ -1,49 +1,53 @@
-export const HelpLinks = [
+﻿export const HelpLinks = [
     {
         paths: ['/dashboard/devices'],
-        url: 'https://jellyfin.org/docs/general/server/devices'
+        url: 'https://MulletaFlix.org/docs/general/server/devices'
     }, {
         paths: ['/dashboard/libraries'],
-        url: 'https://jellyfin.org/docs/general/server/libraries'
+        url: 'https://MulletaFlix.org/docs/general/server/libraries'
     }, {
         paths: [
             '/dashboard/livetv',
             '/dashboard/livetv/tuner',
             '/dashboard/recordings'
         ],
-        url: 'https://jellyfin.org/docs/general/server/live-tv/'
+        url: 'https://MulletaFlix.org/docs/general/server/live-tv/'
     }, {
         paths: ['/dashboard/livetv/guide'],
-        url: 'https://jellyfin.org/docs/general/server/live-tv/setup-guide#adding-guide-data'
+        url: 'https://MulletaFlix.org/docs/general/server/live-tv/setup-guide#adding-guide-data'
     }, {
         paths: ['/dashboard/networking'],
-        url: 'https://jellyfin.org/docs/general/networking/'
+        url: 'https://MulletaFlix.org/docs/general/networking/'
     }, {
         paths: ['/dashboard/playback/transcoding'],
-        url: 'https://jellyfin.org/docs/general/server/transcoding'
+        url: 'https://MulletaFlix.org/docs/general/server/transcoding'
     }, {
         paths: ['/dashboard/plugins'],
-        url: 'https://jellyfin.org/docs/general/server/plugins/'
+        url: 'https://MulletaFlix.org/docs/general/server/plugins/'
     }, {
         paths: ['/dashboard/plugins/repositories'],
-        url: 'https://jellyfin.org/docs/general/server/plugins/#repositories'
+        url: 'https://MulletaFlix.org/docs/general/server/plugins/#repositories'
     }, {
         paths: [
             '/dashboard/branding',
             '/dashboard/settings'
         ],
-        url: 'https://jellyfin.org/docs/general/server/settings'
+        url: 'https://MulletaFlix.org/docs/general/server/settings'
     }, {
         paths: ['/dashboard/tasks'],
-        url: 'https://jellyfin.org/docs/general/server/tasks'
+        url: 'https://MulletaFlix.org/docs/general/server/tasks'
     }, {
         paths: ['/dashboard/users'],
-        url: 'https://jellyfin.org/docs/general/server/users/adding-managing-users'
+        url: 'https://MulletaFlix.org/docs/general/server/users/adding-managing-users'
+    }, {
+        paths: ['/dashboard/users/licenses'],
+        url: 'https://MulletaFlix.org/docs/general/server/users/'
     }, {
         paths: ['/dashboard/users/:userId/:tab'],
-        url: 'https://jellyfin.org/docs/general/server/users/'
+        url: 'https://MulletaFlix.org/docs/general/server/users/'
     }, {
         paths: ['/dashboard/backups'],
-        url: 'https://jellyfin.org/docs/general/administration/backup-and-restore/'
+        url: 'https://MulletaFlix.org/docs/general/administration/backup-and-restore/'
     }
 ];
+

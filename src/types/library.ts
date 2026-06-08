@@ -64,3 +64,4 @@ export interface LibraryViewSettings {
     Filters?: Filters;
     Alphabet?: string | null;
 }
+

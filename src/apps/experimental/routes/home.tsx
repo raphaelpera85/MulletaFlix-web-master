@@ -12,6 +12,8 @@ import '../../../elements/emby-tabs/emby-tabs';
 import '../../../elements/emby-button/emby-button';
 import '../../../elements/emby-scroller/emby-scroller';
 
+const controllerModules = import.meta.glob('../../../controllers/*.js');
+
 type OnResumeOptions = {
     autoFocus?: boolean;
     refresh?: boolean
@@ -70,7 +72,12 @@ const Home = () => {
                 depends = 'favorites';
         }
 
-        return import(/* webpackChunkName: "[request]" */ `../../../controllers/${depends}`).then(({ default: ControllerFactory }) => {
+        const globPath = `../../../controllers/${depends}.js`;
+        const loadFn = controllerModules[globPath];
+        if (!loadFn) {
+            return Promise.reject(new Error(`Controller not found in glob: ${depends}`));
+        }
+        return loadFn().then(({ default: ControllerFactory }) => {
             let controller = tabControllers[index];
 
             if (!controller) {

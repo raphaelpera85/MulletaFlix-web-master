@@ -474,3 +474,4 @@ export default {
     onClick,
     getShortcutAttributesHtml
 };
+

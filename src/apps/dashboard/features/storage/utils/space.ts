@@ -18,3 +18,4 @@ export const calculateUsedPercentage = (folder?: FolderStorageDto) => {
 
     return Math.min(100, (usedSpace / totalSpace) * 100);
 };
+

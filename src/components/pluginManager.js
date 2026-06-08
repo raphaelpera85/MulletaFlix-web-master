@@ -14,6 +14,11 @@ import * as dashboard from '../utils/dashboard';
 // TODO: replace with each plugin version
 const cacheParam = new Date().getTime();
 
+const pluginModules = import.meta.glob([
+    '../plugins/**/*.js',
+    '../plugins/**/*.ts'
+]);
+
 class PluginManager {
     pluginsList = [];
 
@@ -94,7 +99,12 @@ class PluginManager {
                 });
             } else {
                 console.debug(`Loading plugin (via dynamic import): ${pluginSpec}`);
-                const pluginResult = await import(/* webpackChunkName: "[request]" */ `../plugins/${pluginSpec}`);
+                const globPath = `../plugins/${pluginSpec}`;
+                const loadFn = pluginModules[globPath] || pluginModules[`${globPath}.js`] || pluginModules[`${globPath}.ts`];
+                if (!loadFn) {
+                    throw new Error(`Plugin not found in glob: ${pluginSpec}`);
+                }
+                const pluginResult = await loadFn();
                 plugin = new pluginResult.default;
             }
         } else if (pluginSpec.then) {
@@ -148,3 +158,4 @@ class PluginManager {
 }
 
 export const pluginManager = new PluginManager();
+

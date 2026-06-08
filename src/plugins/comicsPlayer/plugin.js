@@ -421,3 +421,4 @@ class ArchiveSource {
 }
 
 export default ComicsPlayer;
+

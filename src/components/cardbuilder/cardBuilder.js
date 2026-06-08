@@ -1047,7 +1047,7 @@ export function getDefaultText(item, options) {
         return `<span class="cardImageIcon material-icons ${icon}" aria-hidden="true"></span>`;
     }
 
-    const defaultName = isUsingLiveTvNaming(item.Type) ? item.Name : itemHelper.getDisplayName(item);
+    const defaultName = itemHelper.getDisplayName(item);
     return '<div class="cardText cardDefaultText">' + escapeHtml(defaultName) + '</div>';
 }
 
@@ -1268,3 +1268,4 @@ export default {
     onTimerCancelled: onTimerCancelled,
     onSeriesTimerCancelled: onSeriesTimerCancelled
 };
+

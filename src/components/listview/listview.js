@@ -507,3 +507,4 @@ export function getListViewHtml(options) {
 export default {
     getListViewHtml
 };
+

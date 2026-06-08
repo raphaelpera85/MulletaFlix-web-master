@@ -50,3 +50,4 @@ class SyncPlayPlugin implements Plugin {
 }
 
 export default SyncPlayPlugin;
+

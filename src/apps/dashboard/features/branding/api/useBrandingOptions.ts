@@ -28,3 +28,4 @@ export const useBrandingOptions = () => {
     const { api } = useApi();
     return useQuery(getBrandingOptionsQuery(api));
 };
+

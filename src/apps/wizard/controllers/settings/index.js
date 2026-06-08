@@ -48,11 +48,33 @@ function populateCountries(select, allCountries) {
     select.innerHTML = html;
 }
 
+function syncMetadataLanguageFromCountry(page) {
+    const apiClient = ServerConnections.currentApiClient();
+    const countryCode = page.querySelector('#selectCountry').value;
+    if (!countryCode) {
+        return Promise.resolve('');
+    }
+
+    return apiClient.getJSON(apiClient.getUrl('Localization/DefaultMetadataLanguage', {
+        countryCode
+    })).then(language => {
+        if (language) {
+            page.querySelector('#selectLanguage').value = language;
+        }
+        return language || '';
+    }).catch(() => {
+        return '';
+    });
+}
+
 function reloadData(page, config, cultures, countries) {
     populateLanguages(page.querySelector('#selectLanguage'), cultures);
     populateCountries(page.querySelector('#selectCountry'), countries);
     page.querySelector('#selectLanguage').value = config.PreferredMetadataLanguage;
     page.querySelector('#selectCountry').value = config.MetadataCountryCode;
+    if (!config.PreferredMetadataLanguage && config.MetadataCountryCode) {
+        void syncMetadataLanguageFromCountry(page);
+    }
     loading.hide();
 }
 
@@ -79,6 +101,9 @@ function onSubmit(e) {
 
 export default function (view) {
     view.querySelector('.wizardSettingsForm').addEventListener('submit', onSubmit);
+    view.querySelector('#selectCountry').addEventListener('change', function () {
+        void syncMetadataLanguageFromCountry(view);
+    });
     view.addEventListener('viewshow', function () {
         document.querySelector('.skinHeader').classList.add('noHomeButtonHeader');
         reload(this);
@@ -87,3 +112,4 @@ export default function (view) {
         document.querySelector('.skinHeader').classList.remove('noHomeButtonHeader');
     });
 }
+

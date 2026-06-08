@@ -1,0 +1,31 @@
+<div class="formDialogHeader">
+    <button is="paper-icon-button-light" class="btnCancel autoSize" tabindex="-1" title="${ButtonBack}">
+        <span class="material-icons arrow_back" aria-hidden="true"></span>
+    </button>
+
+    <h3 class="formDialogHeaderTitle">${HeaderRegister}</h3>
+</div>
+
+<div class="formDialogContent smoothScrollY">
+    <div class="dialogContentInner dialog-content-centered" style="padding-top:2em;">
+        <form>
+            <div class="inputContainer">
+                <input is="emby-input" type="email" id="txtRegisterName" required="required" label="${LabelEmail}" autocomplete="email" autocapitalize="off" />
+            </div>
+
+            <div class="inputContainer">
+                <input is="emby-input" id="txtRegisterPassword" type="password" label="${LabelPassword}" autocomplete="new-password" minlength="8" />
+            </div>
+
+            <div class="inputContainer">
+                <input is="emby-input" id="txtRegisterConfirmPassword" type="password" label="${LabelPasswordConfirm}" autocomplete="new-password" minlength="8" />
+            </div>
+
+            <div class="formDialogFooter">
+                <button is="emby-button" type="submit" class="raised btnSubmit block formDialogFooterItem button-submit">
+                    <span>${ButtonRegister}</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

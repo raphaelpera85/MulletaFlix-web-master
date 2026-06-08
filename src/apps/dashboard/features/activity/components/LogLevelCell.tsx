@@ -12,3 +12,4 @@ const LogLevelCell: FC<ActivityLogEntryCell> = ({ cell }) => {
 };
 
 export default LogLevelCell;
+

@@ -199,3 +199,4 @@ class SkipSegment extends PlaybackSubscriber {
 }
 
 export const bindSkipSegment = (playbackManager: PlaybackManager) => new SkipSegment(playbackManager);
+

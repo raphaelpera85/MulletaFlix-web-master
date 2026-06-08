@@ -32,3 +32,4 @@ const TaskTriggerCell: FC<CellProps> = ({ cell }) => {
 };
 
 export default TaskTriggerCell;
+

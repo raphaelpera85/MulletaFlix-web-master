@@ -7,7 +7,6 @@ import browser from '../../scripts/browser';
 import layoutManager from '../../components/layoutManager';
 import dom from '../../utils/dom';
 import focusManager from '../../components/focusManager';
-import ResizeObserver from 'resize-observer-polyfill';
 import '../../styles/scrollstyles.scss';
 import globalize from '../globalize';
 
@@ -572,9 +571,9 @@ const scrollerFactory = function (frame, options) {
      * @return {Int}
      */
     function normalizeWheelDelta(event) {
-        // JELLYFIN MOD: Only use deltaX for horizontal scroll and remove IE8 support
+        // MulletaFlix MOD: Only use deltaX for horizontal scroll and remove IE8 support
         scrolling.curDelta = o.horizontal ? event.deltaX : event.deltaY;
-        // END JELLYFIN MOD
+        // END MulletaFlix MOD
 
         if (transform) {
             scrolling.curDelta /= event.deltaMode === 1 ? 3 : 100;
@@ -917,3 +916,4 @@ scrollerFactory.create = function (frame, options) {
 };
 
 export default scrollerFactory;
+

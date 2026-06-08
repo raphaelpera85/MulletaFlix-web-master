@@ -3738,7 +3738,7 @@ export class PlaybackManager {
 
         if (appHost.supports(AppFeature.RemoteControl)) {
             // Defer setup past module evaluation to avoid the circular dependency:
-            // playbackmanager → lib/jellyfin-apiclient → ServerConnections → utils/dashboard → backdrop → playbackmanager
+            // playbackmanager â†’ lib/jellyfin-apiclient â†’ ServerConnections â†’ utils/dashboard â†’ backdrop â†’ playbackmanager
             queueMicrotask(() => {
                 let _unsubscribeRemoteControl;
                 Events.on(ServerConnections, 'localusersignedin', () => {
@@ -4340,3 +4340,4 @@ window.addEventListener('beforeunload', function () {
         console.error('error in onAppClose: ' + err);
     }
 });
+

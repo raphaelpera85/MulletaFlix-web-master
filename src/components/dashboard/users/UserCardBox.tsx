@@ -6,6 +6,7 @@ import globalize from '../../../lib/globalize';
 import IconButtonElement from '../../../elements/IconButtonElement';
 import LinkButton from '../../../elements/emby-button/LinkButton';
 import { getDefaultBackgroundClass } from '../../cardbuilder/utils/builder';
+import { useUserLicense } from 'apps/dashboard/features/users/api/useUserLicense';
 
 type IProps = {
     user?: UserDto;
@@ -20,6 +21,8 @@ const getLastSeenText = (lastActivityDate?: string | null) => {
 };
 
 const UserCardBox: FunctionComponent<IProps> = ({ user = {} }: IProps) => {
+    const { data: license } = useUserLicense(user.Id || '');
+
     let cssClass = 'card squareCard scalableCard squareCard-scalable';
 
     if (user.Policy?.IsDisabled) {
@@ -73,6 +76,18 @@ const UserCardBox: FunctionComponent<IProps> = ({ user = {} }: IProps) => {
                     </div>
                     <div className='cardText'>
                         <span>{user.Name}</span>
+                        {license && (
+                            <span 
+                                style={{ 
+                                    fontSize: '0.75em', 
+                                    marginLeft: '8px', 
+                                    fontWeight: 'bold',
+                                    color: license.isExpired ? '#f44336' : license.isUnlimited ? '#2196f3' : '#4caf50' 
+                                }}
+                            >
+                                {license.isExpired ? 'â€¢ Exp' : license.isUnlimited ? 'â€¢ Ilim' : `â€¢ Ativo`}
+                            </span>
+                        )}
                     </div>
                     <div className='cardText cardText-secondary'>
                         <span>{lastSeen != '' ? lastSeen : ''}</span>
@@ -84,3 +99,4 @@ const UserCardBox: FunctionComponent<IProps> = ({ user = {} }: IProps) => {
 };
 
 export default UserCardBox;
+

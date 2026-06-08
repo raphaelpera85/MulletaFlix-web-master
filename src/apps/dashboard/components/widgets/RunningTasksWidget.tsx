@@ -40,3 +40,4 @@ const RunningTasksWidget = ({ tasks }: RunningTasksWidgetProps) => {
 };
 
 export default RunningTasksWidget;
+

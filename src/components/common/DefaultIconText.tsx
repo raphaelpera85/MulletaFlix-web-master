@@ -40,3 +40,4 @@ const DefaultIconText: FC<DefaultIconTextProps> = ({
 };
 
 export default DefaultIconText;
+

@@ -19,3 +19,4 @@ const LogLevelChip = ({ level }: { level: LogLevel }) => {
 };
 
 export default LogLevelChip;
+

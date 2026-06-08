@@ -16,3 +16,4 @@ const filterSessions = (sessions: SessionInfoDto[] = []) => {
 };
 
 export default filterSessions;
+

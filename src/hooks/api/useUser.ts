@@ -37,3 +37,4 @@ export const useUser = ({ userId }: GetUserByIdParams) => {
 
     return useQuery(getUserQuery(api, { userId: userId || user?.Id }));
 };
+

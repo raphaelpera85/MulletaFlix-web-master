@@ -612,3 +612,4 @@ class HomeScreenSettings {
 }
 
 export default HomeScreenSettings;
+

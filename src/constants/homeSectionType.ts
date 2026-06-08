@@ -1,5 +1,5 @@
-// NOTE: This should be included in the OpenAPI spec ideally
-// https://github.com/jellyfin/jellyfin/blob/1b4394199a2f9883cd601bdb8c9d66015397aa52/Jellyfin.Data/Enums/HomeSectionType.cs
+﻿// NOTE: This should be included in the OpenAPI spec ideally
+// https://github.com/MulletaFlix/MulletaFlix/blob/1b4394199a2f9883cd601bdb8c9d66015397aa52/MulletaFlix.Data/Enums/HomeSectionType.cs
 export enum HomeSectionType {
     None = 'none',
     SmallLibraryTiles = 'smalllibrarytiles',
@@ -14,7 +14,7 @@ export enum HomeSectionType {
 }
 
 // NOTE: This needs to match the server defaults
-// https://github.com/jellyfin/jellyfin/blob/1b4394199a2f9883cd601bdb8c9d66015397aa52/Jellyfin.Api/Controllers/DisplayPreferencesController.cs#L120
+// https://github.com/MulletaFlix/MulletaFlix/blob/1b4394199a2f9883cd601bdb8c9d66015397aa52/MulletaFlix.Api/Controllers/DisplayPreferencesController.cs#L120
 export const DEFAULT_SECTIONS: HomeSectionType[] = [
     HomeSectionType.SmallLibraryTiles,
     HomeSectionType.Resume,
@@ -27,3 +27,4 @@ export const DEFAULT_SECTIONS: HomeSectionType[] = [
     HomeSectionType.None,
     HomeSectionType.None
 ];
+

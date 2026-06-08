@@ -256,3 +256,4 @@ export default {
     show: showEditor,
     embed: embed
 };
+

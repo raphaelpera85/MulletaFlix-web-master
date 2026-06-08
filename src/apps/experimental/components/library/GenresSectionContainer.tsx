@@ -83,3 +83,4 @@ const GenresSectionContainer: FC<GenresSectionContainerProps> = ({
 };
 
 export default GenresSectionContainer;
+

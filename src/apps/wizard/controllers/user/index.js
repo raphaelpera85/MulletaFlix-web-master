@@ -79,3 +79,4 @@ export default function (view) {
     });
     view.addEventListener('viewshow', onViewShow);
 }
+

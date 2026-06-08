@@ -29,3 +29,4 @@ export const usePlugins = () => {
     return useQuery(getPluginsQuery(api));
 };
 
+

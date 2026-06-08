@@ -48,3 +48,4 @@ export const useProgramsSearch = (
         enabled: !!api && !!userId && !collectionType
     });
 };
+

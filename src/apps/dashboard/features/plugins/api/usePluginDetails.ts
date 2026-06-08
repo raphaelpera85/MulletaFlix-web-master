@@ -117,3 +117,4 @@ export const usePluginDetails = () => {
         isPending: isConfigurationPagesPending || isPackagesPending || isPluginsPending
     };
 };
+

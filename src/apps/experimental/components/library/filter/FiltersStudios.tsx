@@ -62,3 +62,4 @@ const FiltersStudios: FC<FiltersStudiosProps> = ({
 };
 
 export default FiltersStudios;
+

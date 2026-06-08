@@ -101,3 +101,4 @@ const ItemCountsWidget = () => {
 };
 
 export default ItemCountsWidget;
+

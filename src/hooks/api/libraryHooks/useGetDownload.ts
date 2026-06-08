@@ -2,10 +2,10 @@ import type { AxiosRequestConfig } from 'axios';
 import type { LibraryApiGetDownloadRequest } from '@jellyfin/sdk/lib/generated-client';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { queryOptions, useQuery } from '@tanstack/react-query';
-import { type JellyfinApiContext, useApi } from 'hooks/useApi';
+import { type MulletaFlixApiContext, useApi } from 'hooks/useApi';
 
 const getDownload = async (
-    apiContext: JellyfinApiContext,
+    apiContext: MulletaFlixApiContext,
     params: LibraryApiGetDownloadRequest,
     options?: AxiosRequestConfig
 ) => {
@@ -19,7 +19,7 @@ const getDownload = async (
 };
 
 export const getDownloadQuery = (
-    apiContext: JellyfinApiContext,
+    apiContext: MulletaFlixApiContext,
     params: LibraryApiGetDownloadRequest
 ) =>
     queryOptions({
@@ -32,3 +32,4 @@ export const useGetDownload = (params: LibraryApiGetDownloadRequest) => {
     const apiContext = useApi();
     return useQuery(getDownloadQuery(apiContext, params));
 };
+

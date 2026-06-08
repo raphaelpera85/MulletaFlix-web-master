@@ -312,3 +312,4 @@ export function setBackdropTransparency(level) {
         backdropElem.classList.remove('hide');
     }
 }
+

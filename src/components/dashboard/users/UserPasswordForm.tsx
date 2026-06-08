@@ -197,3 +197,4 @@ const UserPasswordForm: FunctionComponent<IProps> = ({ user }: IProps) => {
 };
 
 export default UserPasswordForm;
+

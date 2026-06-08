@@ -173,3 +173,4 @@ const NewTriggerForm: FunctionComponent<IProps> = ({ open, title, onClose, onAdd
 };
 
 export default NewTriggerForm;
+

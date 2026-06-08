@@ -14,3 +14,4 @@ export interface PluginDetails {
     version?: VersionInfo
     versions: VersionInfo[]
 }
+

@@ -1,4 +1,4 @@
-name: Bug Report
+﻿name: Bug Report
 description: You have noticed a general issue or regression, and would like to report it
 labels:
   - bug
@@ -9,9 +9,9 @@ body:
       label: "This issue respects the following points:"
       description: All conditions are **required**.
       options:
-        - label: This issue is **not** already reported on [GitHub](https://github.com/jellyfin/jellyfin-web/issues?q=is%3Aissue) _(I've searched it)_.
+        - label: This issue is **not** already reported on [GitHub](https://github.com/MulletaFlix/MulletaFlix-web/issues?q=is%3Aissue) _(I've searched it)_.
           required: true
-        - label: I agree to follow Jellyfin's [Code of Conduct](https://jellyfin.org/docs/general/community-standards.html#code-of-conduct).
+        - label: I agree to follow MulletaFlix's [Code of Conduct](https://MulletaFlix.org/docs/general/community-standards.html#code-of-conduct).
           required: true
         - label: This report addresses only a single issue; If you encounter multiple issues, kindly create separate reports for each one.
           required: true
@@ -35,9 +35,9 @@ body:
       description: |
         Steps to reproduce the behavior:
       placeholder: |
-        1. Go to …
-        2. Click on …
-        3. Scroll down to …
+        1. Go to â€¦
+        2. Click on â€¦
+        3. Scroll down to â€¦
         4. See error / the app crashes
     validations:
       required: true
@@ -57,7 +57,7 @@ body:
       label: Logs
       description: |
         Please paste any log errors.
-      placeholder: Paste logs…
+      placeholder: Paste logsâ€¦
   - type: markdown
     attributes:
       value: |

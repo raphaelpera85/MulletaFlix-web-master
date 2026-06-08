@@ -227,7 +227,7 @@ function getRemoteImageHtml(image, imageType) {
             html += image.Width + ' x ' + image.Height;
 
             if (image.Language) {
-                html += ' • ' + image.Language;
+                html += ' â€¢ ' + image.Language;
             }
         } else if (image.Language) {
             html += image.Language;
@@ -245,7 +245,7 @@ function getRemoteImageHtml(image, imageType) {
             html += image.CommunityRating.toFixed(1);
 
             if (image.VoteCount) {
-                html += ' • ' + image.VoteCount + (image.VoteCount === 1 ? ' vote' : ' votes');
+                html += ' â€¢ ' + image.VoteCount + (image.VoteCount === 1 ? ' vote' : ' votes');
             }
         } else {
             html += 'Unrated';
@@ -389,4 +389,5 @@ export function show(itemId, serverId, itemType, imageType, parentId) {
 export default {
     show: show
 };
+
 

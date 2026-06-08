@@ -8,7 +8,7 @@ import 'elements/emby-select/emby-select';
 
 function loadPage(page, systemInfo, config, languageOptions) {
     const serverNameElem = page.querySelector('#txtServerName');
-    serverNameElem.value = config.ServerName || systemInfo.ServerName;
+    serverNameElem.value = config.ServerName || systemInfo.ServerName || 'Mulletaflix';
 
     const languageElem = page.querySelector('#selectLocalizationLanguage');
     languageElem.innerHTML = languageOptions.map(function (l) {
@@ -22,8 +22,8 @@ function loadPage(page, systemInfo, config, languageOptions) {
 function save(page) {
     loading.show();
     const apiClient = ServerConnections.currentApiClient();
-    apiClient.getJSON(apiClient.getUrl('Startup/Configuration')).then(function (config) {
-        config.ServerName = page.querySelector('#txtServerName').value;
+        apiClient.getJSON(apiClient.getUrl('Startup/Configuration')).then(function (config) {
+        config.ServerName = page.querySelector('#txtServerName').value || 'Mulletaflix';
         config.UICulture = page.querySelector('#selectLocalizationLanguage').value;
 
         apiClient.ajax({
@@ -64,3 +64,4 @@ export default function (view) {
         document.querySelector('.skinHeader').classList.remove('noHomeButtonHeader');
     });
 }
+

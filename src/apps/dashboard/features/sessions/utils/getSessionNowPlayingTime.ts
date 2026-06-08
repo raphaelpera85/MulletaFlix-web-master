@@ -24,3 +24,4 @@ const getSessionNowPlayingTime = (session: SessionInfo) => {
 };
 
 export default getSessionNowPlayingTime;
+

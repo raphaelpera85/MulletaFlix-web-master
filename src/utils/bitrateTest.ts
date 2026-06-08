@@ -223,3 +223,4 @@ export const detectBitrate = (api: Api, force: boolean) => {
 
     return pendingBitrateDetection;
 };
+

@@ -18,3 +18,4 @@ export function getMediaSegmentAction(userSettings: UserSettings, type: MediaSeg
 
     return action ? action as MediaSegmentAction : defaultAction;
 }
+

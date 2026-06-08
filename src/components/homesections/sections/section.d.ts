@@ -10,3 +10,4 @@ export type SectionContainerElement = {
     getItemsHtml: (items: BaseItemDto[]) => void
     parentContainer: HTMLElement
 } & Element;
+

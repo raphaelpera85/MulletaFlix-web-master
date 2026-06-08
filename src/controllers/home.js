@@ -5,6 +5,8 @@ import '../elements/emby-button/emby-button';
 import '../elements/emby-scroller/emby-scroller';
 import LibraryMenu from '../scripts/libraryMenu';
 
+const controllerModules = import.meta.glob('../controllers/*.js');
+
 class HomeView extends TabbedView {
     setTitle() {
         LibraryMenu.setTitle(null);
@@ -49,7 +51,12 @@ class HomeView extends TabbedView {
         }
 
         const instance = this;
-        return import(/* webpackChunkName: "[request]" */ `../controllers/${depends}`).then(({ default: ControllerFactory }) => {
+        const globPath = `../controllers/${depends}.js`;
+        const loadFn = controllerModules[globPath];
+        if (!loadFn) {
+            return Promise.reject(new Error(`Controller not found in glob: ${depends}`));
+        }
+        return loadFn().then(({ default: ControllerFactory }) => {
             let controller = instance.tabControllers[index];
 
             if (!controller) {

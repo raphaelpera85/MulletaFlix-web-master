@@ -41,3 +41,4 @@ export default function onItemsContainerClick(e) {
         onGroupedCardClick(e, groupedCard);
     }
 }
+

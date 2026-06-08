@@ -9,6 +9,7 @@ import { safeDecodeURIComponent } from 'utils/url';
  * @returns {Api} An equivalent SDK Api instance.
  */
 export const toApi = (apiClient: ApiClient): Api => {
+    const serverUrl = apiClient.serverAddress() || 'http://localhost';
     return (new Jellyfin({
         // The SDK encodes these values when creating the authorization header,
         // so we need to decode them here to avoid double encoding.
@@ -21,7 +22,8 @@ export const toApi = (apiClient: ApiClient): Api => {
             id: safeDecodeURIComponent(apiClient.deviceId())
         }
     })).createApi(
-        apiClient.serverAddress(),
+        serverUrl,
         apiClient.accessToken()
     );
 };
+

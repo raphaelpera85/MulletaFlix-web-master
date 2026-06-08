@@ -488,3 +488,4 @@ function showEditor(itemId, serverId) {
 export default {
     show: showEditor
 };
+

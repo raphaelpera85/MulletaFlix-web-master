@@ -21,3 +21,4 @@ export const fetchItemsByType = async (
     );
     return response.data;
 };
+

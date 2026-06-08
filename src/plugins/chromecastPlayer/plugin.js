@@ -1115,3 +1115,4 @@ class ChromecastPlayer {
 }
 
 export default ChromecastPlayer;
+

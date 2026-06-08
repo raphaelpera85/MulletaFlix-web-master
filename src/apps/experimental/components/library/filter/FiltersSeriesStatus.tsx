@@ -66,3 +66,4 @@ const FiltersSeriesStatus: FC<FiltersSeriesStatusProps> = ({
 };
 
 export default FiltersSeriesStatus;
+

@@ -2126,3 +2126,4 @@ export default function (view, params) {
 
     init();
 }
+

@@ -54,3 +54,4 @@ export function initialize() {
 
     Events.on(ServerConnections, 'localusersignedin', onOpen);
 }
+

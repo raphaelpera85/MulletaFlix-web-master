@@ -607,15 +607,9 @@ function Guide(options) {
                 cssClass += ' guide-channelHeaderCell-tv';
             }
 
-            const title = [];
-            if (channel.ChannelNumber) {
-                title.push(channel.ChannelNumber);
-            }
-            if (channel.Name) {
-                title.push(channel.Name);
-            }
+            const title = (channel.Name || channel.ChannelName || channel.ChannelNumber || '').replace(/^\s*\d+\s+/, '').trim();
 
-            html += `<button title="${escapeHtml(title.join(' '))}" type="button" class="${cssClass}" data-action="${ItemAction.Link}" data-isfolder="${channel.IsFolder}" data-id="${channel.Id}" data-serverid="${channel.ServerId}" data-type="${channel.Type}">`;
+            html += `<button title="${escapeHtml(title)}" type="button" class="${cssClass}" data-action="${ItemAction.Link}" data-isfolder="${channel.IsFolder}" data-id="${channel.Id}" data-serverid="${channel.ServerId}" data-type="${channel.Type}">`;
 
             if (hasChannelImage) {
                 const url = apiClient.getScaledImageUrl(channel.Id, {
@@ -627,12 +621,12 @@ function Guide(options) {
                 html += '<div class="guideChannelImage lazy" data-src="' + url + '"></div>';
             }
 
-            if (channel.ChannelNumber) {
-                html += '<h3 class="guideChannelNumber">' + channel.ChannelNumber + '</h3>';
-            }
+            const channelName = (channel.Name || channel.ChannelName || '').replace(/^\s*\d+\s+/, '').trim();
 
-            if (!hasChannelImage && channel.Name) {
-                html += '<div class="guideChannelName">' + escapeHtml(channel.Name) + '</div>';
+            if (channelName) {
+                html += '<div class="guideChannelName">' + escapeHtml(channelName) + '</div>';
+            } else if (channel.ChannelNumber) {
+                html += '<h3 class="guideChannelNumber">' + channel.ChannelNumber + '</h3>';
             }
 
             html += '</button>';
@@ -1201,3 +1195,4 @@ function Guide(options) {
 }
 
 export default Guide;
+

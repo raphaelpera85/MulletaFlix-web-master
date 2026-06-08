@@ -9,3 +9,4 @@ export function isHls(mediaSource: MediaSourceInfo | null | undefined): boolean 
     return mediaSource?.TranscodingSubProtocol?.toUpperCase() === 'HLS'
         || mediaSource?.Container?.toUpperCase() === 'HLS';
 }
+

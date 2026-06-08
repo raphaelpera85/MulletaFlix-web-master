@@ -36,3 +36,4 @@ const Media: FC<MediaProps> = ({
 };
 
 export default Media;
+

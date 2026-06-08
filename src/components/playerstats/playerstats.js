@@ -534,3 +534,4 @@ class PlayerStats {
 }
 
 export default PlayerStats;
+

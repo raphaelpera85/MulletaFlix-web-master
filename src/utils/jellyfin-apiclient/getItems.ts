@@ -73,3 +73,4 @@ export function getItems(apiClient: ApiClient, userId: string, options?: GetItem
 
     return Promise.all(results).then(mergeResults);
 }
+

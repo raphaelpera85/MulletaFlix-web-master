@@ -1,3 +1,72 @@
+.page#loginPage {
+    position: relative;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top, rgba(210, 18, 18, 0.16), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(0, 170, 255, 0.09), transparent 28%),
+        linear-gradient(180deg, #111 0%, #0d0d0d 100%);
+}
+
+.page#loginPage > .padded-left.padded-right.padded-bottom-page.margin-auto-y {
+    width: min(46rem, calc(100vw - 2rem));
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 0.65rem;
+    padding-bottom: 0.45rem;
+}
+
+.loginBranding {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    margin: 0.25rem 0 0.55rem;
+    text-align: center;
+}
+
+.loginBrandLogo {
+    width: min(5.9rem, 23vw);
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 0 14px rgba(0, 0, 0, 0.35));
+}
+
+.loginBrandName {
+    font-size: clamp(1.45rem, 2.4vw, 2.3rem);
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    user-select: none;
+}
+
+.loginBrandNameMulleta,
+.loginBrandNameFlix {
+    display: inline-block;
+    padding: 0 0.02em;
+}
+
+.loginBrandNameMulleta {
+    color: #ffffff;
+    -webkit-text-stroke: 1px #d31212;
+    text-shadow:
+        1px 0 0 #d31212,
+        -1px 0 0 #d31212,
+        0 1px 0 #d31212,
+        0 -1px 0 #d31212;
+}
+
+.loginBrandNameFlix {
+    color: #d31212;
+    -webkit-text-stroke: 1px #ffffff;
+    text-shadow:
+        1px 0 0 #ffffff,
+        -1px 0 0 #ffffff,
+        0 1px 0 #ffffff,
+        0 -1px 0 #ffffff;
+}
+
 .loginDisclaimerContainer {
     display: flex;
     margin-top: 2em;
@@ -23,4 +92,109 @@
         margin-right: auto;
         width: fit-content;
     }
+}
+
+.loginActionCard {
+    width: min(100%, 52rem);
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0.8rem 1rem 0.7rem;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(10px);
+}
+
+.manualLoginForm,
+.readOnlyContent {
+    width: 100%;
+}
+
+.manualLoginForm .inputContainer {
+    margin-bottom: 0.35rem;
+}
+
+.manualLoginForm label.checkboxContainer {
+    margin-top: 0.2rem;
+    margin-bottom: 0.28rem;
+}
+
+.manualLoginForm .button-submit,
+.manualLoginForm .btnCancel,
+.readOnlyContent .button,
+.readOnlyContent button {
+    min-height: 2.15rem;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    font-size: 0.86rem;
+    border-radius: 0.68rem;
+}
+
+.manualLoginForm input[is='emby-input'] {
+    min-height: 2.15rem;
+    font-size: 0.92rem;
+}
+
+.manualLoginForm .sectionTitle {
+    display: none;
+}
+
+.page#loginPage .sectionTitle {
+    display: none !important;
+}
+
+.readOnlyContent {
+    margin-top: 0.45rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.24rem;
+}
+
+.readOnlyContent button {
+    margin-bottom: 0;
+    width: 100%;
+    margin-left: 0;
+}
+
+.page#loginPage button[is='emby-button'],
+.page#loginPage input[is='emby-input'] {
+    border-radius: 0.7rem;
+}
+
+.page#loginPage .manualLoginForm button[is='emby-button'],
+.page#loginPage .readOnlyContent button[is='emby-button'] {
+    min-height: 2.05rem;
+    font-size: 0.84rem;
+}
+
+.page#loginPage .readOnlyContent button[is='emby-button'] {
+    background: linear-gradient(180deg, #12a8da 0%, #0e95c4 100%) !important;
+    border: 0 !important;
+    color: #000 !important;
+    box-shadow: 0 8px 22px rgba(18, 168, 218, 0.18);
+}
+
+.page#loginPage .readOnlyContent button[is='emby-button']:hover,
+.page#loginPage .readOnlyContent button[is='emby-button']:focus {
+    background: linear-gradient(180deg, #20b0df 0%, #109acd 100%) !important;
+    color: #000 !important;
+}
+
+.page#loginPage .manualLoginForm input[is='emby-input'] {
+    min-height: 2.05rem;
+    font-size: 0.9rem;
+}
+
+.page#loginPage .manualLoginForm .inputContainer {
+    margin-bottom: 0.3rem;
+}
+
+.loginBranding,
+.loginActionCard {
+    max-width: 52rem;
+}
+
+.page#loginPage .readOnlyContent > .loginDisclaimerContainer {
+    margin-top: 0.35rem;
 }

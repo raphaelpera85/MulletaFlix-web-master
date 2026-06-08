@@ -34,3 +34,4 @@ export const useDisplayPreferences = (
         userId: params?.userId || user?.Id
     }));
 };
+

@@ -34,3 +34,4 @@ export function loadLibraryButtons(elem: HTMLElement, userViews: BaseItemDto[]) 
     elem.innerHTML = html;
     imageLoader.lazyChildren(elem);
 }
+

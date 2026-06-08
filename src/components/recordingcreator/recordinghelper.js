@@ -174,3 +174,4 @@ export default {
     cancelTimerWithConfirmation: cancelTimerWithConfirmation,
     cancelSeriesTimerWithConfirmation: cancelSeriesTimerWithConfirmation
 };
+

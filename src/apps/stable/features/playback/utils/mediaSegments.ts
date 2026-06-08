@@ -39,3 +39,4 @@ export const findCurrentSegment = (segments: MediaSegmentDto[], time: number, la
         if (isInSegment(segment, time)) return { index, segment };
     }
 };
+

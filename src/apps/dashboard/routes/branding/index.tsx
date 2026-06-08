@@ -324,3 +324,4 @@ export const Component = () => {
 };
 
 Component.displayName = 'BrandingPage';
+

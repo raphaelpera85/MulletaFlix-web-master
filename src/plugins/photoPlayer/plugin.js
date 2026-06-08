@@ -42,3 +42,4 @@ export default class PhotoPlayer {
         return (mediaType || '').toLowerCase() === 'photo';
     }
 }
+

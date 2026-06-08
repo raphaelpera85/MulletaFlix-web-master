@@ -55,3 +55,4 @@ export const useVideoSearch = (
         enabled: !!api && !!userId && !collectionType
     });
 };
+

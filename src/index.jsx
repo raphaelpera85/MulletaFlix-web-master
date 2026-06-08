@@ -212,3 +212,4 @@ async function renderApp() {
 }
 
 init();
+

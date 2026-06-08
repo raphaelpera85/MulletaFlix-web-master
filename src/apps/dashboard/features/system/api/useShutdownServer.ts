@@ -14,3 +14,4 @@ const useShutdownServer = () => {
 };
 
 export default useShutdownServer;
+

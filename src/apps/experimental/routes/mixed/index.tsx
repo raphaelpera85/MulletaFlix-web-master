@@ -74,3 +74,4 @@ const Mixed: FC = () => {
 };
 
 export default Mixed;
+

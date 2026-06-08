@@ -33,6 +33,37 @@ interface ViewOptions {
     }
 }
 
+const dashboardControllers = import.meta.glob([
+    '../../apps/dashboard/controllers/**/*.js',
+    '../../apps/dashboard/controllers/**/*.ts',
+    '../../apps/dashboard/controllers/**/*.html'
+]);
+
+const wizardControllers = import.meta.glob([
+    '../../apps/wizard/controllers/**/*.js',
+    '../../apps/wizard/controllers/**/*.ts',
+    '../../apps/wizard/controllers/**/*.html'
+]);
+
+const defaultControllers = import.meta.glob([
+    '../../controllers/**/*.js',
+    '../../controllers/**/*.ts',
+    '../../controllers/**/*.html'
+]);
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const resolveModule = (glob: Record<string, () => Promise<any>>, basePath: string, name: string) => {
+    const extensions = ['.html', '.js', '.ts', ''];
+    for (const ext of extensions) {
+        const path = `${basePath}/${name}${ext}`;
+        const loadFn = glob[path];
+        if (loadFn) {
+            return loadFn().then(mod => mod.default || mod);
+        }
+    }
+    return Promise.reject(new Error(`Module not found: ${basePath}/${name}`));
+};
+
 const importController = (
     appType: AppType,
     controller: string,
@@ -41,20 +72,20 @@ const importController = (
     switch (appType) {
         case AppType.Dashboard:
             return Promise.all([
-                import(/* webpackChunkName: "[request]" */ `../../apps/dashboard/controllers/${controller}`),
-                import(/* webpackChunkName: "[request]" */ `../../apps/dashboard/controllers/${view}`)
+                resolveModule(dashboardControllers, '../../apps/dashboard/controllers', controller),
+                resolveModule(dashboardControllers, '../../apps/dashboard/controllers', view)
                     .then(html => globalize.translateHtml(html))
             ]);
         case AppType.Wizard:
             return Promise.all([
-                import(/* webpackChunkName: "[request]" */ `../../apps/wizard/controllers/${controller}`),
-                import(/* webpackChunkName: "[request]" */ `../../apps/wizard/controllers/${view}`)
+                resolveModule(wizardControllers, '../../apps/wizard/controllers', controller),
+                resolveModule(wizardControllers, '../../apps/wizard/controllers', view)
                     .then(html => globalize.translateHtml(html))
             ]);
         default:
             return Promise.all([
-                import(/* webpackChunkName: "[request]" */ `../../controllers/${controller}`),
-                import(/* webpackChunkName: "[request]" */ `../../controllers/${view}`)
+                resolveModule(defaultControllers, '../../controllers', controller),
+                resolveModule(defaultControllers, '../../controllers', view)
                     .then(html => globalize.translateHtml(html))
             ]);
     }

@@ -158,7 +158,7 @@ export const Component = () => {
                                 helperText={(
                                     <>
                                         <span>{globalize.translate('LabelDisplayLanguageHelp')}</span>
-                                        <Link href='https://jellyfin.org/docs/general/contributing/#translating' target='_blank'>
+                                        <Link href='https://MulletaFlix.org/docs/general/contributing/#translating' target='_blank'>
                                             {globalize.translate('LearnHowYouCanContribute')}
                                         </Link>
                                     </>
@@ -269,3 +269,4 @@ export const Component = () => {
 };
 
 Component.displayName = 'SettingsPage';
+

@@ -553,3 +553,4 @@ export const isLyricsPage = () => history.location.pathname.toLowerCase() === '/
 
 window.Emby = window.Emby || {};
 window.Emby.Page = appRouter;
+

@@ -144,3 +144,4 @@ const SuggestionsSectionView: FC<SuggestionsSectionViewProps> = ({
 };
 
 export default SuggestionsSectionView;
+

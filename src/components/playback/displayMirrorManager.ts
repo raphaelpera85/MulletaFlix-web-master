@@ -38,3 +38,4 @@ document.addEventListener('viewshow', e => {
         void mirrorIfEnabled(serverId, id);
     }
 });
+

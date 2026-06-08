@@ -765,3 +765,4 @@ document.addEventListener('viewbeforeshow', function (e) {
         }
     }
 });
+

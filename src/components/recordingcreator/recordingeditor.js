@@ -154,3 +154,4 @@ function showEditor(itemId, serverId, options) {
 export default {
     show: showEditor
 };
+

@@ -94,3 +94,4 @@ export function loadRecordings(
     itemsContainer.getItemsHtml = getLatestRecordingItemsHtml(activeRecordingsOnly, options);
     itemsContainer.parentContainer = elem;
 }
+

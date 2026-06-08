@@ -280,3 +280,4 @@ class FilterMenu {
 }
 
 export default FilterMenu;
+

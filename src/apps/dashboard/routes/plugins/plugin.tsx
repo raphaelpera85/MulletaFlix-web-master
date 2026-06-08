@@ -43,7 +43,7 @@ interface AlertMessage {
 }
 
 // Plugins from this url will be trusted and not prompt for confirmation when installing
-const TRUSTED_REPO_URL = 'https://repo.jellyfin.org/';
+const TRUSTED_REPO_URL = 'https://repo.MulletaFlix.org/';
 
 const PluginPage: FC = () => {
     const { api } = useApi();
@@ -116,7 +116,7 @@ const PluginPage: FC = () => {
                 isEnabled: (isEnabledOverride && pluginInfo?.Status === PluginStatus.Restart)
                     ?? pluginInfo?.Status !== PluginStatus.Disabled,
                 name: pluginName || pluginInfo?.Name || packageInfo?.name,
-                owner: pluginInfo?.CanUninstall === false ? 'jellyfin' : packageInfo?.owner,
+                owner: pluginInfo?.CanUninstall === false ? 'MulletaFlix' : packageInfo?.owner,
                 status: pluginInfo?.Status,
                 configurationPage: findBestConfigurationPage(configurationPages || [], pluginId),
                 version,
@@ -454,3 +454,4 @@ const PluginPage: FC = () => {
 };
 
 export default PluginPage;
+

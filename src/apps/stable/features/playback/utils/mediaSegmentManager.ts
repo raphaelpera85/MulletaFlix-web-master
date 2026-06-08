@@ -141,3 +141,4 @@ class MediaSegmentManager extends PlaybackSubscriber {
 }
 
 export const bindMediaSegmentManager = (playbackManager: PlaybackManager) => new MediaSegmentManager(playbackManager);
+

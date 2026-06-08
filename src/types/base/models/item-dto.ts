@@ -25,3 +25,4 @@ export interface ItemDto extends BaseItem, TimerInfo, SeriesTimerInfo, SearchHin
     'ProgramInfo'?: ItemDto;
     'CurrentProgram'?: ItemDto;
 }
+

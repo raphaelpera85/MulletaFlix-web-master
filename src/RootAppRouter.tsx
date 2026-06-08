@@ -3,11 +3,10 @@ import React from 'react';
 import {
     RouterProvider,
     createHashRouter,
-    Outlet,
-    useLocation
+    Outlet
 } from 'react-router-dom';
 
-import { DASHBOARD_APP_PATHS, DASHBOARD_APP_ROUTES } from 'apps/dashboard/routes/routes';
+import { DASHBOARD_APP_ROUTES } from 'apps/dashboard/routes/routes';
 import { EXPERIMENTAL_APP_ROUTES } from 'apps/experimental/routes/routes';
 import { STABLE_APP_ROUTES } from 'apps/stable/routes/routes';
 import { WIZARD_APP_ROUTES } from 'apps/wizard/routes/routes';
@@ -48,10 +47,6 @@ export default function RootAppRouter() {
  * NOTE: The app will crash if these get removed from the DOM.
  */
 function RootAppLayout() {
-    const location = useLocation();
-    const isNewLayoutPath = Object.values(DASHBOARD_APP_PATHS)
-        .some(path => location.pathname.startsWith(`/${path}`));
-
     return (
         <ThemeProvider
             theme={appTheme}
@@ -59,7 +54,7 @@ function RootAppLayout() {
             storageManager={ThemeStorageManager}
         >
             <Backdrop />
-            <AppHeader isHidden={isExperimentalLayout || isNewLayoutPath} />
+            <AppHeader isHidden />
 
             <Outlet />
         </ThemeProvider>

@@ -5,3 +5,4 @@ export interface ActivityLogEntryCell {
     cell: MRT_Cell<ActivityLogEntry>
     row: MRT_Row<ActivityLogEntry>
 }
+

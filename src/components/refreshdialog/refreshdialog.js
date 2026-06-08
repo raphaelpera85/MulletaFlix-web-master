@@ -174,3 +174,4 @@ class RefreshDialog {
 }
 
 export default RefreshDialog;
+

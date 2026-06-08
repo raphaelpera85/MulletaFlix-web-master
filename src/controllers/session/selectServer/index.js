@@ -124,8 +124,8 @@ export default function (view, params) {
 
                 case ConnectionState.ServerUpdateNeeded:
                     alertTextWithOptions({
-                        text: globalize.translate('core#ServerUpdateNeeded', 'https://github.com/jellyfin/jellyfin'),
-                        html: globalize.translate('core#ServerUpdateNeeded', '<a href="https://github.com/jellyfin/jellyfin">https://github.com/jellyfin/jellyfin</a>')
+                        text: globalize.translate('core#ServerUpdateNeeded', 'https://github.com/MulletaFlix/MulletaFlix'),
+                        html: globalize.translate('core#ServerUpdateNeeded', '<a href="https://github.com/MulletaFlix/MulletaFlix">https://github.com/MulletaFlix/MulletaFlix</a>')
                     });
                     break;
 
@@ -222,3 +222,4 @@ export default function (view, params) {
         }
     });
 }
+

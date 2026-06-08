@@ -1,3 +1,4 @@
+import AssignmentInd from '@mui/icons-material/AssignmentInd';
 import Dashboard from '@mui/icons-material/Dashboard';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
@@ -90,6 +91,12 @@ const ServerDrawerSection = () => {
                     <ListItemText primary={globalize.translate('HeaderUsers')} />
                 </ListItemLink>
             </ListItem>
+            <ListItemLink to='/dashboard/users/licenses' sx={{ pl: 4 }}>
+                <ListItemIcon>
+                    <AssignmentInd />
+                </ListItemIcon>
+                <ListItemText primary='Licenças' />
+            </ListItemLink>
             <ListItem disablePadding>
                 <ListItemButton onClick={onLibrarySectionClick}>
                     <ListItemIcon>

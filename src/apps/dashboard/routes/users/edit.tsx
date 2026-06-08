@@ -15,6 +15,7 @@ import Access from 'apps/dashboard/features/users/components/Access';
 import ParentalControl from 'apps/dashboard/features/users/components/ParentalControl';
 import Password from 'apps/dashboard/features/users/components/Password';
 import Alert from '@mui/material/Alert';
+import { Navigate } from 'react-router-dom';
 
 export const Component = () => {
     const navigate = useNavigate();
@@ -26,6 +27,10 @@ export const Component = () => {
     }, [ navigate ]);
 
     if (isPending) return <Loading />;
+
+    if (tab === UserTab.License) {
+        return <Navigate to='/dashboard/users/licenses' replace />;
+    }
 
     return (
         <Page

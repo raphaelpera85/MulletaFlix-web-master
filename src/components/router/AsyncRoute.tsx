@@ -14,15 +14,30 @@ export interface AsyncRoute {
     type?: AppType
 }
 
-const importRoute = (page: string, type: AppType) => {
-    switch (type) {
-        case AppType.Dashboard:
-            return import(/* webpackChunkName: "[request]" */ `../../apps/dashboard/routes/${page}`);
-        case AppType.Experimental:
-            return import(/* webpackChunkName: "[request]" */ `../../apps/experimental/routes/${page}`);
-        case AppType.Stable:
-            return import(/* webpackChunkName: "[request]" */ `../../apps/stable/routes/${page}`);
+const dashboardModules = import.meta.glob('../../apps/dashboard/routes/**/*.tsx');
+const experimentalModules = import.meta.glob('../../apps/experimental/routes/**/*.tsx');
+const stableModules = import.meta.glob('../../apps/stable/routes/**/*.tsx');
+
+const importRoute = (page: string, type: AppType): Promise<any> => {
+    const key1 = `../../apps/dashboard/routes/${page}.tsx`;
+    const key2 = `../../apps/dashboard/routes/${page}/index.tsx`;
+    const key3 = `../../apps/experimental/routes/${page}.tsx`;
+    const key4 = `../../apps/experimental/routes/${page}/index.tsx`;
+    const key5 = `../../apps/stable/routes/${page}.tsx`;
+    const key6 = `../../apps/stable/routes/${page}/index.tsx`;
+
+    if (type === AppType.Dashboard) {
+        const loader = dashboardModules[key1] || dashboardModules[key2];
+        if (loader) return loader();
+    } else if (type === AppType.Experimental) {
+        const loader = experimentalModules[key3] || experimentalModules[key4];
+        if (loader) return loader();
+    } else if (type === AppType.Stable) {
+        const loader = stableModules[key5] || stableModules[key6];
+        if (loader) return loader();
     }
+
+    throw new Error(`Route component not found for page: ${page} with type: ${type}`);
 };
 
 export const toAsyncPageRoute = ({

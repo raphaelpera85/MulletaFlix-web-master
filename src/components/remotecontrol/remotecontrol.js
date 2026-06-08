@@ -935,3 +935,4 @@ export default function () {
         onDialogClosed();
     };
 }
+

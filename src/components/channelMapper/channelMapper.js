@@ -148,3 +148,4 @@ export default class ChannelMapper {
         };
     }
 }
+

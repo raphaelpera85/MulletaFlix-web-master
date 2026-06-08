@@ -407,3 +407,4 @@ class PlaybackSettings {
 }
 
 export default PlaybackSettings;
+

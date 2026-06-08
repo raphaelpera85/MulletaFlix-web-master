@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+﻿import React, { useMemo } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 
 const BangRedirect = () => {
@@ -21,7 +21,7 @@ const BangRedirect = () => {
 
     if (!to) return null;
 
-    console.warn('[BangRedirect] You are using a deprecated URL format. This will stop working in a future Jellyfin update.');
+    console.warn('[BangRedirect] You are using a deprecated URL format. This will stop working in a future MulletaFlix update.');
 
     return (
         <Navigate
@@ -32,3 +32,4 @@ const BangRedirect = () => {
 };
 
 export default BangRedirect;
+

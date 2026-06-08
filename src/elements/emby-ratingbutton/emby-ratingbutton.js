@@ -160,3 +160,4 @@ document.registerElement('emby-ratingbutton', {
     extends: 'button'
 });
 
+

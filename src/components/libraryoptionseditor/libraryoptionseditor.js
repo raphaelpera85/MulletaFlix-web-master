@@ -51,6 +51,85 @@ function populateCountries(select) {
     });
 }
 
+function getDefaultMetadataLanguage(countryCode) {
+    if (!countryCode) {
+        return Promise.resolve('');
+    }
+
+    return ApiClient.getJSON(ApiClient.getUrl('Localization/DefaultMetadataLanguage', {
+        countryCode
+    })).then(language => {
+        return language || '';
+    }).catch(() => {
+        return '';
+    });
+}
+
+function syncMetadataLanguageFromCountry(parent) {
+    const countryCode = parent.querySelector('#selectCountry').value;
+    if (!countryCode) {
+        return Promise.resolve('');
+    }
+
+    return getDefaultMetadataLanguage(countryCode).then(language => {
+        if (language) {
+            parent.querySelector('#selectLanguage').value = language;
+        }
+
+        return language;
+    });
+}
+
+function getNewLibraryOptions(serverConfiguration = {}) {
+    const countryCode = serverConfiguration.MetadataCountryCode || '';
+    const preferredLanguage = serverConfiguration.PreferredMetadataLanguage || '';
+
+    return {
+        Enabled: true,
+        EnablePhotos: true,
+        EnableRealtimeMonitor: true,
+        EnableLUFSScan: false,
+        EnableChapterImageExtraction: false,
+        ExtractChapterImagesDuringLibraryScan: false,
+        EnableTrickplayImageExtraction: false,
+        ExtractTrickplayImagesDuringLibraryScan: false,
+        PathInfos: [],
+        SaveLocalMetadata: false,
+        EnableInternetProviders: true,
+        EnableAutomaticSeriesGrouping: true,
+        EnableEmbeddedTitles: false,
+        EnableEmbeddedExtrasTitles: false,
+        EnableEmbeddedEpisodeInfos: false,
+        AutomaticRefreshIntervalDays: 0,
+        PreferredMetadataLanguage: preferredLanguage || '',
+        MetadataCountryCode: countryCode,
+        SeasonZeroDisplayName: 'Specials',
+        MetadataSavers: [],
+        DisabledLocalMetadataReaders: [],
+        LocalMetadataReaderOrder: [],
+        DisabledSubtitleFetchers: [],
+        SubtitleFetcherOrder: [],
+        DisabledMediaSegmentProviders: [],
+        MediaSegmentProviderOrder: [],
+        SkipSubtitlesIfEmbeddedSubtitlesPresent: false,
+        SkipSubtitlesIfAudioTrackMatches: true,
+        SubtitleDownloadLanguages: [],
+        RequirePerfectSubtitleMatch: true,
+        SaveSubtitlesWithMedia: true,
+        SaveLyricsWithMedia: false,
+        SaveTrickplayWithMedia: false,
+        DisabledLyricFetchers: [],
+        LyricFetcherOrder: [],
+        PreferNonstandardArtistsTag: false,
+        UseCustomTagDelimiters: false,
+        CustomTagDelimiters: ['/', '|', ';', '\\'],
+        DelimiterWhitelist: [],
+        AutomaticallyAddToCollection: false,
+        AllowEmbeddedSubtitles: 'AllowAll',
+        TypeOptions: []
+    };
+}
+
 function populateRefreshInterval(select) {
     let html = '';
     html += `<option value='0'>${globalize.translate('Never')}</option>`;
@@ -484,6 +563,9 @@ function bindEvents(parent) {
     parent.querySelector('.mediaSegmentProviders').addEventListener('click', onSortableContainerClick);
     parent.querySelector('.imageFetchers').addEventListener('click', onImageFetchersContainerClick);
     parent.querySelector('.similarItemProviders').addEventListener('click', onSortableContainerClick);
+    parent.querySelector('#selectCountry').addEventListener('change', () => {
+        void syncMetadataLanguageFromCountry(parent);
+    });
 
     parent.querySelector('#chkEnableEmbeddedTitles').addEventListener('change', (e) => {
         parent.querySelector('.chkEnableEmbeddedExtrasTitlesContainer').classList.toggle('hide', !e.currentTarget.checked);
@@ -501,9 +583,13 @@ export async function embed(parent, contentType, libraryOptions) {
     parent.innerHTML = globalize.translateHtml(template);
     populateRefreshInterval(parent.querySelector('#selectAutoRefreshInterval'));
     const promises = [populateLanguages(parent), populateCountries(parent.querySelector('#selectCountry'))];
-    Promise.all(promises).then(function() {
+    if (isNewLibrary) {
+        promises.push(ApiClient.getJSON(ApiClient.getUrl('Startup/Configuration')).catch(() => null));
+    }
+    Promise.all(promises).then(function (responses) {
+        const serverConfiguration = isNewLibrary ? responses[2] || {} : null;
         return setContentType(parent, contentType).then(function() {
-            libraryOptions && setLibraryOptions(parent, libraryOptions);
+            setLibraryOptions(parent, libraryOptions || getNewLibraryOptions(serverConfiguration));
             bindEvents(parent);
         });
     });
@@ -701,7 +787,7 @@ export function getLibraryOptions(parent) {
         Enabled: parent.querySelector('.chkEnabled').checked,
         EnableArchiveMediaFiles: false,
         EnablePhotos: parent.querySelector('.chkEnablePhotos').checked,
-        EnableRealtimeMonitor: parent.querySelector('.chkEnableRealtimeMonitor').checked,
+        EnableRealtimeMonitor: true,
         EnableLUFSScan: parent.querySelector('.chkEnableLUFSScan').checked,
         ExtractTrickplayImagesDuringLibraryScan: parent.querySelector('.chkExtractTrickplayDuringLibraryScan').checked,
         SaveTrickplayWithMedia: parent.querySelector('.chkSaveTrickplayLocally').checked,
@@ -775,7 +861,8 @@ export function setLibraryOptions(parent, options) {
     parent.querySelector('#txtSeasonZeroName').value = options.SeasonZeroDisplayName || 'Specials';
     parent.querySelector('.chkEnabled').checked = options.Enabled;
     parent.querySelector('.chkEnablePhotos').checked = options.EnablePhotos;
-    parent.querySelector('.chkEnableRealtimeMonitor').checked = options.EnableRealtimeMonitor;
+    parent.querySelector('.chkEnableRealtimeMonitor').checked = true;
+    parent.querySelector('.chkEnableRealtimeMonitor').disabled = true;
     parent.querySelector('.chkEnableLUFSScan').checked = options.EnableLUFSScan;
     parent.querySelector('.chkExtractTrickplayDuringLibraryScan').checked = options.ExtractTrickplayImagesDuringLibraryScan;
     parent.querySelector('.chkExtractTrickplayImages').checked = options.EnableTrickplayImageExtraction;
@@ -812,6 +899,10 @@ export function setLibraryOptions(parent, options) {
     renderSubtitleFetchers(parent, parent.availableOptions, options);
     renderLyricFetchers(parent, parent.availableOptions, options);
     renderMediaSegmentProviders(parent, parent.availableOptions, options);
+
+    if (!options.PreferredMetadataLanguage && options.MetadataCountryCode) {
+        void syncMetadataLanguageFromCountry(parent);
+    }
 }
 
 let currentLibraryOptions;
@@ -823,3 +914,4 @@ export default {
     getLibraryOptions,
     setLibraryOptions
 };
+

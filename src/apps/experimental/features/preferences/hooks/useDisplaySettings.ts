@@ -166,3 +166,4 @@ async function saveDisplaySettings({
 function normalizeValue(value: string) {
     return /^(auto|none)$/.test(value) ? '' : value;
 }
+

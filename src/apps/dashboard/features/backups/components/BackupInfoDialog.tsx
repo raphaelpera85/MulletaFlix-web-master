@@ -144,3 +144,4 @@ const BackupInfoDialog: FunctionComponent<IProps> = ({ backup, open, onClose }: 
 };
 
 export default BackupInfoDialog;
+

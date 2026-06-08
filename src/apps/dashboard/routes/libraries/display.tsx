@@ -189,3 +189,4 @@ export const Component = () => {
 };
 
 Component.displayName = 'DisplayPage';
+

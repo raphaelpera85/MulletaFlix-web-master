@@ -10,3 +10,4 @@ export const QUERY_OPTIONS = {
     enableTotalRecordCount: false,
     imageTypeLimit: 1
 };
+

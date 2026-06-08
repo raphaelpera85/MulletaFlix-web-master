@@ -118,3 +118,4 @@ export function loadNextUp(
     itemsContainer.getItemsHtml = getNextUpItemsHtmlFn(userSettings.useEpisodeImagesInNextUpAndResume(), options);
     itemsContainer.parentContainer = elem;
 }
+

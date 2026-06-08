@@ -27,3 +27,4 @@ const Tasks: FunctionComponent<TasksProps> = ({ category, tasks }: TasksProps) =
 };
 
 export default Tasks;
+

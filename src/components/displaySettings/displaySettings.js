@@ -269,3 +269,4 @@ class DisplaySettings {
 }
 
 export default DisplaySettings;
+

@@ -76,6 +76,11 @@ const UserProfiles = () => {
                 icon: 'person'
             });
             menuItems.push({
+                name: 'Licenças',
+                id: 'license',
+                icon: 'assignment_ind'
+            });
+            menuItems.push({
                 name: globalize.translate('Delete'),
                 id: 'delete',
                 icon: 'delete'
@@ -97,6 +102,10 @@ const UserProfiles = () => {
 
                             case 'parentalcontrol':
                                 navigate(`/dashboard/users/${userId}/${UserTab.ParentalControl}`);
+                                break;
+
+                            case 'license':
+                                navigate('/dashboard/users/licenses');
                                 break;
 
                             case 'delete':

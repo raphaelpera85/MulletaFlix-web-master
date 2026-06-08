@@ -40,7 +40,15 @@ export function getCardImageUrl({
     let itemId = null;
 
     /* eslint-disable sonarjs/no-duplicated-branches */
-    if (options.preferThumb && item.ImageTags?.Thumb) {
+    if (item.Type === 'TvChannel' && item.ChannelPrimaryImageTag) {
+        imgType = ImageType.Primary;
+        imgTag = item.ChannelPrimaryImageTag;
+        itemId = item.Id;
+
+        if (primaryImageAspectRatio && uiAspect) {
+            coverImage = (Math.abs(primaryImageAspectRatio - uiAspect) / uiAspect) <= 0.2;
+        }
+    } else if (options.preferThumb && item.ImageTags?.Thumb) {
         imgType = ImageType.Thumb;
         imgTag = item.ImageTags.Thumb;
     } else if ((options.preferBanner || shape === CardShape.Banner) && item.ImageTags?.Banner) {
@@ -171,3 +179,4 @@ export function getCardImageUrl({
         coverImage
     };
 }
+

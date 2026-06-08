@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+﻿import React, { useMemo } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 
 import Page from 'components/Page';
@@ -27,7 +27,7 @@ const FallbackRoute = () => {
     }, [ location ]);
 
     if (to) {
-        console.warn('[FallbackRoute] You are using a deprecated URL format. This will stop working in a future Jellyfin update.');
+        console.warn('[FallbackRoute] You are using a deprecated URL format. This will stop working in a future MulletaFlix update.');
 
         return (
             <Navigate
@@ -59,3 +59,4 @@ const FallbackRoute = () => {
 };
 
 export default FallbackRoute;
+

@@ -41,3 +41,4 @@ const GenresItemsContainer: FC<GenresItemsContainerProps> = ({
 };
 
 export default GenresItemsContainer;
+

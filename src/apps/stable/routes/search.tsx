@@ -44,3 +44,4 @@ const Search: FC = () => {
 };
 
 export default Search;
+

@@ -9,3 +9,4 @@ export const enum ConnectionState {
     ServerUpdateNeeded = 'ServerUpdateNeeded',
     Unavailable = 'Unavailable'
 }
+

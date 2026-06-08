@@ -1,4 +1,4 @@
-name: Packaging 📦
+﻿name: Packaging ðŸ“¦
 
 on:
   workflow_call:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   run-build-prod:
-    name: Run production build 🏗️
+    name: Run production build ðŸ—ï¸
     runs-on: ubuntu-latest
 
     steps:
@@ -30,12 +30,12 @@ jobs:
 
       - name: Run a production build
         env:
-          JELLYFIN_VERSION: ${{ inputs.commit || github.sha }}
+          MulletaFlix_VERSION: ${{ inputs.commit || github.sha }}
         run: npm run build:production
 
       - name: Update config.json for testing
         run: |
-          jq '.multiserver=true | .servers=["https://demo.jellyfin.org/unstable"]' dist/config.json > dist/config.tmp.json
+          jq '.multiserver=true | .servers=["https://demo.MulletaFlix.org/unstable"]' dist/config.json > dist/config.tmp.json
           mv dist/config.tmp.json dist/config.json
 
       - name: Upload artifact
@@ -44,3 +44,4 @@ jobs:
           name: frontend
           path: dist
           if-no-files-found: error
+

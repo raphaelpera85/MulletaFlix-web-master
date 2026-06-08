@@ -109,3 +109,4 @@ function taskbutton(options) {
 }
 
 export default taskbutton;
+

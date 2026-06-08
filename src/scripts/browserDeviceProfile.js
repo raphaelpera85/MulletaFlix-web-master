@@ -1,4 +1,4 @@
-import browser from './browser';
+﻿import browser from './browser';
 import appSettings from './settings/appSettings';
 import * as userSettings from './settings/userSettings';
 
@@ -90,7 +90,7 @@ function canPlayNativeHlsInFmp4() {
 }
 
 function canPlayHlsWithMSE() {
-    // text tracks don’t work with this in firefox
+    // text tracks donâ€™t work with this in firefox
     return window.MediaSource != null; /* eslint-disable-line compat/compat */
 }
 
@@ -216,7 +216,7 @@ function testCanPlayMkv(videoTestElement) {
     if (browser.firefox) {
         // As of Firefox 145, its mkv support is buggy and causes playback issues because it would force preloading the
         // whole mkv file before playback starts, which is extremely undesirable for streaming.
-        // See https://github.com/jellyfin/jellyfin/issues/15521
+        // See https://github.com/MulletaFlix/MulletaFlix/issues/15521
         return false;
     }
 
@@ -1629,3 +1629,4 @@ export default function (options) {
 
     return profile;
 }
+

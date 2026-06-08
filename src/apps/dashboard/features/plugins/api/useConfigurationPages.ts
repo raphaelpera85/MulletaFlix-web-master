@@ -33,3 +33,4 @@ export const useConfigurationPages = (
     const { api } = useApi();
     return useQuery(getConfigurationPagesQuery(api, params));
 };
+

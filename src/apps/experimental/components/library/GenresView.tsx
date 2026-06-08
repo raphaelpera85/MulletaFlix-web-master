@@ -21,3 +21,4 @@ const GenresView: FC<GenresViewProps> = ({ parentId, collectionType, itemType })
 };
 
 export default GenresView;
+

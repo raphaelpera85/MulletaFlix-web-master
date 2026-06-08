@@ -2,7 +2,7 @@ import { queryOptions, useQuery } from '@tanstack/react-query';
 import type { Api } from '@jellyfin/sdk';
 import type { PackageApiGetPackageInfoRequest } from '@jellyfin/sdk/lib/generated-client/api/package-api';
 import { getPackageApi } from '@jellyfin/sdk/lib/utils/api/package-api';
-import type { AxiosRequestConfig } from 'axios';
+import axios, { type AxiosRequestConfig } from 'axios';
 
 import { useApi } from 'hooks/useApi';
 
@@ -25,9 +25,17 @@ const fetchPackageInfo = async (
         }
     }
 
-    const response = await getPackageApi(api)
-        .getPackageInfo(params, options);
-    return response.data;
+    try {
+        const response = await getPackageApi(api)
+            .getPackageInfo(params, options);
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.status === 404) {
+            return undefined;
+        }
+
+        throw error;
+    }
 };
 
 const getPackageInfoQuery = (
@@ -47,3 +55,4 @@ export const usePackageInfo = (
     const { api } = useApi();
     return useQuery(getPackageInfoQuery(api, params));
 };
+

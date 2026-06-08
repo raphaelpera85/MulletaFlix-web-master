@@ -357,3 +357,4 @@ declare module 'jellyfin-apiclient' {
     };
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
+

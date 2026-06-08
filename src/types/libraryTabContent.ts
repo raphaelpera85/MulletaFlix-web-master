@@ -30,3 +30,4 @@ export interface LibraryTabContent {
 }
 
 export type LibraryTabMapping = Record<number, LibraryTabContent>;
+

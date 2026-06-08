@@ -688,7 +688,7 @@ let navDrawerInstance;
 let mainDrawerButton;
 let headerHomeButton;
 let currentDrawerType;
-let documentTitle = 'Jellyfin';
+let documentTitle = 'MulletaFlix';
 let pageTitleElement;
 let headerBackButton;
 let headerUserButton;
@@ -866,3 +866,4 @@ window.LibraryMenu = LibraryMenu;
 renderHeader();
 
 export default LibraryMenu;
+

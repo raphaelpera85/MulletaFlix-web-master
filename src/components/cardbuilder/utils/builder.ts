@@ -17,7 +17,9 @@ const ASPECT_RATIOS = {
  * @param {string | null | undefined} itemType - Item type to use for the check.
  * @returns {boolean} Flag showing if the item is live TV.
  */
-export const isUsingLiveTvNaming = (itemType: string | null | undefined): boolean => itemType === 'Program' || itemType === 'Timer' || itemType === 'Recording';
+export const isUsingLiveTvNaming = (itemType: string | null | undefined): boolean => {
+    return itemType === 'Program' || itemType === 'Timer' || itemType === 'Recording' || itemType === 'TvChannel';
+};
 
 /**
  * Resolves Card action to display

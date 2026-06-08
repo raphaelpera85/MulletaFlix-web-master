@@ -170,3 +170,4 @@ export function loadRecentlyAdded(
         renderLatestSection(frag, apiClient, user, item, options);
     });
 }
+

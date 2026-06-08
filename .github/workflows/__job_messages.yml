@@ -1,4 +1,4 @@
-name: Job messages ⚙️
+﻿name: Job messages âš™ï¸
 
 on:
   workflow_call:
@@ -33,18 +33,18 @@ on:
 
 jobs:
   cf_pages_msg:
-    name: CloudFlare Pages deployment 📃🚀
+    name: CloudFlare Pages deployment ðŸ“ƒðŸš€
     runs-on: ubuntu-latest
 
     steps:
-      - name: Compose message 📃
+      - name: Compose message ðŸ“ƒ
         if: ${{ always() }}
         id: compose
         env:
           COMMIT: ${{ inputs.commit }}
-          PREVIEW_URL: ${{ inputs.preview_url != '' && (inputs.branch != 'master' && inputs.preview_url || format('https://jellyfin-web.pages.dev ({0})', inputs.preview_url)) || 'Not available' }}
-          DEPLOY_STATUS: ${{ inputs.in_progress && '🔄 Deploying...' || (inputs.preview_url != '' && '✅ Deployed!' || '❌ Failure. Check workflow logs for details') }}
-          DEPLOYMENT_TYPE: ${{ inputs.branch != 'master' && '🔀 Preview' || '⚙️ Production' }}
+          PREVIEW_URL: ${{ inputs.preview_url != '' && (inputs.branch != 'master' && inputs.preview_url || format('https://MulletaFlix-web.pages.dev ({0})', inputs.preview_url)) || 'Not available' }}
+          DEPLOY_STATUS: ${{ inputs.in_progress && 'ðŸ”„ Deploying...' || (inputs.preview_url != '' && 'âœ… Deployed!' || 'âŒ Failure. Check workflow logs for details') }}
+          DEPLOYMENT_TYPE: ${{ inputs.branch != 'master' && 'ðŸ”€ Preview' || 'âš™ï¸ Production' }}
           WORKFLOW_RUN: ${{ !inputs.in_progress && format('**[View build logs](https://github.com/{0}/actions/runs/{1})**', github.repository, github.run_id) || '' }}
         # EOF is needed for multiline environment variables in a GitHub Actions context
         run: |
@@ -62,7 +62,7 @@ jobs:
           echo "$COMPOSED_MSG" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
-      - name: Push comment to Pull Request 🔼
+      - name: Push comment to Pull Request ðŸ”¼
         uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3.0.1
         if: ${{ inputs.comment && steps.compose.conclusion == 'success' }}
         with:
@@ -70,3 +70,4 @@ jobs:
           message: ${{ env.msg }}
           comment-tag: ${{ inputs.marker }}
           pr-number: ${{ inputs.pr_number }}
+

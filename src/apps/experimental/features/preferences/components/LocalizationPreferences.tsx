@@ -1,4 +1,4 @@
-import FormControl from '@mui/material/FormControl';
+﻿import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import InputLabel from '@mui/material/InputLabel';
 import Link from '@mui/material/Link';
@@ -49,7 +49,7 @@ export function LocalizationPreferences({ onChange, values }: Readonly<Localizat
                         <span>{globalize.translate('LabelDisplayLanguageHelp')}</span>
                         { appHost.supports(AppFeature.ExternalLinks) && (
                             <Link
-                                href='https://github.com/jellyfin/jellyfin'
+                                href='https://github.com/MulletaFlix/MulletaFlix'
                                 rel='noopener noreferrer'
                                 target='_blank'
                             >
@@ -80,3 +80,4 @@ export function LocalizationPreferences({ onChange, values }: Readonly<Localizat
         </Stack>
     );
 }
+

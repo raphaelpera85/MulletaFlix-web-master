@@ -506,3 +506,4 @@ const ParentalControl = ({ userId }: ParentalControlProps) => {
 };
 
 export default ParentalControl;
+

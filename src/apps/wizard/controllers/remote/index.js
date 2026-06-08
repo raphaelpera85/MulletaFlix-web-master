@@ -43,3 +43,4 @@ export default function (view) {
         document.querySelector('.skinHeader').classList.remove('noHomeButtonHeader');
     });
 }
+

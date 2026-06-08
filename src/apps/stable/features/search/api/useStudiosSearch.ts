@@ -49,3 +49,4 @@ export const useStudiosSearch = (
         enabled: !!api && !!userId && isStudiosEnabled
     });
 };
+

@@ -30,3 +30,4 @@ export const useServerLog = (name: string, refetchInterval: false | number) => {
         refetchInterval
     });
 };
+

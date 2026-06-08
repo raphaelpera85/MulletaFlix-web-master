@@ -1,17 +1,17 @@
-# Contributing to Jellyfin Web
+# Contributing to MulletaFlix Web
 
 Thanks for taking the time to contribute! :purple_heart:
-Jellyfin is an entirely volunteer-driven project, so without contributors like you it could not exist!
+MulletaFlix is an entirely volunteer-driven project, so without contributors like you it could not exist!
 
 Below are some general guidelines and information about this project.
-If you have any questions, please join one of our [development chat rooms](https://jellyfin.org/contact) to discuss them!
+If you have any questions, please join one of our [development chat rooms](https://MulletaFlix.org/contact) to discuss them!
 
 ## Contributor Guidelines
 
 ### New Code
 
 * New files **MUST** be written in TypeScript.
-* API interactions **MUST** be made using the Jellyfin TypeScript SDK.
+* API interactions **MUST** be made using the MulletaFlix TypeScript SDK.
 * **SHOULD** be covered by unit tests when possible (legacy component/view code is deemed untestable).
 * **SHOULD** avoid whitespace only changes in unchanged sections of code.
 * **SHOULD NOT** overuse dynamic imports. We use dynamic imports at the page level; otherwise we should let our build tooling deal with code-splitting for the best bundle sizes.
@@ -20,15 +20,15 @@ If you have any questions, please join one of our [development chat rooms](https
 
 ### Localization
 
-* Translation changes or additions **MUST** be made via the [Jellyfin Weblate instance](https://translate.jellyfin.org/) except for the source language (`en-us`).
+* Translation changes or additions **MUST** be made via the [MulletaFlix Weblate instance](https://translate.MulletaFlix.org/) except for the source language (`en-us`).
 * Existing translation keys **SHOULD NOT** be renamed without a significant reason. Weblate cannot track key name changes so a key name change requires retranslation in ALL languages.
 
 ### Pull Requests
 
-* **MUST** follow [project guidelines](https://jellyfin.org/docs/general/contributing/development#pull-request-guidelines).
+* **MUST** follow [project guidelines](https://MulletaFlix.org/docs/general/contributing/development#pull-request-guidelines).
   * **SHOULD NOT** use "Conventional Commits" for titles or commit messages.
   * **SHOULD NOT** rebase once reviews are in progress.
-* **MUST** follow the [LLM development policy](https://jellyfin.org/docs/general/contributing/llm-policies).
+* **MUST** follow the [LLM development policy](https://MulletaFlix.org/docs/general/contributing/llm-policies).
 * **MUST** test that the change works as expected before marking a PR as ready for review.
 * **SHOULD** represent a singular focus (i.e. a PR to fix a bug should not include unrelated refactoring).
 * **SHOULD NOT** update from `master` needlessly once opened (only update if conflicts exist).
@@ -45,9 +45,9 @@ You may be asked to update your Pull Request to target a release branch as part 
 
 ### Tech Stack
 
-* [Bulletproof React based structure](https://forum.jellyfin.org/t-proposed-update-to-the-structure-of-jellyfin-web) ([official reference](https://github.com/alan2207/bulletproof-react/blob/master/README.md)) &mdash; General file structure
+* [Bulletproof React based structure](https://forum.MulletaFlix.org/t-proposed-update-to-the-structure-of-MulletaFlix-web) ([official reference](https://github.com/alan2207/bulletproof-react/blob/master/README.md)) &mdash; General file structure
 * [TypeScript](https://www.typescriptlang.org/docs/handbook/intro.html) &mdash; Programming language
-* [Jellyfin TypeScript SDK](https://typescript-sdk.jellyfin.org/) &mdash; Jellyfin API library
+* [MulletaFlix TypeScript SDK](https://typescript-sdk.MulletaFlix.org/) &mdash; MulletaFlix API library
 * [React](https://react.dev/reference/react) &mdash; User Interface library
 * [React Router](https://reactrouter.com/) &mdash; Routing library
 * [TanStack Query](https://tanstack.com/query/latest/docs/framework/react/overview) &mdash; State management library for server data
@@ -62,7 +62,7 @@ You may be asked to update your Pull Request to target a release branch as part 
 | [Emby WebComponents](./src/elements) | MUI components (Dashboard + Experimental apps ONLY; Untested on TVs) |
 | [App Router](./src/components/router/appRouter.js) | React Router |
 | [View Manager](./src/components/viewManager) | React Router |
-| [Jellyfin ApiClient](https://github.com/jellyfin-archive/jellyfin-apiclient-javascript) | Jellyfin TypeScript SDK |
+| [MulletaFlix ApiClient](https://github.com/MulletaFlix-archive/jellyfin-apiclient-javascript) | MulletaFlix TypeScript SDK |
 | [jQuery](https://api.jquery.com/) | None (use plain JavaScript/TypeScript) |
 
 #### Supported Browsers
@@ -95,38 +95,39 @@ The official list of supported browser versions can be found in the `browserlist
 ## Directory Structure
 
 > [!NOTE]
-> We are in the process of refactoring to a [new structure](https://forum.jellyfin.org/t-proposed-update-to-the-structure-of-jellyfin-web) based on [Bulletproof React](https://github.com/alan2207/bulletproof-react/blob/master/docs/project-structure.md) architecture guidelines.
+> We are in the process of refactoring to a [new structure](https://forum.MulletaFlix.org/t-proposed-update-to-the-structure-of-MulletaFlix-web) based on [Bulletproof React](https://github.com/alan2207/bulletproof-react/blob/master/docs/project-structure.md) architecture guidelines.
 > Most new code should be organized under the appropriate app directory unless it is common/shared.
 
 ```
 .
-└── src
-    ├── apps
-    │   ├── dashboard           # Admin dashboard app
-    │   ├── experimental        # New experimental app
-    │   ├── stable              # Classic (stable) app
-    │   └── wizard              # Startup wizard app
-    ├── assets                  # Static assets
-    ├── components              # Higher order visual components and React components
-    ├── constants               # Common constant values
-    ├── controllers             # Legacy page views and controllers 🧹 ❌
-    ├── elements                # Basic webcomponents and React equivalents 🧹
-    ├── hooks                   # Custom React hooks
-    ├── lib                     # Reusable libraries
-    │   ├── globalize           # Custom localization library
-    │   ├── jellyfin-apiclient  # Supporting code for the deprecated apiclient package
-    │   ├── legacy              # Polyfills for legacy browsers
-    │   ├── navdrawer           # Navigation drawer library for classic layout
-    │   └── scroller            # Content scrolling library
-    ├── plugins                 # Client plugins (features dynamically loaded at runtime)
-    ├── scripts                 # Random assortment of visual components and utilities 🐉 ❌
-    ├── strings                 # Translation files (only commit changes to en-us.json)
-    ├── styles                  # Common app Sass stylesheets
-    ├── themes                  # Sass and MUI themes
-    ├── types                   # Common TypeScript interfaces/types
-    └── utils                   # Utility functions
+â””â”€â”€ src
+    â”œâ”€â”€ apps
+    â”‚Â Â  â”œâ”€â”€ dashboard           # Admin dashboard app
+    â”‚Â Â  â”œâ”€â”€ experimental        # New experimental app
+    â”‚Â Â  â”œâ”€â”€ stable              # Classic (stable) app
+    â”‚Â Â  â””â”€â”€ wizard              # Startup wizard app
+    â”œâ”€â”€ assets                  # Static assets
+    â”œâ”€â”€ components              # Higher order visual components and React components
+    â”œâ”€â”€ constants               # Common constant values
+    â”œâ”€â”€ controllers             # Legacy page views and controllers ðŸ§¹ âŒ
+    â”œâ”€â”€ elements                # Basic webcomponents and React equivalents ðŸ§¹
+    â”œâ”€â”€ hooks                   # Custom React hooks
+    â”œâ”€â”€ lib                     # Reusable libraries
+    â”‚Â Â  â”œâ”€â”€ globalize           # Custom localization library
+    â”‚Â Â  â”œâ”€â”€ jellyfin-apiclient  # Supporting code for the deprecated apiclient package
+    â”‚Â Â  â”œâ”€â”€ legacy              # Polyfills for legacy browsers
+    â”‚Â Â  â”œâ”€â”€ navdrawer           # Navigation drawer library for classic layout
+    â”‚Â Â  â””â”€â”€ scroller            # Content scrolling library
+    â”œâ”€â”€ plugins                 # Client plugins (features dynamically loaded at runtime)
+    â”œâ”€â”€ scripts                 # Random assortment of visual components and utilities ðŸ‰ âŒ
+    â”œâ”€â”€ strings                 # Translation files (only commit changes to en-us.json)
+    â”œâ”€â”€ styles                  # Common app Sass stylesheets
+    â”œâ”€â”€ themes                  # Sass and MUI themes
+    â”œâ”€â”€ types                   # Common TypeScript interfaces/types
+    â””â”€â”€ utils                   # Utility functions
 ```
 
-* ❌ &mdash; Deprecated, do **not** create new files here
-* 🧹 &mdash; Needs cleanup
-* 🐉 &mdash; Serious mess (Here be dragons)
+* âŒ &mdash; Deprecated, do **not** create new files here
+* ðŸ§¹ &mdash; Needs cleanup
+* ðŸ‰ &mdash; Serious mess (Here be dragons)
+

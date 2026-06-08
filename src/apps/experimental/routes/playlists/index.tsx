@@ -42,3 +42,4 @@ const Playlists: FC = () => {
 };
 
 export default Playlists;
+

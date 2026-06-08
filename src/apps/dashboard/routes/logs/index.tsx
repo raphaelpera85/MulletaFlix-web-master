@@ -134,3 +134,4 @@ export const Component = () => {
 };
 
 Component.displayName = 'LogsPage';
+

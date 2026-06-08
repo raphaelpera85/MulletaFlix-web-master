@@ -576,3 +576,4 @@ export const startMultiSelect = (card) => {
 export const stopMultiSelect = () => {
     hideSelections();
 };
+

@@ -12,3 +12,4 @@ export interface PlayTarget {
     supportedCommands?: string[]
     user?: UserDto
 }
+

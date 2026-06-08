@@ -779,3 +779,4 @@ export default class ConnectionManager {
         return this._minServerVersion;
     }
 }
+

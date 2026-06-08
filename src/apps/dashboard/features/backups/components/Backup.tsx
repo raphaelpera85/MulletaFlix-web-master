@@ -66,3 +66,4 @@ const Backup: FunctionComponent<BackupProps> = ({ backup, onRestore }) => {
 };
 
 export default Backup;
+

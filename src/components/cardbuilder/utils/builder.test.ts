@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+﻿import { describe, expect, test } from 'vitest';
 import {
     getDefaultBackgroundClass,
     getDefaultColorIndex,
@@ -412,6 +412,8 @@ test('isUsingLiveTvNaming', () => {
     expect(isUsingLiveTvNaming('Program')).toEqual(true);
     expect(isUsingLiveTvNaming('Timer')).toEqual(true);
     expect(isUsingLiveTvNaming('Recording')).toEqual(true);
+    expect(isUsingLiveTvNaming('TvChannel')).toEqual(true);
+    expect(isUsingLiveTvNaming('Movie')).toEqual(false);
 });
 
 describe('isResizable', () => {
@@ -629,7 +631,7 @@ describe('resolveCardImageContainerCssClasses', () => {
         expect(resolveCardImageContainerCssClasses({
             itemType: '',
             itemName: 'Movie Name',
-            imgUrl: 'https://jellyfin.org/some-image',
+            imgUrl: 'https://MulletaFlix.org/some-image',
             hasCoverImage: false
         })).toEqual('cardImageContainer');
     });
@@ -717,3 +719,4 @@ describe('getDefaultColorIndex', () => {
         expect(getDefaultColorIndex('Musical artist')).toEqual(1);
     });
 });
+

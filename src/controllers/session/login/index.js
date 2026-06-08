@@ -37,8 +37,27 @@ function authenticateUserByName(page, apiClient, url, username, password) {
 
         const UnauthorizedOrForbidden = [401, 403];
         if (UnauthorizedOrForbidden.includes(response.status)) {
-            const messageKey = response.status === 401 ? 'MessageInvalidUser' : 'MessageUnauthorizedUser';
-            toast(globalize.translate(messageKey));
+            if (response.status === 401) {
+                toast(globalize.translate('MessageInvalidUser'));
+                return;
+            }
+
+            response.text().then(function (text) {
+                let message = '';
+
+                if (text) {
+                    try {
+                        const data = JSON.parse(text);
+                        message = data.Message || data.message || data.title || '';
+                    } catch (error) {
+                        message = text;
+                    }
+                }
+
+                toast(message || globalize.translate('MessageUnauthorizedUser'));
+            }).catch(function () {
+                toast(globalize.translate('MessageUnauthorizedUser'));
+            });
         } else {
             Dashboard.alert({
                 message: globalize.translate('MessageUnableToConnectToServer'),
@@ -186,6 +205,14 @@ function loadUserList(context, apiClient, users) {
 }
 
 export default function (view, params) {
+    function setHeaderVisibility(hidden) {
+        const header = document.querySelector('.skinHeader');
+
+        if (header) {
+            header.classList.toggle('hide', hidden);
+        }
+    }
+
     function getApiClient() {
         const serverId = params.serverid;
 
@@ -258,12 +285,18 @@ export default function (view, params) {
         view.querySelector('#txtManualName').value = '';
         showManualForm(view, true);
     });
+    view.querySelector('.btnRegister').addEventListener('click', function () {
+        import('../register/index').then(function (registerDialog) {
+            registerDialog.default(getApiClient());
+        });
+    });
     view.querySelector('.btnSelectServer').addEventListener('click', function () {
         Dashboard.selectServer();
     });
 
     view.addEventListener('viewshow', function () {
         loading.show();
+        setHeaderVisibility(true);
         libraryMenu.setTransparentMenu(true);
 
         if (!appHost.supports(AppFeature.MultiServer)) {
@@ -313,7 +346,9 @@ export default function (view, params) {
         });
     });
     view.addEventListener('viewhide', function () {
+        setHeaderVisibility(false);
         libraryMenu.setTransparentMenu(false);
     });
 }
+
 

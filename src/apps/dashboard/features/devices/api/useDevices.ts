@@ -31,3 +31,4 @@ export const useDevices = (
         enabled: !!api
     });
 };
+

@@ -47,3 +47,4 @@ export const useArtistsSearch = (
         enabled: !!api && !!userId && (!collectionType || isMusic(collectionType))
     });
 };
+

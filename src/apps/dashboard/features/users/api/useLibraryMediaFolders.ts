@@ -20,3 +20,4 @@ export const useLibraryMediaFolders = (params?: LibraryApiGetMediaFoldersRequest
         enabled: !!api
     });
 };
+

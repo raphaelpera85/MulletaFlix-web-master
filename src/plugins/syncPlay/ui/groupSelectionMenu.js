@@ -227,3 +227,4 @@ class GroupSelectionMenu {
 /** GroupSelectionMenu singleton. */
 const groupSelectionMenu = new GroupSelectionMenu();
 export default groupSelectionMenu;
+

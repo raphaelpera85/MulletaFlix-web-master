@@ -25,3 +25,4 @@ export const useNamedConfiguration = <ConfigType = NamedConfiguration>(key: stri
         enabled: !!api
     });
 };
+

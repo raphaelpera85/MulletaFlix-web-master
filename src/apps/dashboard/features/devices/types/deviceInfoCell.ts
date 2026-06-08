@@ -5,3 +5,4 @@ export interface DeviceInfoCell {
     renderedCellValue: React.ReactNode
     row: MRT_Row<DeviceInfoDto>
 }
+

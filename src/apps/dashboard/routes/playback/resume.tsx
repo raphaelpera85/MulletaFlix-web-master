@@ -168,3 +168,4 @@ export const Component = () => {
 };
 
 Component.displayName = 'ResumePage';
+

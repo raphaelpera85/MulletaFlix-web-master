@@ -19,3 +19,4 @@ export const findBestConfigurationPage = (
     // Fallback to the first match
     return candidates[0];
 };
+

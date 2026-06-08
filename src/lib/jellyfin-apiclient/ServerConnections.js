@@ -57,6 +57,13 @@ class ServerConnections extends ConnectionManager {
             // The SDK Api is lazily created on first use so the access token is available.
             let _sdkApi = null;
             apiClient.subscribe = (messageTypes, onMessage, subscriptionIntervals) => {
+                const serverUrl = apiClient.serverAddress();
+                if (!serverUrl) {
+                    console.warn('Cannot subscribe: apiClient serverAddress is not set yet.');
+                    return {
+                        close: () => {}
+                    };
+                }
                 if (!_sdkApi) {
                     _sdkApi = toApi(apiClient);
                 }
@@ -183,3 +190,4 @@ export default new ServerConnections(
     () => appHost.deviceName(),
     () => appHost.deviceId(),
     capabilities);
+

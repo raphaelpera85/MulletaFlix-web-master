@@ -293,3 +293,4 @@ export const Component = () => {
 };
 
 Component.displayName = 'DevicesPage';
+

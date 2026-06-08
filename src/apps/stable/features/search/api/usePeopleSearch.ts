@@ -54,3 +54,4 @@ export const usePeopleSearch = (
         enabled: !!api && !!userId && isPeopleEnabled
     });
 };
+

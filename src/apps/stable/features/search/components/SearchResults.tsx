@@ -69,3 +69,4 @@ const SearchResults: FC<SearchResultsProps> = ({
 };
 
 export default SearchResults;
+

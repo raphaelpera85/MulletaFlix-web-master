@@ -115,3 +115,4 @@ function getIndicatorIcon(item) {
 }
 
 export default RecordingButton;
+

@@ -257,3 +257,4 @@ const DeviceCard = ({ device }: DeviceCardProps) => {
 };
 
 export default DeviceCard;
+

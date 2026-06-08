@@ -180,3 +180,4 @@ export const Component = () => {
 };
 
 Component.displayName = 'TaskPage';
+

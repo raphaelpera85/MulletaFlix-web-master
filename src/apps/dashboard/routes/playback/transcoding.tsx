@@ -190,7 +190,7 @@ export const Component = () => {
                                 value={config.HardwareAccelerationType}
                                 onChange={onConfigChange}
                                 helperText={(
-                                    <Link href='https://jellyfin.org/docs/general/administration/hardware-acceleration' target='_blank'>
+                                    <Link href='https://MulletaFlix.org/docs/general/administration/hardware-acceleration' target='_blank'>
                                         {globalize.translate('LabelHardwareAccelerationTypeHelp')}
                                     </Link>
                                 )}
@@ -366,7 +366,7 @@ export const Component = () => {
                                                     }
                                                 />
                                                 <FormHelperText>
-                                                    <Link href='https://jellyfin.org/docs/general/post-install/transcoding/hardware-acceleration/intel#configure-and-verify-lp-mode-on-linux' target='_blank'>
+                                                    <Link href='https://MulletaFlix.org/docs/general/post-install/transcoding/hardware-acceleration/intel#configure-and-verify-lp-mode-on-linux' target='_blank'>
                                                         {globalize.translate('IntelLowPowerEncHelp')}
                                                     </Link>
                                                 </FormHelperText>
@@ -648,7 +648,7 @@ export const Component = () => {
                                 onChange={onConfigChange}
                                 label={globalize.translate('LabelFallbackFontPath')}
                                 helperText={
-                                    <Link href='https://jellyfin.org/docs/general/administration/configuration#fonts' target='_blank'>
+                                    <Link href='https://MulletaFlix.org/docs/general/administration/configuration#fonts' target='_blank'>
                                         {globalize.translate('LabelFallbackFontPathHelp')}
                                     </Link>
                                 }
@@ -896,3 +896,4 @@ export const Component = () => {
 };
 
 Component.displayName = 'TranscodingPage';
+

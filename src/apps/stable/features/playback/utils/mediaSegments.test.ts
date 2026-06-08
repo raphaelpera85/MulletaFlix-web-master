@@ -66,3 +66,4 @@ describe('findCurrentSegment()', () => {
         expect(segmentDetails).toBeUndefined();
     });
 });
+

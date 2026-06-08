@@ -105,3 +105,4 @@ export const Component = () => {
 };
 
 Component.displayName = 'PluginRepositoriesPage';
+
