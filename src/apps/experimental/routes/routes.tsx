@@ -38,6 +38,7 @@ export const EXPERIMENTAL_APP_ROUTES: RouteObject[] = [
                 /* Public routes */
                 element: <ConnectionRequired level='public' />,
                 children: [
+                    toAsyncPageRoute({ path: 'forgotpassword', page: 'session/forgotPassword' }),
                     ...LEGACY_PUBLIC_ROUTES.map(toViewManagerPageRoute),
 
                     /* Fallback route for invalid paths */

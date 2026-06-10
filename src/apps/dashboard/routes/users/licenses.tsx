@@ -19,8 +19,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import type { ChipProps } from '@mui/material/Chip';
-import type { Locale } from 'date-fns';
-import format from 'date-fns/format';
 
 import Page from 'components/Page';
 import confirm from 'components/confirm/confirm';
@@ -29,7 +27,6 @@ import toast from 'components/toast/toast';
 import { fetchUserLicense, type UserLicenseDto, USER_LICENSE_QUERY_KEY, useRevokeUserLicense, useSetUserLicense } from 'apps/dashboard/features/users/api/useUserLicense';
 import { useUsers } from 'hooks/useUsers';
 import { useApi } from 'hooks/useApi';
-import { useLocale } from 'hooks/useLocale';
 
 type LicenseRowStatus = {
     label: string;
@@ -116,7 +113,7 @@ const getStatus = (
         };
     }
 
-    if (license.isUnlimited) {
+    if (license.IsUnlimited) {
         return {
             label: 'Ilimitada',
             color: 'info',
@@ -124,12 +121,12 @@ const getStatus = (
         };
     }
 
-    if (license.isExpired) {
+    if (license.IsExpired) {
         return {
             label: 'Expirada',
             color: 'error',
-            details: license.expirationDate
-                ? `Expirou em ${new Date(license.expirationDate).toLocaleString()}.`
+            details: license.ExpirationDate
+                ? `Expirou em ${new Date(license.ExpirationDate).toLocaleString()}.`
                 : 'A licença expirou.'
         };
     }
@@ -137,29 +134,12 @@ const getStatus = (
     return {
         label: 'Ativa',
         color: 'success',
-        details: license.timeRemaining ? `Tempo restante: ${license.timeRemaining}.` : 'Licença ativa.'
+        details: license.TimeRemaining ? `Tempo restante: ${license.TimeRemaining}.` : 'Licença ativa.'
     };
-};
-
-const formatDateTime = (value: string | null | undefined, locale: Locale) => {
-    if (!value) {
-        return '—';
-    }
-
-    return format(new Date(value), 'Pp', { locale });
-};
-
-const formatDateOnly = (value: string | null | undefined, locale: Locale) => {
-    if (!value) {
-        return '—';
-    }
-
-    return format(new Date(value), 'dd/M/yyyy', { locale });
 };
 
 export const Component = () => {
     const { api } = useApi();
-    const { dateFnsLocale } = useLocale();
     const { data: users, isPending, isError } = useUsers();
     const setLicenseMutation = useSetUserLicense();
     const revokeLicenseMutation = useRevokeUserLicense();
@@ -289,7 +269,6 @@ export const Component = () => {
                             <TableRow>
                                 <TableCell sx={{ width: 190 }}>Usuário</TableCell>
                                 <TableCell sx={{ width: 110 }}>Perfil</TableCell>
-                                <TableCell sx={{ width: 140 }}>Início da licença</TableCell>
                                 <TableCell sx={{ width: 210 }}>Situação</TableCell>
                                 <TableCell sx={{ width: 150 }}>Tempo para adicionar</TableCell>
                                 <TableCell sx={{ width: 150 }}>Ações</TableCell>
@@ -324,38 +303,14 @@ export const Component = () => {
                                             </Stack>
                                         </TableCell>
                                         <TableCell>
-                                            {rowIsLoading ? (
-                                                <Box sx={{ display: 'flex', alignItems: 'center', minHeight: 36 }}>
-                                                    <CircularProgress size={18} />
-                                                </Box>
-                                            ) : license && !isNoLicense ? (
-                                                <Stack spacing={0.5}>
-                                                    <Typography variant='body2' fontWeight='medium' noWrap>
-                                                        {formatDateOnly(license.startDate, dateFnsLocale)}
-                                                    </Typography>
-                                                    <Typography variant='caption' color='text.secondary' noWrap>
-                                                        {license.isUnlimited
-                                                            ? 'Licença ilimitada'
-                                                            : license.expirationDate
-                                                                ? `Expira em ${formatDateOnly(license.expirationDate, dateFnsLocale)}`
-                                                                : 'Sem expiração definida'}
-                                                    </Typography>
-                                                </Stack>
-                                            ) : (
-                                                <Typography variant='body2' color='text.secondary'>
-                                                    Sem licença
-                                                </Typography>
-                                            )}
-                                        </TableCell>
-                                        <TableCell>
                                             <Stack spacing={0.75}>
                                                 <Chip label={status.label} color={status.color} size='small' />
                                                 <Typography variant='body2' color='text.secondary'>
                                                     {status.details}
                                                 </Typography>
-                                                {license?.adminNotes && !isNoLicense && (
+                                                {license?.AdminNotes && !isNoLicense && (
                                                     <Typography variant='caption' color='text.secondary'>
-                                                        Observação: {license.adminNotes}
+                                                        Observação: {license.AdminNotes}
                                                     </Typography>
                                                 )}
                                             </Stack>

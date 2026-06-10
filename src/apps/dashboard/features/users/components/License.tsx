@@ -99,18 +99,18 @@ const License = ({ userId }: LicenseProps) => {
     let statusDetails = 'Este usuário não possui nenhuma licença ativa no momento. O acesso ao sistema é irrestrito.';
 
     if (hasLicense && license) {
-        if (license.isUnlimited) {
+        if (license.IsUnlimited) {
             statusLabel = '♾️ Licença Ilimitada';
             chipColor = 'info';
             statusDetails = 'Esta conta possui acesso por tempo ilimitado ao servidor.';
-        } else if (license.isExpired) {
+        } else if (license.IsExpired) {
             statusLabel = '🔴 Licença Expirada';
             chipColor = 'error';
-            statusDetails = `Esta conta expirou em ${new Date(license.expirationDate!).toLocaleString()}. O acesso foi desativado automaticamente.`;
+            statusDetails = `Esta conta expirou em ${new Date(license.ExpirationDate!).toLocaleString()}. O acesso foi desativado automaticamente.`;
         } else {
             statusLabel = '🟢 Licença Ativa';
             chipColor = 'success';
-            statusDetails = `Esta conta está ativa. Tempo restante: ${license.timeRemaining}.`;
+            statusDetails = `Esta conta está ativa. Tempo restante: ${license.TimeRemaining}.`;
         }
     }
 
@@ -139,26 +139,26 @@ const License = ({ userId }: LicenseProps) => {
                                         Data de Início
                                     </Typography>
                                     <Typography variant="body2" fontWeight="medium">
-                                        {new Date(license.startDate).toLocaleString()}
+                                        {new Date(license.StartDate).toLocaleString()}
                                     </Typography>
                                 </Box>
-                                {!license.isUnlimited && license.expirationDate && (
+                                {!license.IsUnlimited && license.ExpirationDate && (
                                     <Box>
                                         <Typography variant="caption" color="text.secondary" display="block">
                                             Data de Expiração
                                         </Typography>
                                         <Typography variant="body2" fontWeight="medium">
-                                            {new Date(license.expirationDate).toLocaleString()}
+                                            {new Date(license.ExpirationDate).toLocaleString()}
                                         </Typography>
                                     </Box>
                                 )}
-                                {license.adminNotes && (
+                                {license.AdminNotes && (
                                     <Box sx={{ gridColumn: '1 / -1' }}>
                                         <Typography variant="caption" color="text.secondary" display="block">
                                             Observações do Administrador
                                         </Typography>
                                         <Typography variant="body2" sx={{ fontStyle: 'italic' }}>
-                                            "{license.adminNotes}"
+                                            "{license.AdminNotes}"
                                         </Typography>
                                     </Box>
                                 )}

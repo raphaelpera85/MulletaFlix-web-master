@@ -5,18 +5,18 @@ import { useApi } from 'hooks/useApi';
 import { queryClient } from 'utils/query/queryClient';
 
 export interface UserLicenseDto {
-    userId: string;
-    userName: string;
-    startDate: string;
-    durationHours: number | null;
-    expirationDate: string | null;
-    isUnlimited: boolean;
-    isExpired: boolean;
-    timeRemaining: string;
-    adminNotes: string | null;
-    grantedByUserName: string | null;
-    createdAt: string;
-    updatedAt: string;
+    UserId: string;
+    UserName: string;
+    StartDate: string;
+    DurationHours: number | null;
+    ExpirationDate: string | null;
+    IsUnlimited: boolean;
+    IsExpired: boolean;
+    TimeRemaining: string;
+    AdminNotes: string | null;
+    GrantedByUserName: string | null;
+    CreatedAt: string;
+    UpdatedAt: string;
 }
 
 export interface SetUserLicenseRequest {
@@ -56,10 +56,6 @@ export const useSetUserLicense = () => {
                 [USER_LICENSE_QUERY_KEY, variables.userId],
                 response.data
             );
-            void queryClient.invalidateQueries({
-                queryKey: [USER_LICENSE_QUERY_KEY, variables.userId]
-            });
-            // Also invalidate general user queries to refresh state/badges
             void queryClient.invalidateQueries({
                 queryKey: ['User', variables.userId]
             });

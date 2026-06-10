@@ -47,6 +47,10 @@ $snackbarContent-color: rgba(255, 255, 255, 0.87) !default;
     scrollbar-color: #3b3b3b #202020;
 }
 
+html, body, #root {
+    color: #fff;
+}
+
 .skinHeader,
 html {
     color: var(--jf-palette-text-secondary, $text-secondary);

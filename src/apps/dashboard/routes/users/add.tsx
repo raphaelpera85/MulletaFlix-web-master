@@ -155,6 +155,8 @@ const UserNew = () => {
                         });
                     }
 
+                    user.Policy.IsHidden = true;
+
                     updateUserPolicy.mutate({
                         userId: user.Id,
                         userPolicy: user.Policy

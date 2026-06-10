@@ -134,6 +134,23 @@ function authenticateQuickConnect(apiClient, targetUrl) {
 function onLoginSuccessful(id, accessToken, apiClient, url) {
     Dashboard.onServerChanged(id, accessToken, apiClient);
     Dashboard.navigate(url || 'home');
+
+    apiClient.getJSON(apiClient.getUrl('Users/' + id + '/License')).then(function (license) {
+        if (!license || license.IsUnlimited) {
+            return;
+        }
+
+        if (license.IsExpired) {
+            toast(globalize.translate('MessageLicenseExpired'));
+            return;
+        }
+
+        if (license.TimeRemaining) {
+            toast(globalize.translate('MessageLicenseTimeRemaining', license.TimeRemaining));
+        }
+    }).catch(function () {
+        // No license or error — silently ignore
+    });
 }
 
 function showManualForm(context, showCancel, focusPassword) {

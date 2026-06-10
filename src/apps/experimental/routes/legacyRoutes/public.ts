@@ -22,13 +22,7 @@ export const LEGACY_PUBLIC_ROUTES: LegacyRoute[] = [
             view: 'session/login/index.html'
         }
     },
-    {
-        path: 'forgotpassword',
-        pageProps: {
-            controller: 'session/forgotPassword/index',
-            view: 'session/forgotPassword/index.html'
-        }
-    },
+
     {
         path: 'forgotpasswordpin',
         pageProps: {

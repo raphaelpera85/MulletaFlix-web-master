@@ -2,6 +2,7 @@ import AssignmentInd from '@mui/icons-material/AssignmentInd';
 import Dashboard from '@mui/icons-material/Dashboard';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import HelpOutline from '@mui/icons-material/HelpOutline';
 import LibraryAdd from '@mui/icons-material/LibraryAdd';
 import Palette from '@mui/icons-material/Palette';
 import People from '@mui/icons-material/People';
@@ -24,7 +25,8 @@ const LIBRARY_PATHS = [
     '/dashboard/libraries',
     '/dashboard/libraries/display',
     '/dashboard/libraries/metadata',
-    '/dashboard/libraries/nfo'
+    '/dashboard/libraries/nfo',
+    '/dashboard/libraries/unidentified'
 ];
 
 const PLAYBACK_PATHS = [
@@ -119,6 +121,12 @@ const ServerDrawerSection = () => {
                     </ListItemLink>
                     <ListItemLink to='/dashboard/libraries/nfo' sx={{ pl: 4 }}>
                         <ListItemText inset primary={globalize.translate('TabNfoSettings')} />
+                    </ListItemLink>
+                    <ListItemLink to='/dashboard/libraries/unidentified' sx={{ pl: 4 }}>
+                        <ListItemIcon>
+                            <HelpOutline />
+                        </ListItemIcon>
+                        <ListItemText inset primary={globalize.translate('UnidentifiedMedia')} />
                     </ListItemLink>
                 </List>
             </Collapse>

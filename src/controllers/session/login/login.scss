@@ -8,11 +8,14 @@
 }
 
 .page#loginPage > .padded-left.padded-right.padded-bottom-page.margin-auto-y {
-    width: min(46rem, calc(100vw - 2rem));
+    width: min(46rem, 100%);
     margin-left: auto;
     margin-right: auto;
     padding-top: 0.65rem;
     padding-bottom: 0.45rem;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+    box-sizing: border-box;
 }
 
 .loginBranding {
@@ -21,7 +24,7 @@
     align-items: center;
     justify-content: center;
     gap: 0.3rem;
-    margin: 0.25rem 0 0.55rem;
+    margin: 0.25rem auto 0.55rem;
     text-align: center;
 }
 
@@ -95,15 +98,16 @@
 }
 
 .loginActionCard {
-    width: min(100%, 52rem);
+    width: min(100%, 26rem);
     margin-left: auto;
     margin-right: auto;
-    padding: 0.8rem 1rem 0.7rem;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 1rem;
-    background: rgba(255, 255, 255, 0.03);
-    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.28);
-    backdrop-filter: blur(10px);
+    padding: 1.2rem 1.2rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1.25rem;
+    background: rgba(0, 0, 0, 0.45);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(16px);
+    box-sizing: border-box;
 }
 
 .manualLoginForm,
@@ -192,7 +196,7 @@
 
 .loginBranding,
 .loginActionCard {
-    max-width: 52rem;
+    max-width: 26rem;
 }
 
 .page#loginPage .readOnlyContent > .loginDisclaimerContainer {

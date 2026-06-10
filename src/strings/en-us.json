@@ -1922,5 +1922,11 @@
     "LabelProgressAndSpeed": "Progress / speed",
     "LabelReasons": "Reasons",
     "LabelPlayerSizes": "Player sizes",
-    "LabelPlaybackQuality": "Frame dropped / corrupted"
+    "LabelPlaybackQuality": "Frame dropped / corrupted",
+    "UnidentifiedMedia": "Unidentified Media",
+    "UnidentifiedMediaDescription": "Media files that the server could not automatically identify through metadata providers.",
+    "NoUnidentifiedItems": "No unidentified {0} found. All items have been matched.",
+    "ItemsFound": "{0} items found",
+    "MessageLicenseTimeRemaining": "Seu acesso expira em {0}.",
+    "MessageLicenseExpired": "Seu acesso expirou. Entre em contato com o administrador."
 }
