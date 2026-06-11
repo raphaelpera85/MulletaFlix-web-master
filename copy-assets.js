@@ -21,8 +21,24 @@ copySync(path.join(srcDir, 'robots.txt'), path.join(distDir, 'robots.txt'));
 copySync(path.join(srcDir, 'manifest.json'), path.join(distDir, 'manifest.json'));
 copySync(path.join(srcDir, 'serviceworker.js'), path.join(distDir, 'serviceworker.js'));
 
-// 2. Copy themes
+// 2. Copy themes and compile SCSS
 copySync(path.join(srcDir, 'themes'), path.join(distDir, 'themes'));
+
+const sass = require('sass');
+const themes = ['appletv', 'blueradiance', 'dark', 'light', 'purplehaze', 'wmc'];
+themes.forEach(theme => {
+    const scssPath = path.join(srcDir, 'themes', theme, 'theme.scss');
+    const destPath = path.join(distDir, 'themes', theme, 'theme.css');
+    if (fs.existsSync(scssPath)) {
+        try {
+            const result = sass.compile(scssPath);
+            fs.writeFileSync(destPath, result.css);
+            console.log(`Compiled theme SCSS: ${theme} -> ${destPath}`);
+        } catch (e) {
+            console.error(`Failed to compile theme ${theme}:`, e);
+        }
+    }
+});
 
 // 3. Copy libraries from node_modules
 const libraries = [

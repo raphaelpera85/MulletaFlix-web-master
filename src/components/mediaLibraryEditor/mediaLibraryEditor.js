@@ -4,7 +4,7 @@
  */
 
 import escapeHtml from 'escape-html';
-import 'jquery';
+import $ from 'jquery';
 import loading from '../loading/loading';
 import dialogHelper from '../dialogHelper/dialogHelper';
 import dom from '../../utils/dom';
@@ -212,7 +212,7 @@ function onDialogClosed() {
 
 export class MediaLibraryEditor {
     constructor(options) {
-        const deferred = jQuery.Deferred();
+        const deferred = $.Deferred();
         currentOptions = options;
         currentDeferred = deferred;
         hasChanges = false;

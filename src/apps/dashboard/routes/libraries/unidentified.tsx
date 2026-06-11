@@ -114,7 +114,7 @@ export const Component = () => {
                             sx={{ mr: 1 }}
                         />
                     )}
-                    <IconButton onClick={() => fetchItems()} title={globalize.translate('ButtonRefresh')} size='large'>
+                    <IconButton onClick={() => fetchItems()} title={globalize.translate('Refresh')} size='large'>
                         <RefreshIcon />
                     </IconButton>
                 </Box>
@@ -155,7 +155,7 @@ export const Component = () => {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell>{globalize.translate('Name')}</TableCell>
-                                        <TableCell>{globalize.translate('Path')}</TableCell>
+                                        <TableCell>{globalize.translate('LabelPath')}</TableCell>
                                         <TableCell>{globalize.translate('DateAdded')}</TableCell>
                                     </TableRow>
                                 </TableHead>

@@ -80,7 +80,8 @@ function syncMetadataLanguageFromCountry(parent) {
     });
 }
 
-function getNewLibraryOptions(serverConfiguration = {}) {
+function getNewLibraryOptions(serverConfiguration) {
+    serverConfiguration = serverConfiguration || {};
     const countryCode = serverConfiguration.MetadataCountryCode || '';
     const preferredLanguage = serverConfiguration.PreferredMetadataLanguage || '';
 
@@ -577,7 +578,7 @@ export async function embed(parent, contentType, libraryOptions) {
         TypeOptions: []
     };
     currentAvailableOptions = null;
-    const isNewLibrary = libraryOptions === null;
+    const isNewLibrary = libraryOptions == null;
     isNewLibrary && parent.classList.add('newlibrary');
 
     parent.innerHTML = globalize.translateHtml(template);

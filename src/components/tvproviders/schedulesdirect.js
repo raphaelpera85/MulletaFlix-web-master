@@ -1,4 +1,4 @@
-import 'jquery';
+import $ from 'jquery';
 import loading from '../loading/loading';
 import globalize from '../../lib/globalize';
 import '../../elements/emby-checkbox/emby-checkbox';

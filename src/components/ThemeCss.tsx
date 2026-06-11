@@ -7,7 +7,8 @@ interface ThemeCssProps {
     dashboard?: boolean
 }
 
-const getThemeUrl = (id: string) => `themes/${id}/theme.css`;;
+const buildId = Date.now();
+const getThemeUrl = (id: string) => `themes/${id}/theme.css?v=${buildId}`;
 
 const DEFAULT_THEME_URL = getThemeUrl(getDefaultTheme().id);
 

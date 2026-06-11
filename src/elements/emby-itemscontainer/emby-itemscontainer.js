@@ -364,7 +364,7 @@ ItemsContainerPrototype.resume = function (options) {
 };
 
 ItemsContainerPrototype.refreshItems = function () {
-    if (!this.fetchData) {
+    if (!this.fetchData || !this.getItemsHtml) {
         return Promise.resolve();
     }
 
@@ -441,7 +441,9 @@ function onDataFetched(result) {
         focusId = activeElement.getAttribute('data-id');
     }
 
-    this.innerHTML = this.getItemsHtml(items);
+    if (this.getItemsHtml) {
+        this.innerHTML = this.getItemsHtml(items);
+    }
 
     imageLoader.lazyChildren(this);
 

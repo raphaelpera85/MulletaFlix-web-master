@@ -37,6 +37,11 @@ const htmlPlugin = () => ({
 });
 
 export default defineConfig({
+    resolve: {
+        alias: [
+            { find: /^~/, replacement: '' }
+        ]
+    },
     base: './',
     root: 'src',
     plugins: [ tsconfigPaths(), htmlPlugin() ],

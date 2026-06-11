@@ -249,7 +249,13 @@ class DisplaySettings {
         const apiClient = ServerConnections.getApiClient(self.options.serverId);
         const userSettings = self.options.userSettings;
 
-        const user = await queryClient.fetchQuery(getUserQuery(toApi(apiClient), { userId }));
+        let user;
+        try {
+            user = await queryClient.fetchQuery(getUserQuery(toApi(apiClient), { userId }));
+        } catch (error) {
+            console.warn('Error fetching user with React Query, falling back to direct API call:', error);
+            user = await apiClient.getUser(userId);
+        }
         await userSettings.setUserInfo(userId, apiClient);
 
         self.dataLoaded = true;
