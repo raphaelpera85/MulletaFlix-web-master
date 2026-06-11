@@ -75,6 +75,34 @@
     }
 }
 
+#bookPlayer .ttsPanel {
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 2vw;
+    background: rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+#bookPlayer .ttsPanel.hide {
+    display: none;
+}
+
+#bookPlayer .ttsSelect {
+    max-width: 200px;
+    font-size: 0.85rem;
+    padding: 0.25rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background: #fff;
+    color: #000;
+}
+
+#bookPlayer .ttsSpeedSelect {
+    max-width: 80px;
+}
+
 @media (max-width: 60em) {
     #dialogToc {
         max-width: 100%;

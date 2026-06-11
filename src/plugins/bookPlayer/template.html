@@ -8,6 +8,9 @@
     <button is="paper-icon-button-light" id="btnBookplayerNext" class="autoSize bookplayerButton hide-mouse-idle-tv" tabindex="-1">
         <span class="material-icons bookplayerButtonIcon navigate_next" aria-hidden="true"></span>
     </button>
+    <button is="paper-icon-button-light" id="btnBookplayerListen" class="autoSize bookplayerButton hide-mouse-idle-tv" tabindex="-1">
+        <span class="material-icons bookplayerButtonIcon volume_up" aria-hidden="true"></span>
+    </button>
     <button is="paper-icon-button-light" id="btnBookplayerRotateTheme" class="autoSize bookplayerButton hide-mouse-idle-tv" tabindex="-1">
         <span class="material-icons bookplayerButtonIcon remove_red_eye" aria-hidden="true"></span>
     </button>
@@ -22,6 +25,29 @@
     </button>
     <button is="paper-icon-button-light" id="btnBookplayerExit" class="autoSize bookplayerButton hide-mouse-idle-tv" tabindex="-1">
         <span class="material-icons bookplayerButtonIcon close" aria-hidden="true"></span>
+    </button>
+</div>
+
+<div id="bookplayerTtsPanel" class="ttsPanel hide">
+    <select id="ttsVoiceSelect" class="ttsSelect emby-select-withcolor"></select>
+    <select id="ttsLangSelect" class="ttsSelect emby-select-withcolor">
+        <option value="">Todos os idiomas</option>
+        <option value="pt-BR">Português (Brasil)</option>
+        <option value="en">English</option>
+    </select>
+    <select id="ttsSpeedSelect" class="ttsSelect ttsSpeedSelect emby-select-withcolor">
+        <option value="0.5">0.5x</option>
+        <option value="0.75">0.75x</option>
+        <option value="1" selected>1x</option>
+        <option value="1.25">1.25x</option>
+        <option value="1.5">1.5x</option>
+        <option value="2">2x</option>
+    </select>
+    <button is="paper-icon-button-light" id="btnTtsPlayPause" class="autoSize" tabindex="-1">
+        <span class="material-icons play_arrow" aria-hidden="true"></span>
+    </button>
+    <button is="paper-icon-button-light" id="btnTtsStop" class="autoSize" tabindex="-1">
+        <span class="material-icons stop" aria-hidden="true"></span>
     </button>
 </div>
 

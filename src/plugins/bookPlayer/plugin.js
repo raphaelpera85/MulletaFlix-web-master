@@ -43,6 +43,10 @@ export class BookPlayer {
             this.theme = 'light';
         }
         this.fontSize = 'medium';
+        this.ttsActive = false;
+        this.ttsUtterance = null;
+        this.ttsPaused = false;
+        this.ttsVoices = [];
         this.onDialogClosed = this.onDialogClosed.bind(this);
         this.openTableOfContents = this.openTableOfContents.bind(this);
         this.rotateTheme = this.rotateTheme.bind(this);
@@ -54,7 +58,19 @@ export class BookPlayer {
         this.addSwipeGestures = this.addSwipeGestures.bind(this);
         this.getPlayerHeight = this.getPlayerHeight.bind(this);
         this.toggleFullscreen = this.toggleFullscreen.bind(this);
+        this.toggleListen = this.toggleListen.bind(this);
+        this.speakCurrentPage = this.speakCurrentPage.bind(this);
+        this.stopSpeech = this.stopSpeech.bind(this);
+        this.toggleTtsPlayPause = this.toggleTtsPlayPause.bind(this);
+        this.populateVoices = this.populateVoices.bind(this);
+        this.onVoicesChanged = this.onVoicesChanged.bind(this);
+        this.onTtsEnd = this.onTtsEnd.bind(this);
         this.fullscreen = false;
+
+        if (typeof speechSynthesis !== 'undefined') {
+            speechSynthesis.addEventListener('voiceschanged', this.onVoicesChanged);
+            this.populateVoices();
+        }
     }
 
     play(options) {
@@ -68,6 +84,7 @@ export class BookPlayer {
     }
 
     stop() {
+        this.stopSpeech();
         this.unbindEvents();
 
         const stopInfo = {
@@ -104,7 +121,10 @@ export class BookPlayer {
     }
 
     destroy() {
-        // Nothing to do here
+        this.stopSpeech();
+        if (typeof speechSynthesis !== 'undefined') {
+            speechSynthesis.removeEventListener('voiceschanged', this.onVoicesChanged);
+        }
     }
 
     currentItem() {
@@ -197,6 +217,16 @@ export class BookPlayer {
         elem.querySelector('#btnBookplayerDecreaseFontSize').addEventListener('click', this.decreaseFontSize);
         elem.querySelector('#btnBookplayerPrev')?.addEventListener('click', this.previous);
         elem.querySelector('#btnBookplayerNext')?.addEventListener('click', this.next);
+        elem.querySelector('#btnBookplayerListen')?.addEventListener('click', this.toggleListen);
+        elem.querySelector('#btnTtsPlayPause')?.addEventListener('click', this.toggleTtsPlayPause);
+        elem.querySelector('#btnTtsStop')?.addEventListener('click', this.stopSpeech);
+        elem.querySelector('#ttsLangSelect')?.addEventListener('change', this.populateVoices);
+        elem.querySelector('#ttsSpeedSelect')?.addEventListener('change', () => {
+            if (this.ttsActive) this.speakCurrentPage();
+        });
+        elem.querySelector('#ttsVoiceSelect')?.addEventListener('change', () => {
+            if (this.ttsActive) this.speakCurrentPage();
+        });
     }
 
     bindEvents() {
@@ -225,6 +255,9 @@ export class BookPlayer {
         elem.querySelector('#btnBookplayerDecreaseFontSize').removeEventListener('click', this.decreaseFontSize);
         elem.querySelector('#btnBookplayerPrev')?.removeEventListener('click', this.previous);
         elem.querySelector('#btnBookplayerNext')?.removeEventListener('click', this.next);
+        elem.querySelector('#btnBookplayerListen')?.removeEventListener('click', this.toggleListen);
+        elem.querySelector('#btnTtsPlayPause')?.removeEventListener('click', this.toggleTtsPlayPause);
+        elem.querySelector('#btnTtsStop')?.removeEventListener('click', this.stopSpeech);
     }
 
     unbindEvents() {
@@ -326,6 +359,126 @@ export class BookPlayer {
         }
     }
 
+    onVoicesChanged() {
+        this.populateVoices();
+    }
+
+    populateVoices() {
+        if (typeof speechSynthesis === 'undefined') return;
+        this.ttsVoices = speechSynthesis.getVoices();
+        const select = document.getElementById('ttsVoiceSelect');
+        const langSelect = document.getElementById('ttsLangSelect');
+        if (!select) return;
+        const currentVal = select.value;
+        const selectedLang = langSelect ? langSelect.value : '';
+        select.innerHTML = '';
+        this.ttsVoices.forEach(function (voice) {
+            if (selectedLang && !voice.lang.startsWith(selectedLang)) return;
+            const option = document.createElement('option');
+            option.value = voice.name;
+            option.textContent = voice.name + ' (' + voice.lang + ')';
+            select.appendChild(option);
+        });
+        if (currentVal && select.querySelector('option[value="' + currentVal + '"]')) {
+            select.value = currentVal;
+        }
+    }
+
+    extractTextFromPage() {
+        if (!this.rendition) return '';
+        const body = this.rendition.getContents()[0]?.document?.body;
+        if (!body) return '';
+        return body.textContent || '';
+    }
+
+    toggleListen() {
+        if (typeof speechSynthesis === 'undefined') {
+            console.warn('SpeechSynthesis not available');
+            return;
+        }
+        const panel = document.getElementById('bookplayerTtsPanel');
+        const icon = document.querySelector('#btnBookplayerListen .material-icons');
+        if (!panel) return;
+
+        if (this.ttsActive) {
+            this.stopSpeech();
+            panel.classList.add('hide');
+            if (icon) icon.textContent = 'volume_up';
+            this.ttsActive = false;
+        } else {
+            panel.classList.remove('hide');
+            if (icon) icon.textContent = 'volume_off';
+            this.ttsActive = true;
+            this.populateVoices();
+            this.speakCurrentPage();
+        }
+    }
+
+    speakCurrentPage() {
+        if (typeof speechSynthesis === 'undefined' || !this.ttsActive) return;
+
+        speechSynthesis.cancel();
+        const text = this.extractTextFromPage();
+        if (!text) return;
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        const voiceSelect = document.getElementById('ttsVoiceSelect');
+        const speedSelect = document.getElementById('ttsSpeedSelect');
+
+        if (voiceSelect && voiceSelect.value) {
+            const selectedVoice = this.ttsVoices.find(function (v) { return v.name === voiceSelect.value; });
+            if (selectedVoice) utterance.voice = selectedVoice;
+        }
+
+        if (speedSelect) {
+            utterance.rate = parseFloat(speedSelect.value);
+        }
+
+        utterance.onend = this.onTtsEnd;
+        utterance.onerror = this.onTtsEnd;
+
+        this.ttsUtterance = utterance;
+        this.ttsPaused = false;
+
+        const playPauseIcon = document.querySelector('#btnTtsPlayPause .material-icons');
+        if (playPauseIcon) playPauseIcon.textContent = 'pause';
+
+        speechSynthesis.speak(utterance);
+    }
+
+    toggleTtsPlayPause() {
+        if (!this.ttsUtterance) {
+            this.speakCurrentPage();
+            return;
+        }
+        const icon = document.querySelector('#btnTtsPlayPause .material-icons');
+        if (this.ttsPaused) {
+            speechSynthesis.resume();
+            this.ttsPaused = false;
+            if (icon) icon.textContent = 'pause';
+        } else {
+            speechSynthesis.pause();
+            this.ttsPaused = true;
+            if (icon) icon.textContent = 'play_arrow';
+        }
+    }
+
+    stopSpeech() {
+        if (typeof speechSynthesis === 'undefined') return;
+        speechSynthesis.cancel();
+        this.ttsUtterance = null;
+        this.ttsPaused = false;
+        const playPauseIcon = document.querySelector('#btnTtsPlayPause .material-icons');
+        if (playPauseIcon) playPauseIcon.textContent = 'play_arrow';
+    }
+
+    onTtsEnd() {
+        this.ttsUtterance = null;
+        this.ttsPaused = false;
+        const playPauseIcon = document.querySelector('#btnTtsPlayPause .material-icons');
+        if (playPauseIcon) playPauseIcon.textContent = 'play_arrow';
+    }
+
     createMediaElement() {
         let elem = this.mediaElement;
         if (elem) {
@@ -408,6 +561,9 @@ export class BookPlayer {
                         rendition.on('relocated', (locations) => {
                             this.progress = book.locations.percentageFromCfi(locations.start.cfi);
                             Events.trigger(this, 'pause');
+                            if (this.ttsActive) {
+                                this.speakCurrentPage();
+                            }
                         });
 
                         loading.hide();
