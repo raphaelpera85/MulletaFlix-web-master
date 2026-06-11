@@ -65,8 +65,6 @@ export class BookPlayer {
         this.populateVoices = this.populateVoices.bind(this);
         this.onVoicesChanged = this.onVoicesChanged.bind(this);
         this.onTtsEnd = this.onTtsEnd.bind(this);
-        this.startReading = this.startReading.bind(this);
-        this.setCurrentPageAsCover = this.setCurrentPageAsCover.bind(this);
         this.fullscreen = false;
 
         if (typeof speechSynthesis !== 'undefined') {
@@ -481,86 +479,69 @@ export class BookPlayer {
         if (playPauseIcon) playPauseIcon.textContent = 'play_arrow';
     }
 
-    showCover(contentWindow) {
-        const cover = document.getElementById('bookPlayerCover');
-        const coverPage = document.getElementById('bookPlayerCoverPage');
-        if (!cover || !coverPage) return;
-
-        const body = contentWindow?.document?.body;
-        if (!body) {
-            cover.classList.add('hide');
-            return;
-        }
-
-        coverPage.innerHTML = body.innerHTML;
-        cover.classList.remove('hide');
-
-        const coverBtn = document.getElementById('btnCoverStartReading');
-        const setCoverBtn = document.getElementById('btnCoverSetAsCover');
-        if (coverBtn) coverBtn.addEventListener('click', this.startReading, { once: true });
-        if (setCoverBtn) setCoverBtn.addEventListener('click', this.setCurrentPageAsCover, { once: true });
-    }
-
-    startReading() {
-        const cover = document.getElementById('bookPlayerCover');
-        if (cover) cover.classList.add('hide');
-        const epubElem = document.querySelector('.epub-container');
-        if (epubElem) epubElem.style.opacity = '';
-    }
-
-    async setCurrentPageAsCover() {
+    async autoUploadCover() {
         const item = this.item;
         if (!item || !item.Id) return;
+        if (item.ImageTags?.Primary) return;
 
         try {
-            const content = this.rendition?.getContents()[0];
-            if (!content) return;
+            const text = this.extractTextFromPage();
+            if (!text) return;
 
-            const doc = content.document;
-            const pageContent = doc?.body?.innerHTML;
-            if (!pageContent) return;
+            const lines = text.split('\n').filter(Boolean);
+            const title = item.Name || 'Book';
+            const preview = lines.slice(0, 20).join('\n').substring(0, 1500);
 
-            const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="800">'
-                + '<defs><style>body{color:#000;background:#fff;font-family:serif;padding:40px;font-size:18px;line-height:1.6;margin:0}*{max-width:100%;}</style></defs>'
-                + '<foreignObject width="100%" height="100%">'
-                + '<div xmlns="http://www.w3.org/1999/xhtml">' + pageContent + '</div>'
-                + '</foreignObject></svg>';
+            const canvas = document.createElement('canvas');
+            canvas.width = 600;
+            canvas.height = 800;
+            const ctx = canvas.getContext('2d');
 
-            const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
+            ctx.fillStyle = '#f5f0eb';
+            ctx.fillRect(0, 0, 600, 800);
 
-            const img = new Image();
-            img.onload = function () {
-                const canvas = document.createElement('canvas');
-                canvas.width = 600;
-                canvas.height = 800;
-                const ctx = canvas.getContext('2d');
-                ctx.fillStyle = '#fff';
-                ctx.fillRect(0, 0, 600, 800);
-                ctx.drawImage(img, 0, 0, 600, 800);
-                URL.revokeObjectURL(url);
+            ctx.fillStyle = '#2c2c2c';
+            ctx.font = 'bold 28px Georgia, serif';
+            ctx.textAlign = 'center';
+            const titleY = 120;
+            this.wrapText(ctx, title, 300, titleY, 500, 34);
+            const titleHeight = ctx.measureText('M').width;
+            const textY = titleY + 60;
 
-                canvas.toBlob(function (pngBlob) {
-                    if (!pngBlob) return;
-                    const file = new File([pngBlob], 'cover.png', { type: 'image/png' });
-                    ServerConnections.getApiClient(item.ServerId)
-                        .uploadItemImage(item.Id, 0 /* ImageType.Primary */, file)
-                        .then(function () {
-                            const btn = document.getElementById('btnCoverSetAsCover');
-                            if (btn) btn.textContent = '✓ Capa salva!';
-                        })
-                        .catch(function (err) {
-                            console.error('Failed to upload cover:', err);
-                        });
-                }, 'image/png');
-            };
-            img.onerror = function () {
-                URL.revokeObjectURL(url);
-                console.error('Failed to render cover SVG');
-            };
-            img.src = url;
+            ctx.fillStyle = '#444';
+            ctx.font = '16px Georgia, serif';
+            ctx.textAlign = 'left';
+            this.wrapText(ctx, preview, 50, textY, 500, 24);
+
+            canvas.toBlob(function (pngBlob) {
+                if (!pngBlob) return;
+                const file = new File([pngBlob], 'cover.png', { type: 'image/png' });
+                ServerConnections.getApiClient(item.ServerId)
+                    .uploadItemImage(item.Id, 0, file)
+                    .catch(function () {});
+            }, 'image/png');
         } catch (err) {
-            console.error('Failed to capture cover:', err);
+            console.error('Cover auto-upload failed:', err);
+        }
+    }
+
+    wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+        const words = text.split(' ');
+        let line = '';
+        let cy = y;
+        for (const word of words) {
+            const testLine = line + (line ? ' ' : '') + word;
+            const metrics = ctx.measureText(testLine);
+            if (metrics.width > maxWidth && line) {
+                ctx.fillText(line, x, cy);
+                line = word;
+                cy += lineHeight;
+            } else {
+                line = testLine;
+            }
+        }
+        if (line) {
+            ctx.fillText(line, x, cy);
         }
     }
 
@@ -632,6 +613,8 @@ export class BookPlayer {
 
                     this.bindEvents();
 
+                    const autoUploadCover = this.autoUploadCover.bind(this);
+
                     return this.rendition.book.locations.generate(1024).then(async () => {
                         if (this.cancellationToken) reject();
 
@@ -650,13 +633,10 @@ export class BookPlayer {
                             }
                         });
 
-                        const contents = rendition.getContents();
-                        if (contents.length && !percentageTicks) {
-                            setTimeout(() => {
-                                this.showCover(contents[0].window);
-                            }, 100);
-                        } else {
-                            epubElem.style.opacity = '';
+                        epubElem.style.opacity = '';
+
+                        if (!percentageTicks) {
+                            setTimeout(autoUploadCover, 500);
                         }
 
                         loading.hide();
