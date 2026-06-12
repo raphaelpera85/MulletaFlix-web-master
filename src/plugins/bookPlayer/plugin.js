@@ -30,6 +30,20 @@ const THEMES = {
 };
 const THEME_ORDER = ['dark', 'sepia', 'light'];
 const FONT_SIZES = ['x-small', 'small', 'medium', 'large', 'x-large'];
+const MATERIAL_ICON_CLASSES = [
+    'volume_up',
+    'volume_off',
+    'play_arrow',
+    'pause'
+];
+
+function setMaterialIcon(icon, iconName) {
+    if (!icon) return;
+
+    icon.classList.remove(...MATERIAL_ICON_CLASSES);
+    icon.classList.add(iconName);
+    icon.textContent = '';
+}
 
 export class BookPlayer {
     constructor() {
@@ -469,14 +483,14 @@ export class BookPlayer {
         if (this.ttsActive) {
             this.stopSpeech();
             panel.classList.add('hide');
-            if (icon) icon.textContent = 'volume_up';
+            setMaterialIcon(icon, 'volume_up');
             this.ttsActive = false;
         } else {
             panel.classList.remove('hide');
-            if (icon) icon.textContent = 'volume_off';
+            setMaterialIcon(icon, 'volume_off');
             this.ttsActive = true;
             this.populateVoices();
-            void this.speakCurrentPage();
+            setMaterialIcon(document.querySelector('#btnTtsPlayPause .material-icons'), 'play_arrow');
         }
     }
 
@@ -514,13 +528,18 @@ export class BookPlayer {
         this.ttsPaused = false;
 
         const playPauseIcon = document.querySelector('#btnTtsPlayPause .material-icons');
-        if (playPauseIcon) playPauseIcon.textContent = 'pause';
+        setMaterialIcon(playPauseIcon, 'pause');
 
         speechSynthesis.speak(utterance);
+        setTimeout(() => {
+            if (this.ttsUtterance === utterance && speechSynthesis.paused) {
+                speechSynthesis.resume();
+            }
+        }, 100);
     }
 
     toggleTtsPlayPause() {
-        if (!this.ttsUtterance) {
+        if (!this.ttsUtterance || !speechSynthesis.speaking) {
             void this.speakCurrentPage();
             return;
         }
@@ -528,11 +547,11 @@ export class BookPlayer {
         if (this.ttsPaused) {
             speechSynthesis.resume();
             this.ttsPaused = false;
-            if (icon) icon.textContent = 'pause';
+            setMaterialIcon(icon, 'pause');
         } else {
             speechSynthesis.pause();
             this.ttsPaused = true;
-            if (icon) icon.textContent = 'play_arrow';
+            setMaterialIcon(icon, 'play_arrow');
         }
     }
 
@@ -543,14 +562,14 @@ export class BookPlayer {
         this.ttsUtterance = null;
         this.ttsPaused = false;
         const playPauseIcon = document.querySelector('#btnTtsPlayPause .material-icons');
-        if (playPauseIcon) playPauseIcon.textContent = 'play_arrow';
+        setMaterialIcon(playPauseIcon, 'play_arrow');
     }
 
     onTtsEnd() {
         this.ttsUtterance = null;
         this.ttsPaused = false;
         const playPauseIcon = document.querySelector('#btnTtsPlayPause .material-icons');
-        if (playPauseIcon) playPauseIcon.textContent = 'play_arrow';
+        setMaterialIcon(playPauseIcon, 'play_arrow');
     }
 
     async autoUploadCover(book) {

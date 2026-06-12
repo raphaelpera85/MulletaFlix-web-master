@@ -95,8 +95,18 @@
     padding: 0.25rem;
     border-radius: 4px;
     border: 1px solid #ccc;
+    background: #fff !important;
+    color: #111 !important;
+}
+
+#bookPlayer .ttsSelect option {
     background: #fff;
-    color: #000;
+    color: #111;
+}
+
+#bookPlayer .ttsSelect option:checked {
+    background: #0aa7d7;
+    color: #fff;
 }
 
 #bookPlayer .ttsSpeedSelect {
