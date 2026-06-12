@@ -1,5 +1,6 @@
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import Screenfull from 'screenfull';
+import EpubCFI from 'epubjs/src/epubcfi';
 
 import { ServerConnections } from 'lib/jellyfin-apiclient';
 import browser from 'scripts/browser';
@@ -47,6 +48,7 @@ export class BookPlayer {
         this.ttsUtterance = null;
         this.ttsPaused = false;
         this.ttsVoices = [];
+        this.ttsRequestId = 0;
         this.onDialogClosed = this.onDialogClosed.bind(this);
         this.openTableOfContents = this.openTableOfContents.bind(this);
         this.rotateTheme = this.rotateTheme.bind(this);
@@ -222,10 +224,10 @@ export class BookPlayer {
         elem.querySelector('#btnTtsStop')?.addEventListener('click', this.stopSpeech);
         elem.querySelector('#ttsLangSelect')?.addEventListener('change', this.populateVoices);
         elem.querySelector('#ttsSpeedSelect')?.addEventListener('change', () => {
-            if (this.ttsActive) this.speakCurrentPage();
+            if (this.ttsActive) void this.speakCurrentPage();
         });
         elem.querySelector('#ttsVoiceSelect')?.addEventListener('change', () => {
-            if (this.ttsActive) this.speakCurrentPage();
+            if (this.ttsActive) void this.speakCurrentPage();
         });
     }
 
@@ -384,11 +386,75 @@ export class BookPlayer {
         }
     }
 
-    extractTextFromPage() {
+    createVisiblePageRange(location) {
+        const startCfi = location?.start?.cfi;
+        const endCfi = location?.end?.cfi;
+
+        if (!startCfi || !endCfi) {
+            return null;
+        }
+
+        const start = new EpubCFI(startCfi);
+        const end = new EpubCFI(endCfi);
+
+        if (!start.base?.steps?.length || !end.base?.steps?.length || start.spinePos !== end.spinePos) {
+            return null;
+        }
+
+        let sharedSteps = 0;
+        const maxSharedSteps = Math.min(start.path.steps.length, end.path.steps.length);
+
+        while (sharedSteps < maxSharedSteps) {
+            const startStep = start.path.steps[sharedSteps];
+            const endStep = end.path.steps[sharedSteps];
+
+            if (!startStep || !endStep || startStep.type !== endStep.type || startStep.index !== endStep.index || startStep.id !== endStep.id) {
+                break;
+            }
+
+            sharedSteps += 1;
+        }
+
+        const range = new EpubCFI();
+        range.range = true;
+        range.base = start.base;
+        range.path = {
+            steps: start.path.steps.slice(0, sharedSteps),
+            terminal: null
+        };
+        range.start = {
+            steps: start.path.steps.slice(sharedSteps),
+            terminal: start.path.terminal
+        };
+        range.end = {
+            steps: end.path.steps.slice(sharedSteps),
+            terminal: end.path.terminal
+        };
+
+        return range.toString();
+    }
+
+    async extractTextFromPage(location) {
         if (!this.rendition) return '';
-        const body = this.rendition.getContents()[0]?.document?.body;
-        if (!body) return '';
-        return body.textContent || '';
+
+        const visibleRange = this.createVisiblePageRange(location);
+        if (visibleRange) {
+            try {
+                const range = await this.rendition.book.getRange(visibleRange);
+                const text = range?.toString()?.trim();
+                if (text) {
+                    return text;
+                }
+            } catch (err) {
+                console.warn('Failed to extract visible book text for TTS:', err);
+            }
+        }
+
+        const contents = this.rendition.getContents();
+        return contents
+            .map((content) => content?.document?.body?.textContent || '')
+            .join('\n')
+            .trim();
     }
 
     toggleListen() {
@@ -410,23 +476,30 @@ export class BookPlayer {
             if (icon) icon.textContent = 'volume_off';
             this.ttsActive = true;
             this.populateVoices();
-            this.speakCurrentPage();
+            void this.speakCurrentPage();
         }
     }
 
-    speakCurrentPage() {
+    async speakCurrentPage(location) {
         if (typeof speechSynthesis === 'undefined' || !this.ttsActive) return;
 
+        const requestId = ++this.ttsRequestId;
         speechSynthesis.cancel();
-        const text = this.extractTextFromPage();
-        if (!text) return;
+        const currentLocation = location || (this.rendition?.currentLocation ? this.rendition.currentLocation() : null);
+        const resolvedLocation = await Promise.resolve(currentLocation);
+        const text = await this.extractTextFromPage(resolvedLocation);
+        if (!text || !this.ttsActive || requestId !== this.ttsRequestId) {
+            return;
+        }
 
         const utterance = new SpeechSynthesisUtterance(text);
         const voiceSelect = document.getElementById('ttsVoiceSelect');
         const speedSelect = document.getElementById('ttsSpeedSelect');
 
         if (voiceSelect && voiceSelect.value) {
-            const selectedVoice = this.ttsVoices.find(function (v) { return v.name === voiceSelect.value; });
+            const selectedVoice = this.ttsVoices.find(function (v) {
+                return v.name === voiceSelect.value;
+            });
             if (selectedVoice) utterance.voice = selectedVoice;
         }
 
@@ -448,7 +521,7 @@ export class BookPlayer {
 
     toggleTtsPlayPause() {
         if (!this.ttsUtterance) {
-            this.speakCurrentPage();
+            void this.speakCurrentPage();
             return;
         }
         const icon = document.querySelector('#btnTtsPlayPause .material-icons');
@@ -465,6 +538,7 @@ export class BookPlayer {
 
     stopSpeech() {
         if (typeof speechSynthesis === 'undefined') return;
+        this.ttsRequestId += 1;
         speechSynthesis.cancel();
         this.ttsUtterance = null;
         this.ttsPaused = false;
@@ -479,47 +553,69 @@ export class BookPlayer {
         if (playPauseIcon) playPauseIcon.textContent = 'play_arrow';
     }
 
-    async autoUploadCover() {
+    async autoUploadCover(book) {
         const item = this.item;
         if (!item || !item.Id) return;
         if (item.ImageTags?.Primary) return;
 
         try {
-            const text = this.extractTextFromPage();
-            if (!text) return;
+            const rendition = this.rendition;
+            const coverBook = book || rendition?.book;
+            const firstPageCfi = coverBook?.locations?.cfiFromPercentage(0);
 
-            const lines = text.split('\n').filter(Boolean);
-            const title = item.Name || 'Book';
-            const preview = lines.slice(0, 20).join('\n').substring(0, 1500);
+            if (!rendition || !coverBook || !firstPageCfi) return;
 
-            const canvas = document.createElement('canvas');
-            canvas.width = 600;
-            canvas.height = 800;
-            const ctx = canvas.getContext('2d');
+            const currentLocation = await Promise.resolve(rendition.currentLocation?.());
+            const restoreTarget = currentLocation?.start?.cfi || currentLocation?.end?.cfi || null;
 
-            ctx.fillStyle = '#f5f0eb';
-            ctx.fillRect(0, 0, 600, 800);
+            try {
+                if (restoreTarget && restoreTarget !== firstPageCfi) {
+                    await rendition.display(firstPageCfi);
+                }
 
-            ctx.fillStyle = '#2c2c2c';
-            ctx.font = 'bold 28px Georgia, serif';
-            ctx.textAlign = 'center';
-            const titleY = 120;
-            this.wrapText(ctx, title, 300, titleY, 500, 34);
-            const titleHeight = ctx.measureText('M').width;
-            const textY = titleY + 60;
+                const text = await this.extractTextFromPage();
+                if (!text) return;
 
-            ctx.fillStyle = '#444';
-            ctx.font = '16px Georgia, serif';
-            ctx.textAlign = 'left';
-            this.wrapText(ctx, preview, 50, textY, 500, 24);
+                const lines = text.split('\n').filter(Boolean);
+                const title = item.Name || 'Book';
+                const preview = lines.slice(0, 20).join('\n').substring(0, 1500);
 
-            canvas.toBlob(function (pngBlob) {
-                if (!pngBlob) return;
-                const file = new File([pngBlob], 'cover.png', { type: 'image/png' });
-                ServerConnections.getApiClient(item.ServerId)
-                    .uploadItemImage(item.Id, 0, file)
-                    .catch(function () {});
-            }, 'image/png');
+                const canvas = document.createElement('canvas');
+                canvas.width = 600;
+                canvas.height = 800;
+                const ctx = canvas.getContext('2d');
+
+                ctx.fillStyle = '#f5f0eb';
+                ctx.fillRect(0, 0, 600, 800);
+
+                ctx.fillStyle = '#2c2c2c';
+                ctx.font = 'bold 28px Georgia, serif';
+                ctx.textAlign = 'center';
+                const titleY = 120;
+                this.wrapText(ctx, title, 300, titleY, 500, 34);
+                const textY = titleY + 60;
+
+                ctx.fillStyle = '#444';
+                ctx.font = '16px Georgia, serif';
+                ctx.textAlign = 'left';
+                this.wrapText(ctx, preview, 50, textY, 500, 24);
+
+                canvas.toBlob(function (pngBlob) {
+                    if (!pngBlob) {
+                        return;
+                    }
+                    const file = new File([pngBlob], 'cover.png', { type: 'image/png' });
+                    ServerConnections.getApiClient(item.ServerId)
+                        .uploadItemImage(item.Id, 0, file)
+                        .catch((error) => {
+                            console.debug('Cover upload failed', error);
+                        });
+                }, 'image/png');
+            } finally {
+                if (restoreTarget && restoreTarget !== firstPageCfi) {
+                    await rendition.display(restoreTarget);
+                }
+            }
         } catch (err) {
             console.error('Cover auto-upload failed:', err);
         }
@@ -613,7 +709,7 @@ export class BookPlayer {
 
                     this.bindEvents();
 
-                    const autoUploadCover = this.autoUploadCover.bind(this);
+                    const autoUploadCover = this.autoUploadCover.bind(this, book);
 
                     return this.rendition.book.locations.generate(1024).then(async () => {
                         if (this.cancellationToken) reject();
@@ -629,15 +725,13 @@ export class BookPlayer {
                             this.progress = book.locations.percentageFromCfi(locations.start.cfi);
                             Events.trigger(this, 'pause');
                             if (this.ttsActive) {
-                                this.speakCurrentPage();
+                                void this.speakCurrentPage(locations);
                             }
                         });
 
                         epubElem.style.opacity = '';
 
-                        if (!percentageTicks) {
-                            setTimeout(autoUploadCover, 500);
-                        }
+                        setTimeout(autoUploadCover, 500);
 
                         loading.hide();
                         return resolve();
