@@ -23,7 +23,6 @@ import Typography from '@mui/material/Typography';
 import Loading from 'components/loading/LoadingComponent';
 import Page from 'components/Page';
 import toast from 'components/toast/toast';
-import { useApi } from 'hooks/useApi';
 import { ServerConnections } from 'lib/jellyfin-apiclient';
 import { queryClient } from 'utils/query/queryClient';
 
@@ -167,8 +166,7 @@ const createProvider = (preset: ProviderPreset): AiProvider => ({
 });
 
 export const Component = () => {
-    const { api: contextApi } = useApi();
-    const api = contextApi ?? ServerConnections.getCurrentApi();
+    const api = ServerConnections.getCurrentApi();
     const [draft, setDraft] = useState<AiMetadataConfiguration>(createDefaultConfiguration());
     const [testResults, setTestResults] = useState<Record<string, string>>({});
 
@@ -305,7 +303,26 @@ export const Component = () => {
         saveMutation.mutate(draft);
     }, [draft, saveMutation]);
 
-    if (!api || isPending) {
+    if (!api) {
+        return (
+            <Page
+                id='dashboardAiMetadataPage'
+                title='IA e Metadados'
+                className='type-interior mainAnimatedPage'
+            >
+                <Box className='content-primary'>
+                    <Stack spacing={3}>
+                        <Typography variant='h1'>IA e Metadados</Typography>
+                        <Alert severity='warning'>
+                            Cliente de API ainda nao esta disponivel. Recarregue a pagina ou faca login novamente.
+                        </Alert>
+                    </Stack>
+                </Box>
+            </Page>
+        );
+    }
+
+    if (isPending) {
         return <Loading />;
     }
 
