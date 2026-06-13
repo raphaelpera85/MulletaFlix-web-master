@@ -2,17 +2,20 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import Add from '@mui/icons-material/Add';
 import Delete from '@mui/icons-material/Delete';
+import PlayArrow from '@mui/icons-material/PlayArrow';
 import Science from '@mui/icons-material/Science';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
+import Chip from '@mui/material/Chip';
 import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import InputLabel from '@mui/material/InputLabel';
+import LinearProgress from '@mui/material/LinearProgress';
 import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
 import Select from '@mui/material/Select';
@@ -72,6 +75,7 @@ type ProviderPreset = {
 };
 
 const QUERY_KEY = ['AiMetadataConfiguration'];
+const ACTIVITY_QUERY_KEY = ['AiMetadataActivity'];
 
 const PROVIDER_PRESETS: ProviderPreset[] = [
     {
@@ -179,6 +183,28 @@ const mergeConfiguration = (value?: AiMetadataConfiguration): AiMetadataConfigur
     Providers: value?.Providers ?? []
 });
 
+type AiMetadataActivityItem = {
+    Id: string;
+    CreatedAt: string;
+    UpdatedAt: string;
+    Status: 'Queued' | 'Running' | 'Completed' | 'Failed';
+    Title: string;
+    CurrentStep: string;
+    Providers: string[];
+    MediaTypes: string[];
+    Progress: number;
+    Summary: string;
+    Logs: string[];
+};
+
+const getActivityColor = (status: AiMetadataActivityItem['Status']) => {
+    if (status === 'Completed') return 'success';
+    if (status === 'Failed') return 'error';
+    if (status === 'Running') return 'info';
+
+    return 'warning';
+};
+
 export const Component = () => {
     const apiClient = ServerConnections.currentApiClient();
     const [draft, setDraft] = useState<AiMetadataConfiguration>(createDefaultConfiguration());
@@ -198,6 +224,23 @@ export const Component = () => {
         refetchOnMount: false,
         queryFn: async () => {
             return await apiClient!.getJSON(apiClient!.getUrl('AiMetadata/Configuration')) as AiMetadataConfiguration;
+        }
+    });
+
+    const {
+        data: activities = [],
+        refetch: refetchActivities
+    } = useQuery({
+        queryKey: ACTIVITY_QUERY_KEY,
+        enabled: !!apiClient,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        queryFn: async () => {
+            return await apiClient!.getJSON(apiClient!.getUrl('AiMetadata/Activity')) as AiMetadataActivityItem[];
+        },
+        refetchInterval: query => {
+            const currentActivities = query.state.data as AiMetadataActivityItem[] | undefined;
+            return currentActivities?.some(item => item.Status === 'Queued' || item.Status === 'Running') ? 5000 : false;
         }
     });
 
@@ -269,6 +312,24 @@ export const Component = () => {
                 [provider.Id]: message
             }));
             toast(message);
+        }
+    });
+
+    const runMutation = useMutation({
+        mutationFn: async () => {
+            await apiClient!.ajax({
+                type: 'POST',
+                url: apiClient!.getUrl('AiMetadata/Run'),
+                data: JSON.stringify({ Scope: 'configured' }),
+                contentType: 'application/json'
+            });
+        },
+        onSuccess: async () => {
+            toast('Analise de IA iniciada.');
+            await refetchActivities();
+        },
+        onError: (error) => {
+            toast(`Erro ao iniciar IA: ${(error as any)?.message || 'erro desconhecido'}`);
         }
     });
 
@@ -397,6 +458,81 @@ export const Component = () => {
                     {isError && (
                         <Alert severity='error'>Nao foi possivel carregar a configuracao de IA.</Alert>
                     )}
+
+                    <Paper sx={{ p: 3 }}>
+                        <Stack spacing={2}>
+                            <Stack direction={{ xs: 'column', md: 'row' }} alignItems={{ xs: 'stretch', md: 'center' }} justifyContent='space-between' gap={2}>
+                                <Stack spacing={0.5}>
+                                    <Typography variant='h2'>Atividade da IA</Typography>
+                                    <Typography color='text.secondary'>
+                                        Acompanhe quando as IAs estao validando provedores, preparando consenso e separando os tipos de midia configurados.
+                                    </Typography>
+                                </Stack>
+                                <Button
+                                    variant='contained'
+                                    startIcon={<PlayArrow />}
+                                    disabled={runMutation.isPending || activities.some(item => item.Status === 'Queued' || item.Status === 'Running')}
+                                    onClick={() => runMutation.mutate()}
+                                >
+                                    Executar analise agora
+                                </Button>
+                            </Stack>
+
+                            {activities.length === 0 ? (
+                                <Alert severity='info'>
+                                    Nenhuma execucao registrada ainda. Clique em executar para ver as IAs trabalhando em tempo real.
+                                </Alert>
+                            ) : (
+                                <Stack spacing={2}>
+                                    {activities.slice(0, 5).map(activity => (
+                                        <Paper key={activity.Id} variant='outlined' sx={{ p: 2 }}>
+                                            <Stack spacing={1.5}>
+                                                <Stack direction={{ xs: 'column', md: 'row' }} justifyContent='space-between' gap={1}>
+                                                    <Stack spacing={0.5}>
+                                                        <Typography variant='h3'>{activity.Title}</Typography>
+                                                        <Typography color='text.secondary'>{activity.CurrentStep}</Typography>
+                                                    </Stack>
+                                                    <Chip
+                                                        color={getActivityColor(activity.Status)}
+                                                        label={activity.Status}
+                                                        sx={{ alignSelf: { xs: 'flex-start', md: 'center' } }}
+                                                    />
+                                                </Stack>
+
+                                                <LinearProgress variant='determinate' value={activity.Progress} />
+
+                                                <Typography>{activity.Summary}</Typography>
+
+                                                <Stack direction='row' flexWrap='wrap' gap={1}>
+                                                    {activity.Providers.map(provider => (
+                                                        <Chip key={provider} size='small' label={provider} />
+                                                    ))}
+                                                    {activity.MediaTypes.map(mediaType => (
+                                                        <Chip key={mediaType} size='small' variant='outlined' label={mediaType} />
+                                                    ))}
+                                                </Stack>
+
+                                                <Box
+                                                    component='pre'
+                                                    sx={{
+                                                        m: 0,
+                                                        p: 2,
+                                                        maxHeight: 220,
+                                                        overflow: 'auto',
+                                                        borderRadius: 1,
+                                                        bgcolor: 'rgba(0, 0, 0, 0.28)',
+                                                        whiteSpace: 'pre-wrap'
+                                                    }}
+                                                >
+                                                    {activity.Logs.join('\n')}
+                                                </Box>
+                                            </Stack>
+                                        </Paper>
+                                    ))}
+                                </Stack>
+                            )}
+                        </Stack>
+                    </Paper>
 
                     <Paper sx={{ p: 3 }}>
                         <Stack spacing={2}>
