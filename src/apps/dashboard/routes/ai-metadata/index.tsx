@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import Add from '@mui/icons-material/Add';
 import Delete from '@mui/icons-material/Delete';
@@ -165,37 +165,47 @@ const createProvider = (preset: ProviderPreset): AiProvider => ({
     ApiKey: ''
 });
 
+const mergeConfiguration = (value?: AiMetadataConfiguration): AiMetadataConfiguration => ({
+    ...createDefaultConfiguration(),
+    ...value,
+    Automation: {
+        ...createDefaultConfiguration().Automation,
+        ...value?.Automation
+    },
+    MediaTypes: {
+        ...createDefaultConfiguration().MediaTypes,
+        ...value?.MediaTypes
+    },
+    Providers: value?.Providers ?? []
+});
+
 export const Component = () => {
     const apiClient = ServerConnections.currentApiClient();
     const [draft, setDraft] = useState<AiMetadataConfiguration>(createDefaultConfiguration());
     const [testResults, setTestResults] = useState<Record<string, string>>({});
 
     const {
+        data: savedConfiguration,
         isPending,
         isError,
         error
     } = useQuery({
         queryKey: QUERY_KEY,
         enabled: !!apiClient,
+        staleTime: Infinity,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        refetchOnMount: false,
         queryFn: async () => {
-            const value = await apiClient!.getJSON(apiClient!.getUrl('AiMetadata/Configuration')) as AiMetadataConfiguration;
-            setDraft({
-                ...createDefaultConfiguration(),
-                ...value,
-                Automation: {
-                    ...createDefaultConfiguration().Automation,
-                    ...value.Automation
-                },
-                MediaTypes: {
-                    ...createDefaultConfiguration().MediaTypes,
-                    ...value.MediaTypes
-                },
-                Providers: value.Providers ?? []
-            });
-
-            return value;
+            return await apiClient!.getJSON(apiClient!.getUrl('AiMetadata/Configuration')) as AiMetadataConfiguration;
         }
     });
+
+    useEffect(() => {
+        if (savedConfiguration) {
+            setDraft(mergeConfiguration(savedConfiguration));
+        }
+    }, [savedConfiguration]);
 
     const saveMutation = useMutation({
         mutationFn: async (configuration: AiMetadataConfiguration) => {
@@ -206,9 +216,22 @@ export const Component = () => {
                 contentType: 'application/json'
             });
         },
-        onSuccess: async () => {
+        onSuccess: () => {
             toast('Configuracao de IA salva com sucesso.');
-            await queryClient.invalidateQueries({ queryKey: QUERY_KEY });
+            setDraft(current => {
+                const next = {
+                    ...current,
+                    Providers: current.Providers.map(provider => ({
+                        ...provider,
+                        ApiKeyConfigured: provider.ClearApiKey ? false : !!provider.ApiKey || !!provider.ApiKeyConfigured,
+                        ApiKey: '',
+                        ClearApiKey: false
+                    }))
+                };
+
+                queryClient.setQueryData(QUERY_KEY, next);
+                return next;
+            });
         },
         onError: (error) => {
             toast(`Erro ao salvar IA: ${(error as any)?.message || 'erro desconhecido'}`);
