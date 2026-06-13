@@ -30,6 +30,20 @@ const THEMES = {
 };
 const THEME_ORDER = ['dark', 'sepia', 'light'];
 const FONT_SIZES = ['x-small', 'small', 'medium', 'large', 'x-large'];
+const CHAPTER_HEADING_SELECTORS = [
+    'h1',
+    'h2',
+    'h3',
+    '[role="doc-chapter"]',
+    '[type~="chapter"]',
+    '.chapter',
+    '.capitulo',
+    '.capítulo',
+    '.chapter-title',
+    '.titulo',
+    '.title'
+];
+const CHAPTER_LABEL_REGEX = /^(chapter|cap[ií]tulo|cap\.|parte|part|livro|book)\s+([0-9ivxlcdm]+|[a-z])/i;
 const MATERIAL_ICON_CLASSES = [
     'volume_up',
     'volume_off',
@@ -63,6 +77,8 @@ export class BookPlayer {
         this.ttsPaused = false;
         this.ttsVoices = [];
         this.ttsRequestId = 0;
+        this.chapterMap = [];
+        this.chapterMapReady = false;
         this.onDialogClosed = this.onDialogClosed.bind(this);
         this.openTableOfContents = this.openTableOfContents.bind(this);
         this.rotateTheme = this.rotateTheme.bind(this);
@@ -305,6 +321,125 @@ export class BookPlayer {
         if (this.loaded) {
             this.tocElement = new TableOfContents(this);
         }
+    }
+
+    flattenNavigationChapters(chapters, book, depth = 0) {
+        if (!chapters?.length) return [];
+
+        return chapters.flatMap((chapter) => {
+            const link = chapter.href?.startsWith('../') ? chapter.href.slice(3) : chapter.href;
+            const href = link ? book.path.directory + link : '';
+            const mappedChapter = {
+                href,
+                label: chapter.label || href || 'Capítulo',
+                depth,
+                source: 'navigation'
+            };
+
+            return [
+                mappedChapter,
+                ...this.flattenNavigationChapters(chapter.subitems, book, depth + 1)
+            ];
+        }).filter((chapter) => chapter.href);
+    }
+
+    normalizeChapterLabel(label) {
+        return (label || '')
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
+    isLikelyChapterHeading(element, label) {
+        const tagName = element.tagName?.toLowerCase();
+        const classAndId = `${element.className || ''} ${element.id || ''}`.toLowerCase();
+
+        return tagName === 'h1'
+            || tagName === 'h2'
+            || CHAPTER_LABEL_REGEX.test(label)
+            || classAndId.includes('chapter')
+            || classAndId.includes('capitulo')
+            || classAndId.includes('capítulo');
+    }
+
+    async loadSpineDocument(book, spineItem) {
+        try {
+            if (spineItem.document) {
+                return spineItem.document;
+            }
+
+            if (typeof spineItem.load === 'function') {
+                return await spineItem.load(book.load.bind(book));
+            }
+        } catch (err) {
+            console.warn('Failed to inspect book spine item for chapters:', err);
+        }
+
+        return null;
+    }
+
+    getChapterHrefFromElement(spineItem, element) {
+        const href = spineItem.href || spineItem.url || '';
+
+        if (!href) return '';
+
+        if (!element.id) {
+            element.id = `mulletaflix-auto-chapter-${Math.random().toString(36).slice(2)}`;
+        }
+
+        return `${href}#${element.id}`;
+    }
+
+    async detectChaptersFromSpine(book) {
+        const spineItems = book?.spine?.spineItems || [];
+        const chapters = [];
+        const seen = new Set();
+
+        for (const spineItem of spineItems) {
+            const document = await this.loadSpineDocument(book, spineItem);
+            if (!document) continue;
+
+            const headings = document.querySelectorAll(CHAPTER_HEADING_SELECTORS.join(','));
+
+            for (const heading of headings) {
+                const label = this.normalizeChapterLabel(heading.textContent);
+                if (!label || label.length < 2 || label.length > 140 || !this.isLikelyChapterHeading(heading, label)) {
+                    continue;
+                }
+
+                const href = this.getChapterHrefFromElement(spineItem, heading);
+                const key = `${href}|${label.toLowerCase()}`;
+                if (!href || seen.has(key)) {
+                    continue;
+                }
+
+                seen.add(key);
+                chapters.push({
+                    href,
+                    label,
+                    depth: heading.tagName?.toLowerCase() === 'h3' ? 1 : 0,
+                    source: 'auto'
+                });
+            }
+        }
+
+        return chapters;
+    }
+
+    async buildChapterMap(book) {
+        const navigationChapters = this.flattenNavigationChapters(book?.navigation, book);
+
+        if (navigationChapters.length) {
+            this.chapterMap = navigationChapters;
+            this.chapterMapReady = true;
+        }
+
+        const detectedChapters = await this.detectChaptersFromSpine(book);
+
+        if (!navigationChapters.length || detectedChapters.length > navigationChapters.length) {
+            this.chapterMap = detectedChapters;
+        }
+
+        this.chapterMapReady = true;
     }
 
     toggleFullscreen() {
@@ -732,6 +867,8 @@ export class BookPlayer {
 
                     return this.rendition.book.locations.generate(1024).then(async () => {
                         if (this.cancellationToken) reject();
+
+                        await this.buildChapterMap(book);
 
                         const percentageTicks = options.startPositionTicks / 10000000;
                         if (percentageTicks !== 0.0) {

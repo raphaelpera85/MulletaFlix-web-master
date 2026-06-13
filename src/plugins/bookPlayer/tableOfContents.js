@@ -53,20 +53,11 @@ export default class TableOfContents {
         });
     }
 
-    chapterTocItem(book, chapter) {
+    chapterTocItem(chapter) {
         let itemHtml = '<li>';
 
-        // remove parent directory reference from href to fix certain books
-        const link = chapter.href.startsWith('../') ? chapter.href.slice(3) : chapter.href;
-        itemHtml += `<a style="color: ${layoutManager.mobile ? this.bookPlayer.THEMES[this.bookPlayer.theme].body.color : 'inherit'}" href="${escapeHTML(book.path.directory + link)}">${escapeHTML(chapter.label)}</a>`;
-
-        if (chapter.subitems?.length) {
-            const subHtml = chapter.subitems
-                .map((nestedChapter) => this.chapterTocItem(book, nestedChapter))
-                .join('');
-
-            itemHtml += `<ul>${subHtml}</ul>`;
-        }
+        const margin = chapter.depth ? ` style="margin-left:${chapter.depth * 1.25}rem"` : '';
+        itemHtml += `<a${margin} data-source="${escapeHTML(chapter.source || 'navigation')}" style="color: ${layoutManager.mobile ? this.bookPlayer.THEMES[this.bookPlayer.theme].body.color : 'inherit'}" href="${escapeHTML(chapter.href)}">${escapeHTML(chapter.label)}</a>`;
 
         itemHtml += '</li>';
         return itemHtml;
@@ -86,16 +77,22 @@ export default class TableOfContents {
         let tocHtml = '<div class="topRightActionButtons">';
         tocHtml += '<button is="paper-icon-button-light" class="autoSize bookplayerButton btnBookplayerTocClose hide-mouse-idle-tv" tabindex="-1"><span class="material-icons bookplayerButtonIcon close" aria-hidden="true"></span></button>';
         tocHtml += '</div>';
+        const chapters = this.bookPlayer.chapterMap || [];
+
         tocHtml += `<ul style="background-color: ${layoutManager.mobile ? this.bookPlayer.THEMES[this.bookPlayer.theme].body.background : 'inherit'}" class="toc">`;
-        rendition.book.navigation.forEach((chapter) => {
-            tocHtml += this.chapterTocItem(rendition.book, chapter);
-        });
+        if (chapters.length) {
+            chapters.forEach((chapter) => {
+                tocHtml += this.chapterTocItem(chapter);
+            });
+        } else {
+            tocHtml += '<li>Nenhum capítulo foi encontrado neste livro.</li>';
+        }
 
         tocHtml += '</ul>';
         elem.innerHTML = tocHtml;
 
         this.replaceLinks(elem, (href) => {
-            const relative = rendition.book.path.relative(href);
+            const relative = href.includes('#') && !href.startsWith('http') ? href : rendition.book.path.relative(href);
             rendition.display(relative);
             this.destroy();
         });
