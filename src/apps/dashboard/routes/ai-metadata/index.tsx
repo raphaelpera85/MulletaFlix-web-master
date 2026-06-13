@@ -166,7 +166,7 @@ const createProvider = (preset: ProviderPreset): AiProvider => ({
 });
 
 export const Component = () => {
-    const api = ServerConnections.getCurrentApi();
+    const apiClient = ServerConnections.currentApiClient();
     const [draft, setDraft] = useState<AiMetadataConfiguration>(createDefaultConfiguration());
     const [testResults, setTestResults] = useState<Record<string, string>>({});
 
@@ -176,10 +176,9 @@ export const Component = () => {
         error
     } = useQuery({
         queryKey: QUERY_KEY,
-        enabled: !!api,
+        enabled: !!apiClient,
         queryFn: async () => {
-            const response = await api!.axiosInstance.get<AiMetadataConfiguration>('/AiMetadata/Configuration');
-            const value = response.data ?? createDefaultConfiguration();
+            const value = await apiClient!.getJSON(apiClient!.getUrl('AiMetadata/Configuration')) as AiMetadataConfiguration;
             setDraft({
                 ...createDefaultConfiguration(),
                 ...value,
@@ -200,7 +199,12 @@ export const Component = () => {
 
     const saveMutation = useMutation({
         mutationFn: async (configuration: AiMetadataConfiguration) => {
-            await api!.axiosInstance.post('/AiMetadata/Configuration', configuration);
+            await apiClient!.ajax({
+                type: 'POST',
+                url: apiClient!.getUrl('AiMetadata/Configuration'),
+                data: JSON.stringify(configuration),
+                contentType: 'application/json'
+            });
         },
         onSuccess: async () => {
             toast('Configuracao de IA salva com sucesso.');
@@ -213,12 +217,19 @@ export const Component = () => {
 
     const testMutation = useMutation({
         mutationFn: async (provider: AiProvider) => {
-            const response = await api!.axiosInstance.post<{ Success: boolean; Message: string }>('/AiMetadata/TestProvider', {
-                Provider: provider
+            const response = await apiClient!.ajax({
+                type: 'POST',
+                url: apiClient!.getUrl('AiMetadata/TestProvider'),
+                data: JSON.stringify({
+                    Provider: provider
+                }),
+                contentType: 'application/json'
             });
+            const data = await response.json() as { Success: boolean; Message: string };
+
             return {
                 providerId: provider.Id,
-                ...response.data
+                ...data
             };
         },
         onSuccess: (result) => {
@@ -303,7 +314,7 @@ export const Component = () => {
         saveMutation.mutate(draft);
     }, [draft, saveMutation]);
 
-    if (!api) {
+    if (!apiClient) {
         return (
             <Page
                 id='dashboardAiMetadataPage'
