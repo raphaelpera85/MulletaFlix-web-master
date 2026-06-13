@@ -24,6 +24,7 @@ import Loading from 'components/loading/LoadingComponent';
 import Page from 'components/Page';
 import toast from 'components/toast/toast';
 import { useApi } from 'hooks/useApi';
+import { ServerConnections } from 'lib/jellyfin-apiclient';
 import { queryClient } from 'utils/query/queryClient';
 
 type AiProvider = {
@@ -166,13 +167,15 @@ const createProvider = (preset: ProviderPreset): AiProvider => ({
 });
 
 export const Component = () => {
-    const { api } = useApi();
-    const [draft, setDraft] = useState<AiMetadataConfiguration | null>(null);
+    const { api: contextApi } = useApi();
+    const api = contextApi ?? ServerConnections.getCurrentApi();
+    const [draft, setDraft] = useState<AiMetadataConfiguration>(createDefaultConfiguration());
     const [testResults, setTestResults] = useState<Record<string, string>>({});
 
     const {
         isPending,
-        isError
+        isError,
+        error
     } = useQuery({
         queryKey: QUERY_KEY,
         enabled: !!api,
@@ -242,59 +245,59 @@ export const Component = () => {
     ), [draft]);
 
     const updateDraft = useCallback((patch: Partial<AiMetadataConfiguration>) => {
-        setDraft(current => current ? { ...current, ...patch } : current);
+        setDraft(current => ({ ...current, ...patch }));
     }, []);
 
     const updateAutomation = useCallback((patch: Partial<AiMetadataConfiguration['Automation']>) => {
-        setDraft(current => current ? {
+        setDraft(current => ({
             ...current,
             Automation: {
                 ...current.Automation,
                 ...patch
             }
-        } : current);
+        }));
     }, []);
 
     const updateMediaTypes = useCallback((patch: Partial<AiMetadataConfiguration['MediaTypes']>) => {
-        setDraft(current => current ? {
+        setDraft(current => ({
             ...current,
             MediaTypes: {
                 ...current.MediaTypes,
                 ...patch
             }
-        } : current);
+        }));
     }, []);
 
     const updateProvider = useCallback((providerId: string, patch: Partial<AiProvider>) => {
-        setDraft(current => current ? {
+        setDraft(current => ({
             ...current,
             Providers: current.Providers.map(provider => provider.Id === providerId ? {
                 ...provider,
                 ...patch
             } : provider)
-        } : current);
+        }));
     }, []);
 
     const addProvider = useCallback((presetName: string) => {
         const preset = PROVIDER_PRESETS.find(item => item.provider === presetName);
         if (!preset) return;
 
-        setDraft(current => current ? {
+        setDraft(current => ({
             ...current,
             Providers: [
                 ...current.Providers,
                 createProvider(preset)
             ]
-        } : current);
+        }));
     }, []);
 
     const removeProvider = useCallback((providerId: string) => {
-        setDraft(current => current ? {
+        setDraft(current => ({
             ...current,
             Providers: current.Providers.filter(provider => provider.Id !== providerId),
             PrimaryProviderId: current.PrimaryProviderId === providerId ? undefined : current.PrimaryProviderId,
             JudgeProviderId: current.JudgeProviderId === providerId ? undefined : current.JudgeProviderId
-        } : current);
+        }));
     }, []);
 
     const save = useCallback(() => {
@@ -302,8 +305,27 @@ export const Component = () => {
         saveMutation.mutate(draft);
     }, [draft, saveMutation]);
 
-    if (isPending || !draft) {
+    if (!api || isPending) {
         return <Loading />;
+    }
+
+    if (isError) {
+        return (
+            <Page
+                id='dashboardAiMetadataPage'
+                title='IA e Metadados'
+                className='type-interior mainAnimatedPage'
+            >
+                <Box className='content-primary'>
+                    <Stack spacing={3}>
+                        <Typography variant='h1'>IA e Metadados</Typography>
+                        <Alert severity='error'>
+                            {`Nao foi possivel carregar a configuracao de IA: ${(error as any)?.message || 'erro desconhecido'}`}
+                        </Alert>
+                    </Stack>
+                </Box>
+            </Page>
+        );
     }
 
     return (
