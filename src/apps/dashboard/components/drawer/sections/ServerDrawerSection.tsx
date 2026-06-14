@@ -9,7 +9,6 @@ import People from '@mui/icons-material/People';
 import PlayCircle from '@mui/icons-material/PlayCircle';
 import Queue from '@mui/icons-material/Queue';
 import Settings from '@mui/icons-material/Settings';
-import SmartToy from '@mui/icons-material/SmartToy';
 import Collapse from '@mui/material/Collapse';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -79,14 +78,6 @@ const ServerDrawerSection = () => {
                         <Settings />
                     </ListItemIcon>
                     <ListItemText primary={globalize.translate('General')} />
-                </ListItemLink>
-            </ListItem>
-            <ListItem disablePadding>
-                <ListItemLink to='/dashboard/ai-metadata'>
-                    <ListItemIcon>
-                        <SmartToy />
-                    </ListItemIcon>
-                    <ListItemText primary='IA e Metadados' />
                 </ListItemLink>
             </ListItem>
             <ListItem disablePadding>
