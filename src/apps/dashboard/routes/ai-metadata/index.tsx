@@ -3,6 +3,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import Add from '@mui/icons-material/Add';
 import Delete from '@mui/icons-material/Delete';
 import PlayArrow from '@mui/icons-material/PlayArrow';
+import Stop from '@mui/icons-material/Stop';
 import Science from '@mui/icons-material/Science';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
@@ -187,7 +188,7 @@ type AiMetadataActivityItem = {
     Id: string;
     CreatedAt: string;
     UpdatedAt: string;
-    Status: 'Queued' | 'Running' | 'Completed' | 'Failed';
+    Status: 'Queued' | 'Running' | 'Stopping' | 'Completed' | 'Failed';
     Title: string;
     CurrentStep: string;
     Providers: string[];
@@ -333,9 +334,31 @@ export const Component = () => {
         }
     });
 
+    const stopMutation = useMutation({
+        mutationFn: async () => {
+            const response = await apiClient!.ajax({
+                type: 'POST',
+                url: apiClient!.getUrl('AiMetadata/Stop')
+            });
+
+            return response;
+        },
+        onSuccess: async () => {
+            toast('Parada da execucao solicitada.');
+            await refetchActivities();
+        },
+        onError: (error) => {
+            toast(`Erro ao parar IA: ${(error as any)?.message || 'erro desconhecido'}`);
+        }
+    });
+
     const enabledProviders = useMemo(() => (
         draft?.Providers.filter(provider => provider.Enabled) ?? []
     ), [draft]);
+
+    const activeRun = useMemo(() => (
+        activities.find(item => item.Status === 'Queued' || item.Status === 'Running' || item.Status === 'Stopping')
+    ), [activities]);
 
     const updateDraft = useCallback((patch: Partial<AiMetadataConfiguration>) => {
         setDraft(current => ({ ...current, ...patch }));
@@ -468,14 +491,25 @@ export const Component = () => {
                                         Acompanhe quando as IAs estao validando provedores, preparando consenso e separando os tipos de midia configurados.
                                     </Typography>
                                 </Stack>
-                                <Button
-                                    variant='contained'
-                                    startIcon={<PlayArrow />}
-                                    disabled={runMutation.isPending || activities.some(item => item.Status === 'Queued' || item.Status === 'Running')}
-                                    onClick={() => runMutation.mutate()}
-                                >
-                                    Executar analise agora
-                                </Button>
+                                <Stack direction='row' spacing={1} flexWrap='wrap' justifyContent='flex-end' alignItems='center'>
+                                    <Button
+                                        variant='contained'
+                                        startIcon={<PlayArrow />}
+                                        disabled={runMutation.isPending || !!activeRun}
+                                        onClick={() => runMutation.mutate()}
+                                    >
+                                        Executar analise agora
+                                    </Button>
+                                    <Button
+                                        variant='outlined'
+                                        color='warning'
+                                        startIcon={<Stop />}
+                                        disabled={stopMutation.isPending || !activeRun}
+                                        onClick={() => stopMutation.mutate()}
+                                    >
+                                        Parar trabalho
+                                    </Button>
+                                </Stack>
                             </Stack>
 
                             {activities.length === 0 ? (
