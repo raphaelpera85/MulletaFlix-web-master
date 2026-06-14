@@ -31,8 +31,10 @@ function getNextUpFetchFn(
                 fields: [
                     ItemFields.PrimaryImageAspectRatio,
                     ItemFields.DateCreated,
+                    ItemFields.ParentId,
                     ItemFields.Path,
-                    ItemFields.MediaSourceCount
+                    ItemFields.MediaSourceCount,
+                    ItemFields.ProviderIds
                 ],
                 imageTypeLimit: 1,
                 enableImageTypes: [

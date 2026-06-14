@@ -5,8 +5,8 @@ import './style.scss';
 
 const worker = new Worker();
 const targetDic = {};
-const INITIAL_PRIORITY_IMAGE_LIMIT = 24;
-const INITIAL_PRIORITY_VIEWPORT_MARGIN = 900;
+const INITIAL_PRIORITY_IMAGE_LIMIT = 72;
+const INITIAL_PRIORITY_VIEWPORT_MARGIN = 2400;
 worker.addEventListener(
     'message',
     ({ data: { pixels, hsh, width, height } }) => {
@@ -287,7 +287,7 @@ export function getPrimaryImageAspectRatio(items) {
 
 export function fillImages(elems) {
     for (let i = 0, length = elems.length; i < length; i++) {
-        const elem = elems[0];
+        const elem = elems[i];
         fillImage(elem);
     }
 }
