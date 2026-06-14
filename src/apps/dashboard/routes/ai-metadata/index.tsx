@@ -191,9 +191,11 @@ type AiMetadataActivityItem = {
     Status: 'Queued' | 'Running' | 'Stopping' | 'Completed' | 'Failed';
     Title: string;
     CurrentStep: string;
+    CurrentPhase: string;
     Providers: string[];
     MediaTypes: string[];
     Progress: number;
+    PhaseProgress: number;
     Summary: string;
     Logs: string[];
 };
@@ -533,7 +535,36 @@ export const Component = () => {
                                                     />
                                                 </Stack>
 
-                                                <LinearProgress variant='determinate' value={activity.Progress} />
+                                                <Stack spacing={1}>
+                                                    <Stack spacing={0.5}>
+                                                        <Stack direction='row' justifyContent='space-between' alignItems='center' gap={1}>
+                                                            <Typography variant='caption' color='text.secondary'>
+                                                                Avanco geral
+                                                            </Typography>
+                                                            <Typography variant='caption' color='text.secondary'>
+                                                                {Math.round(activity.Progress)}%
+                                                            </Typography>
+                                                        </Stack>
+                                                        <LinearProgress variant='determinate' value={activity.Progress} />
+                                                    </Stack>
+
+                                                    <Stack spacing={0.5}>
+                                                        <Stack direction='row' justifyContent='space-between' alignItems='center' gap={1}>
+                                                            <Typography variant='caption' color='text.secondary'>
+                                                                Fase atual
+                                                            </Typography>
+                                                            <Typography variant='caption' color='text.secondary'>
+                                                                {activity.CurrentPhase || 'Em processamento'} {Math.round(activity.PhaseProgress)}%
+                                                            </Typography>
+                                                        </Stack>
+                                                        <LinearProgress
+                                                            variant='determinate'
+                                                            value={activity.PhaseProgress}
+                                                            color='secondary'
+                                                            sx={{ '& .MuiLinearProgress-bar': { borderRadius: 999 } }}
+                                                        />
+                                                    </Stack>
+                                                </Stack>
 
                                                 <Typography>{activity.Summary}</Typography>
 
