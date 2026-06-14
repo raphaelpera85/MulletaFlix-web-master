@@ -78,7 +78,9 @@ export function loadSections(elem, apiClient, user, userSettings) {
                         loadSection(elem, apiClient, user, userSettings, userViews, section, index)
                     ));
 
-                return Promise.all(promises)
+                return Promise.all(promises.map(promise => Promise.resolve(promise).catch(err => {
+                    console.error('Home section failed to load', err);
+                })))
                     // Timeout for polyfilled CustomElements (webOS 1.2)
                     .then(() => new Promise((resolve) => setTimeout(resolve, 0)))
                     .then(() => resume(elem, { refresh: true }));
