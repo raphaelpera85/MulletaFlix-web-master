@@ -7,6 +7,7 @@ import LibraryAdd from '@mui/icons-material/LibraryAdd';
 import Palette from '@mui/icons-material/Palette';
 import People from '@mui/icons-material/People';
 import PlayCircle from '@mui/icons-material/PlayCircle';
+import Queue from '@mui/icons-material/Queue';
 import Settings from '@mui/icons-material/Settings';
 import SmartToy from '@mui/icons-material/SmartToy';
 import Collapse from '@mui/material/Collapse';
@@ -86,6 +87,14 @@ const ServerDrawerSection = () => {
                         <SmartToy />
                     </ListItemIcon>
                     <ListItemText primary='IA e Metadados' />
+                </ListItemLink>
+            </ListItem>
+            <ListItem disablePadding>
+                <ListItemLink to='/dashboard/jobs'>
+                    <ListItemIcon>
+                        <Queue />
+                    </ListItemIcon>
+                    <ListItemText primary='Fila de Trabalhos' />
                 </ListItemLink>
             </ListItem>
             <ListItemLink to='/dashboard/branding'>
