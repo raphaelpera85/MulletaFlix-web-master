@@ -137,6 +137,28 @@ const PROVIDER_PRESETS: ProviderPreset[] = [
     }
 ];
 
+const getRequestErrorMessage = (error: unknown): string => {
+    const requestError = error as {
+        message?: string;
+        status?: number;
+        statusText?: string;
+        responseJSON?: { message?: string; Message?: string; error?: string };
+        responseText?: string;
+    };
+
+    const serverMessage = requestError.responseJSON?.message
+        || requestError.responseJSON?.Message
+        || requestError.responseJSON?.error
+        || requestError.responseText
+        || requestError.message;
+
+    if (requestError.status) {
+        return `${requestError.status}${requestError.statusText ? ` ${requestError.statusText}` : ''}${serverMessage ? ` - ${serverMessage}` : ''}`;
+    }
+
+    return serverMessage || 'erro desconhecido';
+};
+
 const createDefaultConfiguration = (): AiMetadataConfiguration => ({
     Enabled: false,
     DecisionMode: 'single',
@@ -332,7 +354,7 @@ export const Component = () => {
             await refetchActivities();
         },
         onError: (error) => {
-            toast(`Erro ao iniciar IA: ${(error as any)?.message || 'erro desconhecido'}`);
+            toast(`Erro ao iniciar IA: ${getRequestErrorMessage(error)}`);
         }
     });
 
@@ -350,7 +372,7 @@ export const Component = () => {
             await refetchActivities();
         },
         onError: (error) => {
-            toast(`Erro ao parar IA: ${(error as any)?.message || 'erro desconhecido'}`);
+            toast(`Erro ao parar IA: ${getRequestErrorMessage(error)}`);
         }
     });
 
