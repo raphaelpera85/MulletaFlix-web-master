@@ -5,7 +5,7 @@ import './style.scss';
 
 const worker = new Worker();
 const targetDic = {};
-const INITIAL_PRIORITY_IMAGE_LIMIT = 72;
+const INITIAL_PRIORITY_IMAGE_LIMIT = 48;
 const INITIAL_PRIORITY_VIEWPORT_MARGIN = 2400;
 worker.addEventListener(
     'message',
@@ -154,6 +154,12 @@ function fillImageElement(elem, url) {
     });
 }
 
+function queueBlurhash(target, hash) {
+    const schedule = window.requestIdleCallback || window.setTimeout;
+
+    schedule(() => itemBlurhashing(target, hash), 0);
+}
+
 function emptyImageElement(elem) {
     elem.removeEventListener('animationend', onAnimationEnd);
     const canvas = elem.previousSibling;
@@ -215,8 +221,8 @@ export function lazyChildren(elem) {
     if (userSettings.enableBlurhash()) {
         for (const lazyElem of lazyElems) {
             const blurhashstr = lazyElem.getAttribute('data-blurhash');
-            if (!lazyElem.classList.contains('blurhashed', 'non-blurhashable') && blurhashstr) {
-                itemBlurhashing(lazyElem, blurhashstr);
+            if (blurhashstr && !lazyElem.classList.contains('blurhashed') && isNearInitialViewport(lazyElem)) {
+                queueBlurhash(lazyElem, blurhashstr);
             } else if (!blurhashstr && !lazyElem.classList.contains('blurhashed')) {
                 lazyElem.classList.add('non-blurhashable');
             }
