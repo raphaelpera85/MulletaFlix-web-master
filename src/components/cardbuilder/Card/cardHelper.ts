@@ -29,7 +29,7 @@ export function getCardLogoUrl(
     let imgType;
     let imgTag;
     let itemId;
-    const dpr = window?.devicePixelRatio || 1;
+    const dpr = Math.min(window?.devicePixelRatio || 1, 1.5);
     const logoHeight = Math.round(40 * dpr);
 
     if (cardOptions.showChannelLogo && item.ChannelPrimaryImageTag) {

@@ -5,8 +5,8 @@ import './style.scss';
 
 const worker = new Worker();
 const targetDic = {};
-const INITIAL_PRIORITY_IMAGE_LIMIT = 24;
-const INITIAL_PRIORITY_VIEWPORT_MARGIN = 600;
+const INITIAL_PRIORITY_IMAGE_LIMIT = 12;
+const INITIAL_PRIORITY_VIEWPORT_MARGIN = 350;
 worker.addEventListener(
     'message',
     ({ data: { pixels, hsh, width, height } }) => {

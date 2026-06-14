@@ -155,7 +155,9 @@ export function getCardImageUrl({
             height = width / uiAspect;
         }
 
-        const dpr = window?.devicePixelRatio || 1;
+        // Cards are thumbnails; capping DPR avoids requesting oversized posters
+        // that slow down scrolling and first paint without visible benefit.
+        const dpr = Math.min(window?.devicePixelRatio || 1, 1.5);
 
         imgUrl = getImageApi(api).getItemImageUrlById(
             itemId,
@@ -164,7 +166,7 @@ export function getCardImageUrl({
                 // Dimensions must be rounded or the API will reject the request
                 fillHeight: height ? Math.round(height * dpr) : undefined,
                 fillWidth: width ? Math.round(width * dpr) : undefined,
-                quality: 96,
+                quality: 82,
                 tag: imgTag
             }
         );

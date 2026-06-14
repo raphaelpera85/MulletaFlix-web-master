@@ -93,7 +93,7 @@ export function getImageUrl(
 ) {
     let imgTag;
     let itemId;
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const scaledSize = size ? Math.round(size * dpr) : undefined;
     const fillWidth = scaledSize;
     const fillHeight = scaledSize;
@@ -139,7 +139,7 @@ export function getChannelImageUrl(
 ) {
     let imgTag;
     let itemId;
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const scaledSize = size ? Math.round(size * dpr) : undefined;
     const fillWidth = scaledSize;
     const fillHeight = scaledSize;
