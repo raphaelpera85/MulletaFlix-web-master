@@ -52,10 +52,17 @@ const Image: FC<ImageProps> = ({
             <LazyLoadImage
                 key={imgUrl}
                 src={imgUrl}
+                threshold={1200}
+                delayMethod='debounce'
+                delayTime={40}
+                wrapperProps={{
+                    style: imageStyle
+                }}
                 style={{
                     ...imageStyle,
                     objectFit: containImage ? 'contain' : 'cover'
                 }}
+                decoding='async'
                 onLoad={handleLoad}
                 beforeLoad={handleLoadStarted}
             />

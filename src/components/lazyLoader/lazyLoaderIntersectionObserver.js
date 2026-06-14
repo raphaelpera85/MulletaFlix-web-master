@@ -14,7 +14,7 @@ export class LazyLoader {
                 });
             },
             {
-                rootMargin: '1200px 0px',
+                rootMargin: '2400px 0px',
                 threshold: 0
             });
 
