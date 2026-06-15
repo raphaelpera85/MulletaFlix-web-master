@@ -17,6 +17,7 @@ import Loading from 'components/loading/LoadingComponent';
 import Page from 'components/Page';
 import toast from 'components/toast/toast';
 import { ServerConnections } from 'lib/jellyfin-apiclient';
+import { useApi } from 'hooks/useApi';
 import { queryClient } from 'utils/query/queryClient';
 
 const QUERY_KEY = ['JobQueueStatus'];
@@ -49,7 +50,7 @@ type JobQueueStatus = {
     Jobs: JobQueueItem[];
 };
 
-const getApiClient = () => ServerConnections.getCurrentApiClient();
+const getApiClient = () => ServerConnections.currentApiClient();
 
 const getErrorMessage = (error: unknown): string => {
     const requestError = error as {
@@ -67,6 +68,10 @@ const getErrorMessage = (error: unknown): string => {
 
 const postJson = async <T,>(url: string, body?: unknown): Promise<T> => {
     const apiClient = getApiClient();
+    if (!apiClient) {
+        throw new Error('Cliente de API indisponível.');
+    }
+
     return apiClient!.ajax({
         type: 'POST',
         url: apiClient!.getUrl(url),
@@ -169,14 +174,21 @@ const JobCard = ({ job, onCancel, isCancelling }: {
 };
 
 const JobsPage = () => {
-    const apiClient = getApiClient();
+    const { api } = useApi();
     const {
         data,
         isLoading,
         error
     } = useQuery({
         queryKey: QUERY_KEY,
-        queryFn: async () => apiClient!.getJSON(apiClient!.getUrl('JobQueue/Status')) as Promise<JobQueueStatus>,
+        queryFn: async () => {
+            if (!api) {
+                throw new Error('Cliente de API indisponível.');
+            }
+
+            return api.getJSON(api.getUrl('JobQueue/Status')) as Promise<JobQueueStatus>;
+        },
+        enabled: !!api,
         refetchInterval: 2500
     });
 
