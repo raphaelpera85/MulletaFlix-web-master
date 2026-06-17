@@ -446,6 +446,7 @@ function onDataFetched(result) {
     }
 
     imageLoader.lazyChildren(this);
+    reloadParentScroller(this);
 
     if (hasActiveElement) {
         setFocus(this, focusId);
@@ -456,6 +457,17 @@ function onDataFetched(result) {
     if (this.afterRefresh) {
         this.afterRefresh(result);
     }
+}
+
+function reloadParentScroller(itemsContainer) {
+    const scroller = itemsContainer.closest('.emby-scroller');
+    if (!scroller?.scroller) {
+        return;
+    }
+
+    window.requestAnimationFrame(() => {
+        scroller.scroller?.reload();
+    });
 }
 
 function setFocus(itemsContainer, focusId) {

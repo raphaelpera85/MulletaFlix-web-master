@@ -81,7 +81,13 @@ const Home = () => {
             let controller = tabControllers[index];
 
             if (!controller) {
-                const tabContent = element.current?.querySelector(".tabContent[data-index='" + index + "']");
+                const tabContent = element.current?.querySelector(".tabContent[data-index='" + index + "']")
+                    || documentRef.current.querySelector(".homePage .tabContent[data-index='" + index + "']");
+
+                if (!tabContent) {
+                    throw new Error(`Home tab content not ready: ${index}`);
+                }
+
                 controller = new ControllerFactory(tabContent, null);
                 tabControllers[index] = controller;
             }
@@ -90,7 +96,7 @@ const Home = () => {
         });
     }, [ tabControllers ]);
 
-    const loadTab = useCallback((index: number, previousIndex: number | null) => {
+    const loadTab = useCallback((index: number, previousIndex: number | null, retryCount = 0) => {
         getTabController(index).then((controller) => {
             const refresh = !controller.refreshed;
 
@@ -102,6 +108,11 @@ const Home = () => {
             controller.refreshed = true;
             tabController.current = controller;
         }).catch(err => {
+            if (err instanceof Error && err.message.startsWith('Home tab content not ready') && retryCount < 10) {
+                window.requestAnimationFrame(() => loadTab(index, previousIndex, retryCount + 1));
+                return;
+            }
+
             console.error('[Home] failed to get tab controller', err);
         });
     }, [ getTabController ]);

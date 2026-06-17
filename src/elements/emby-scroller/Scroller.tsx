@@ -159,6 +159,7 @@ const Scroller: FC<PropsWithChildren<ScrollerProps>> = ({
         }
 
         const enableScrollButtons = layoutManager.desktop && !browser.touch && isHorizontalEnabled && isScrollButtonsEnabled;
+        const useNativeScroll = !enableScrollButtons;
 
         const options = {
             horizontal: isHorizontalEnabled,
@@ -174,8 +175,8 @@ const Scroller: FC<PropsWithChildren<ScrollerProps>> = ({
             skipSlideToWhenVisible: isSkipFocusWhenVisibleEnabled,
             dispatchScrollEvent: enableScrollButtons || isScrollEventEnabled,
             hideScrollbar: enableScrollButtons || isHideScrollbarEnabled,
-            allowNativeSmoothScroll: isAllowNativeSmoothScrollEnabled && !enableScrollButtons,
-            allowNativeScroll: !enableScrollButtons,
+            allowNativeSmoothScroll: isAllowNativeSmoothScrollEnabled && useNativeScroll,
+            allowNativeScroll: useNativeScroll,
             forceHideScrollbars: enableScrollButtons,
             // In edge, with the native scroll, the content jumps around when hovering over the buttons
             requireAnimation: enableScrollButtons && browser.edge

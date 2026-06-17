@@ -7,6 +7,14 @@
 .emby-scroller {
     @include conditional-max(padding-left, 3.3%, env(safe-area-inset-left));
     @include conditional-max(padding-right, 3.3%, env(safe-area-inset-right));
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+}
+
+.emby-scroller.scrollX > .scrollSlider {
+    width: max-content;
+    min-width: 100%;
 }
 
 .servers > .card > .cardBox {
