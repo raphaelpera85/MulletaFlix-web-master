@@ -26,7 +26,13 @@ export function getCardImageUrl({
         throw new Error('API instance is required to get card image URL');
     }
 
-    item = item.ProgramInfo || item;
+    const resolvedItem = item.CurrentProgram || item.ProgramInfo || {};
+    item = {
+        ...item,
+        ...resolvedItem
+    };
+    const serverId = item.ServerId || options.serverId;
+    if (!serverId) return null;
 
     const width = options.width;
     let height: number | undefined;
@@ -40,10 +46,10 @@ export function getCardImageUrl({
     let itemId = null;
 
     /* eslint-disable sonarjs/no-duplicated-branches */
-    if (item.Type === 'TvChannel' && item.ChannelPrimaryImageTag) {
+    if ((item.Type === 'TvChannel' || item.Type === 'Program') && item.ChannelPrimaryImageTag && item.ChannelId) {
         imgType = ImageType.Primary;
         imgTag = item.ChannelPrimaryImageTag;
-        itemId = item.Id;
+        itemId = item.ChannelId;
 
         if (primaryImageAspectRatio && uiAspect) {
             coverImage = (Math.abs(primaryImageAspectRatio - uiAspect) / uiAspect) <= 0.2;
@@ -83,6 +89,7 @@ export function getCardImageUrl({
     } else if (item.ImageTags?.Primary && (item.Type !== 'Episode' || item.ChildCount !== 0)) {
         imgType = ImageType.Primary;
         imgTag = item.ImageTags.Primary;
+        itemId = item.PrimaryImageItemId || item.Id;
         height = width && primaryImageAspectRatio ? (width / primaryImageAspectRatio) : undefined;
 
         if (options.preferThumb && options.showTitle !== false) {
@@ -99,7 +106,7 @@ export function getCardImageUrl({
     } else if (item.PrimaryImageTag) {
         imgType = ImageType.Primary;
         imgTag = item.PrimaryImageTag;
-        itemId = item.PrimaryImageItemId;
+        itemId = item.PrimaryImageItemId || item.Id;
         height = width && primaryImageAspectRatio ? (width / primaryImageAspectRatio) : undefined;
 
         if (options.preferThumb && options.showTitle !== false) {

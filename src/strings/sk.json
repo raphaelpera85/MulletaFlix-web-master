@@ -1903,5 +1903,7 @@
     "LabelProgressAndSpeed": "Priebeh / rýchlosť",
     "LabelReasons": "Dôvody",
     "LabelPlayerSizes": "Veľkosti prehrávača",
-    "LabelPlaybackQuality": "Stratený / poškodený snímok"
+    "LabelPlaybackQuality": "Stratený / poškodený snímok",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

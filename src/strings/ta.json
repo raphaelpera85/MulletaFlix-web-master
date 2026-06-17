@@ -1864,5 +1864,7 @@
     "ViewAllPlugins": "அனைத்து செருகுநிரல்களையும் காண்க",
     "LabelBundled": "தொகுக்கப்பட்டது",
     "ButtonAddProvider": "வழங்குநரைச் சேர்",
-    "ButtonAddTunerDevice": "ட்யூனர் சாதனத்தைச் சேர்"
+    "ButtonAddTunerDevice": "ட்யூனர் சாதனத்தைச் சேர்",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

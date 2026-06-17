@@ -1866,5 +1866,7 @@
     "ExtractTrickplayImagesHelp": "Trickplay-bilete liknar kapittelbilete, men dekkjer heile lengda av innhaldet og vert brukte til førehandsvising når du spolar i videoar.",
     "LabelExtractTrickplayDuringLibraryScan": "Hent ut trickplay-bilete under bibliotekskanning",
     "LabelExtractTrickplayDuringLibraryScanHelp": "Generer trickplay-bilete når videoar vert importerte under bibliotekskanninga. Elles vert dei henta ut under den planlagde oppgåva for trickplay-bilete.",
-    "LogLoadFailure": "Kunne ikkje laste loggfila. Ho kan vere i bruk av ein annan prosess."
+    "LogLoadFailure": "Kunne ikkje laste loggfila. Ho kan vere i bruk av ein annan prosess.",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

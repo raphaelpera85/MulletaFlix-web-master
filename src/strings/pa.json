@@ -129,5 +129,7 @@
     "AllEpisodes": "ਸਾਰੇ ਐਪਿਸੋਡ",
     "AllLanguages": "ਸਭ ਭਾਸ਼ਾਵਾਂ",
     "AirDate": "ਪ੍ਰਸਾਰਣ ਦੀ ਮਿਤੀ",
-    "AllowCollectionManagement": "ਇਸ ਉਪਭੋਗਤਾ ਨੂੰ ਕਲੈਕਸ਼ਨ ਪ੍ਰਬੰਧਿਤ ਕਰਨ ਦੀ ਆਗਿਆ ਦਿਓ"
+    "AllowCollectionManagement": "ਇਸ ਉਪਭੋਗਤਾ ਨੂੰ ਕਲੈਕਸ਼ਨ ਪ੍ਰਬੰਧਿਤ ਕਰਨ ਦੀ ਆਗਿਆ ਦਿਓ",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

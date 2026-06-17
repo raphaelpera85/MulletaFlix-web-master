@@ -33,7 +33,10 @@ export function buildCardImage(
     const image = getCardImageUrl({
         api: toApi(apiClient),
         item,
-        options,
+        options: {
+            ...options,
+            serverId: item.ServerId || options.serverId
+        },
         shape
     });
 

@@ -1905,5 +1905,7 @@
     "LabelProgressAndSpeed": "Напредък / скорост",
     "LabelReasons": "Причини",
     "LabelPlayerSizes": "Размер на плейъра",
-    "LabelPlaybackQuality": "Кадри са пропуснати / повредени"
+    "LabelPlaybackQuality": "Кадри са пропуснати / повредени",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

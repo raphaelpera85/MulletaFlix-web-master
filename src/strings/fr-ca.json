@@ -1906,5 +1906,7 @@
     "LabelPlaybackQuality": "Images perdues / corrompues",
     "OnFilesystem": "Sur le système de fichier : {0}",
     "VideoRotationNotSupported": "La rotation de la vidéo n'est pas supporté",
-    "LabelVideoAttributes": "Attributs de la vidéo"
+    "LabelVideoAttributes": "Attributs de la vidéo",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

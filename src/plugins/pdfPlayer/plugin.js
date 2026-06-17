@@ -328,7 +328,7 @@ export class PdfPlayer {
     }
 
     canPlayItem(item) {
-        return item.Path ? item.Path.toLowerCase().endsWith('pdf') : false;
+        return item.Path?.toLowerCase().endsWith('.pdf') === true;
     }
 }
 

@@ -19,6 +19,7 @@ import { useUpdateDevice } from 'apps/dashboard/features/devices/api/useUpdateDe
 import DeviceNameCell from 'apps/dashboard/features/devices/components/DeviceNameCell';
 import type { DeviceInfoCell } from 'apps/dashboard/features/devices/types/deviceInfoCell';
 import ConfirmDialog from 'components/ConfirmDialog';
+import NoItemsMessage from 'components/common/NoItemsMessage';
 import { useApi } from 'hooks/useApi';
 import { type UsersRecords, useUsersDetails } from 'hooks/useUsers';
 import globalize from 'lib/globalize';
@@ -35,6 +36,10 @@ const getUserCell = (users: UsersRecords) => function UserCell({ renderedCellVal
     );
 };
 
+const getQueryItems = <T,>(result?: { Items?: T[] } | T[]) => (
+    Array.isArray(result) ? result : result?.Items || []
+);
+
 export const Component = () => {
     const { api } = useApi();
     const {
@@ -44,13 +49,11 @@ export const Component = () => {
         isRefetching
     } = useDevices({});
     const devices = useMemo(() => (
-        data?.Items || []
+        getQueryItems<DeviceInfoDto>(data)
     ), [ data ]);
     const {
         usersById: users,
-        names: userNames,
-        isLoading: isUsersLoading,
-        isError: isUsersError
+        names: userNames
     } = useUsersDetails();
     const theme = useTheme();
 
@@ -60,7 +63,7 @@ export const Component = () => {
     const deleteDevice = useDeleteDevice();
     const updateDevice = useUpdateDevice();
 
-    const isLoading = isDevicesLoading || isUsersLoading;
+    const isLoading = isDevicesLoading;
 
     const onDeleteDevice = useCallback((id: string | null | undefined) => () => {
         if (id) {
@@ -258,7 +261,9 @@ export const Component = () => {
             >
                 {globalize.translate('DeleteAll')}
             </Button>
-        )
+        ),
+
+        renderEmptyRowsFallback: () => <NoItemsMessage />
     });
 
     return (
@@ -267,7 +272,7 @@ export const Component = () => {
             title={globalize.translate('HeaderDevices')}
             className='mainAnimatedPage type-interior'
             table={mrTable}
-            isError={isDevicesError || isUsersError}
+            isError={isDevicesError}
             errorMessage={globalize.translate('DevicesLoadError')}
         >
             <ConfirmDialog

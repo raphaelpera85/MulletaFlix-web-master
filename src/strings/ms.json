@@ -290,5 +290,7 @@
     "LabelSlideshowIntervalHelp": "Masa dalam saat, setiap gambar dipaparkan dalam persembahan slaid.",
     "LabelBindToLocalNetworkAddress": "Pautkan ke alamat rangkaian tempatan",
     "LabelBirthYear": "Tahun kelahiran",
-    "ActivitiesLoadError": "Gagal untuk memuatkan aktiviti"
+    "ActivitiesLoadError": "Gagal untuk memuatkan aktiviti",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

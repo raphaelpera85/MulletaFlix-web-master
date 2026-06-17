@@ -1815,5 +1815,7 @@
     "MessageForgotPasswordPinReset": "Masukan PIN disini untuk menyelesaikan reset Password",
     "PluginLoadConfigError": "Terjadi kesalah ketika mencoba mendapatkan halaman konfigurasi plugin.",
     "PluginUninstallError": "Kesalahan terjadi ketika menguninstall plugin.",
-    "ActivitiesLoadError": "Gagal memuat aktifitas"
+    "ActivitiesLoadError": "Gagal memuat aktifitas",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

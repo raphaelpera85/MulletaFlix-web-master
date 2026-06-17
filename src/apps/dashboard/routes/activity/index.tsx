@@ -9,6 +9,7 @@ import { type MRT_ColumnDef, type MRT_Theme, type MRT_ColumnFiltersState, type M
 import DateTimeCell from 'apps/dashboard/components/table/DateTimeCell';
 import TablePage, { DEFAULT_TABLE_OPTIONS } from 'apps/dashboard/components/table/TablePage';
 import { useLogEntries } from 'apps/dashboard/features/activity/api/useLogEntries';
+import NoItemsMessage from 'components/common/NoItemsMessage';
 import ActionsCell from 'apps/dashboard/features/activity/components/ActionsCell';
 import LogLevelCell from 'apps/dashboard/features/activity/components/LogLevelCell';
 import OverviewCell from 'apps/dashboard/features/activity/components/OverviewCell';
@@ -30,6 +31,10 @@ const enum ActivityView {
 }
 
 const VIEW_PARAM = 'useractivity';
+
+const getQueryItems = <T,>(result?: { Items?: T[] } | T[]) => (
+    Array.isArray(result) ? result : result?.Items || []
+);
 
 const getActivityView = (param: string | null) => {
     if (param === null) return ActivityView.All;
@@ -58,9 +63,7 @@ export const Component = () => {
 
     const {
         usersById: users,
-        names: userNames,
-        isLoading: isUsersLoading,
-        isError: isUsersError
+        names: userNames
     } = useUsersDetails();
 
     const theme = useTheme();
@@ -117,13 +120,13 @@ export const Component = () => {
         isError: isLogEntriesError
     } = useLogEntries(activityParams);
     const logEntries = useMemo(() => (
-        data?.Items || []
+        getQueryItems<ActivityLogEntry>(data)
     ), [ data ]);
     const rowCount = useMemo(() => (
-        data?.TotalRecordCount || 0
-    ), [ data ]);
+        Array.isArray(data) ? data.length : (data?.TotalRecordCount || logEntries.length)
+    ), [ data, logEntries.length ]);
 
-    const isLoading = isUsersLoading || isLogEntriesLoading;
+    const isLoading = isLogEntriesLoading;
 
     const userColumn: MRT_ColumnDef<ActivityLogEntry>[] = useMemo(() =>
         (activityView === ActivityView.System) ? [] : [{
@@ -275,7 +278,9 @@ export const Component = () => {
                     {globalize.translate('LabelSystem')}
                 </ToggleButton>
             </ToggleButtonGroup>
-        )
+        ),
+
+        renderEmptyRowsFallback: () => <NoItemsMessage />
     });
 
     return (
@@ -284,7 +289,7 @@ export const Component = () => {
             title={globalize.translate('HeaderActivity')}
             className='mainAnimatedPage type-interior'
             table={table}
-            isError={isUsersError || isLogEntriesError}
+            isError={isLogEntriesError}
             errorMessage={globalize.translate('ActivitiesLoadError')}
         />
     );

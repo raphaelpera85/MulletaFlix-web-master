@@ -858,5 +858,7 @@
     "ActivitiesLoadError": "Kon nie aktiwiteite laai nie",
     "LabelExternalServerUri": "Eksterne URI",
     "ApiKeysLoadError": "Kon nie aktiwiteite laai nie",
-    "Authors": "Skrywers"
+    "Authors": "Skrywers",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

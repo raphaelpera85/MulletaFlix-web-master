@@ -466,5 +466,7 @@
     "LabelSegmentKeepSeconds": "Tími til að halda bútum",
     "LabelSegmentKeepSecondsHelp": "Tími í sekúndum sem bútum er haldið eftir að biðlarinn halar þeim niður. Virkar einungis ef heimilt er að eyða bútum.",
     "AllowFmp4TranscodingContainerHelp": "Leyfa fMP4 umritunarílát fyrir þennan móttakara til að virkja HEVC og HDR efni. Ekki eru allir móttakarar samhæfir þessum íláti. Slökktu á þessu ef þú lendir í vandræðum með spilun.",
-    "AlwaysBurnInSubtitleWhenTranscoding": "Alltaf brenna inn texta við umritun"
+    "AlwaysBurnInSubtitleWhenTranscoding": "Alltaf brenna inn texta við umritun",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

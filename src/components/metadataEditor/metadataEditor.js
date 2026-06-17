@@ -440,7 +440,7 @@ function populateLanguages(select, languages) {
     for (let i = 0, length = languages.length; i < length; i++) {
         const culture = languages[i];
 
-        html += "<option value='" + culture.TwoLetterISOLanguageName + "'>" + culture.DisplayName + '</option>';
+        html += "<option value='" + culture.Name + "'>" + culture.DisplayName + '</option>';
     }
 
     select.innerHTML = html;
@@ -872,7 +872,7 @@ function fillItemInfo(context, item, parentalRatingOptions) {
 
     context.querySelector('#txtOriginalAspectRatio').value = item.AspectRatio || '';
 
-    context.querySelector('#selectLanguage').value = item.PreferredMetadataLanguage || '';
+    context.querySelector('#selectLanguage').value = resolveLanguageSelection(context.querySelector('#selectLanguage'), item.PreferredMetadataLanguage || '', item.PreferredMetadataCountryCode || '');
     context.querySelector('#selectCountry').value = item.PreferredMetadataCountryCode || '';
 
     if (item.RunTimeTicks) {
@@ -1152,4 +1152,26 @@ export default {
     }
 };
 
+function resolveLanguageSelection(select, language, countryCode) {
+    if (!language) {
+        return '';
+    }
 
+    const values = Array.from(select.options).map(option => option.value);
+    if (values.includes(language)) {
+        return language;
+    }
+
+    const normalized = language.replace('_', '-');
+    if (values.includes(normalized)) {
+        return normalized;
+    }
+
+    if (countryCode && countryCode.toUpperCase() === 'BR' && values.includes('pt-BR')) {
+        return 'pt-BR';
+    }
+
+    const prefix = normalized.split('-')[0];
+    const fallback = values.find(value => value.toLowerCase().startsWith(prefix.toLowerCase() + '-'));
+    return fallback || language;
+}

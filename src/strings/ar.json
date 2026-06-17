@@ -1910,5 +1910,7 @@
     "HeaderBackupWarning": "تحذير: هناك مهام مجدولة قائمة",
     "VideoRotationNotSupported": "تدوير الفيديو غير مدعوم",
     "HeaderTypeSimilarItemProviders": "مقدمو عنصر مشابهين ({0})",
-    "LabelSimilarItemProvidersHelp": "تفعيل و تقييم مزودي العنصر المشابة المفضلين لديك بالافضلية."
+    "LabelSimilarItemProvidersHelp": "تفعيل و تقييم مزودي العنصر المشابة المفضلين لديك بالافضلية.",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

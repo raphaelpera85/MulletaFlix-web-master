@@ -1,4 +1,4 @@
-export function getFetchPromise(request) {
+﻿export function getFetchPromise(request) {
     const headers = request.headers || {};
 
     if (request.dataType === 'json') {
@@ -46,25 +46,28 @@ export function getFetchPromise(request) {
 function fetchWithTimeout(url, options, timeoutMs) {
     console.debug(`fetchWithTimeout: timeoutMs: ${timeoutMs}, url: ${url}`);
 
-    return new Promise(function (resolve, reject) {
-        const timeout = setTimeout(reject, timeoutMs);
+    // Use AbortController to actually cancel the underlying HTTP request on timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(function () {
+        controller.abort();
+    }, timeoutMs);
 
         options = options || {};
         options.credentials = 'same-origin';
+    options.signal = controller.signal;
 
-        fetch(url, options).then(function (response) {
-            clearTimeout(timeout);
-
+    return fetch(url, options).then(function (response) {
+        clearTimeout(timeoutId);
             console.debug(`fetchWithTimeout: succeeded connecting to url: ${url}`);
-
-            resolve(response);
-        }, function (error) {
-            clearTimeout(timeout);
-
+        return response;
+    }).catch(function (error) {
+        clearTimeout(timeoutId);
+        if (error.name === 'AbortError') {
             console.debug(`fetchWithTimeout: timed out connecting to url: ${url}`);
-
-            reject(error);
-        });
+            throw new Error(`Request timed out after ${timeoutMs}ms: ${url}`);
+}
+        console.debug(`fetchWithTimeout: failed connecting to url: ${url}`);
+        throw error;
     });
 }
 
@@ -107,3 +110,4 @@ export function ajax(request) {
         throw err;
     });
 }
+

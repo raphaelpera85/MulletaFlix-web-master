@@ -1910,5 +1910,7 @@
     "HeaderTypeSimilarItemProviders": "Провайдер похожих элементов ({0})",
     "LabelBackupWarning": "Есть активные запланированные задачи. Рекомендуем остановить их либо дождаться их выполнения перед созданием бэкапа.",
     "LabelSimilarItemProvidersHelp": "Включайте и ранжируйте провайдеров похожих элементов порядке приоритета.",
-    "HeaderBackupWarning": "ВНИМАНИЕ: Есть активные запланированные задачи"
+    "HeaderBackupWarning": "ВНИМАНИЕ: Есть активные запланированные задачи",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

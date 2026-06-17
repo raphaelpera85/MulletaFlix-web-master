@@ -49,5 +49,7 @@
     "Alternate": "বিকল্প",
     "AllowFfmpegThrottling": "থ্রটল ট্রান্সকোড",
     "AllowSubtitleManagement": "এই ব্যবহারকারীকে সাবটাইটেল সম্পাদনার অনুমতি দিন",
-    "AllowSegmentDeletion": "সেগমেন্ট মুছে ফেলুন"
+    "AllowSegmentDeletion": "সেগমেন্ট মুছে ফেলুন",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

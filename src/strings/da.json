@@ -1873,5 +1873,7 @@
     "HeaderDeleteCollection": "Slet kollektion",
     "ActivitiesLoadError": "kunne ikke indlæse aktiviteter",
     "ApiKeysLoadError": "Kunne ikke indlæse API nøgler",
-    "Authors": "Forfattere"
+    "Authors": "Forfattere",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

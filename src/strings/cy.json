@@ -605,5 +605,7 @@
     "ShowAdvancedSettings": "Dangos gosodiadau uwch",
     "AirPlay": "AirPlay",
     "AllowFmp4TranscodingContainerHelp": "Caniatáu cynhwysydd trawsgodio fMP4 ar gyfer y tiwniwr hwn i alluogi cynnwys HEVC a HDR. Nid yw pob tiwniwr yn gydnaws â'r cynhwysydd hwn. Analluogwch hwn os oes problemau chwarae.",
-    "AllowSegmentDeletion": "Dileu darnau"
+    "AllowSegmentDeletion": "Dileu darnau",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

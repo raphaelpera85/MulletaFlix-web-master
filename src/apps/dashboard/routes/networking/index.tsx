@@ -51,6 +51,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         EnableIPv4: data.EnableIPv4?.toString() === 'on',
         EnableIPv6: data.EnableIPv6?.toString() === 'on',
         EnableRemoteAccess: data.EnableRemoteAccess?.toString() === 'on',
+        EnableUPnP: data.EnableUPnP?.toString() === 'on',
+        EnablePublishedServerUriByRequest: data.EnablePublishedServerUriByRequest?.toString() === 'on',
         LocalNetworkSubnets: splitString(data.LocalNetworkSubnets?.toString()),
         LocalNetworkAddresses: splitString(data.LocalNetworkAddresses?.toString()),
         KnownProxies: splitString(data.KnownProxies?.toString()),
@@ -90,6 +92,7 @@ export const Component = () => {
     const [ useSamePublishedUri, setUseSamePublishedUri ] = useState(true);
     const [ publishedUris, setPublishedUris ] = useState<PublishedServerUris | null>();
     const [ isUrisLoaded, setIsUrisLoaded ] = useState(false);
+    const enableUPnP = (Reflect.get(config, 'EnableUPnP') as boolean | undefined) ?? false;
 
     const onCertificatePathChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         setCertificatePath(event.target.value);
@@ -269,6 +272,36 @@ export const Component = () => {
                                         label={globalize.translate('AllowRemoteAccess')}
                                     />
                                     <FormHelperText>{globalize.translate('AllowRemoteAccessHelp')}</FormHelperText>
+                                </FormControl>
+
+                                <FormControl>
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                name='EnablePublishedServerUriByRequest'
+                                                defaultChecked={config.EnablePublishedServerUriByRequest}
+                                            />
+                                        }
+                                        label={globalize.translate('LabelPublishedServerUriByRequest')}
+                                    />
+                                    <FormHelperText>
+                                        {globalize.translate('LabelPublishedServerUriByRequestHelp')}
+                                    </FormHelperText>
+                                </FormControl>
+
+                                <FormControl>
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                name='EnableUPnP'
+                                                defaultChecked={enableUPnP}
+                                            />
+                                        }
+                                        label={globalize.translate('LabelCreateHttpPortMap')}
+                                    />
+                                    <FormHelperText>
+                                        {globalize.translate('LabelCreateHttpPortMapHelp')}
+                                    </FormHelperText>
                                 </FormControl>
 
                                 <TextField

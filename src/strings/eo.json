@@ -1462,5 +1462,7 @@
     "Bold": "Grasa",
     "LabelTextWeight": "Teksta pezo",
     "EnableSplashScreen": "Ebligi la salutŝildon",
-    "MediaInfoDoViTitle": "DV titolo"
+    "MediaInfoDoViTitle": "DV titolo",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

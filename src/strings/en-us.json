@@ -1928,5 +1928,7 @@
     "NoUnidentifiedItems": "No unidentified {0} found. All items have been matched.",
     "ItemsFound": "{0} items found",
     "MessageLicenseTimeRemaining": "Seu acesso expira em {0}.",
-    "MessageLicenseExpired": "Seu acesso expirou. Entre em contato com o administrador."
+    "MessageLicenseExpired": "Seu acesso expirou. Entre em contato com o administrador.",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

@@ -1870,5 +1870,7 @@
     "ActivitiesLoadError": "アクティビティの読み込みに失敗しました",
     "ApiKeysLoadError": "APIキーの読み込みに失敗しました",
     "ConfirmDeleteCollection": "このコレクションを削除してよろしいですか？",
-    "ConfirmDeletePlaylist": "このプレイリストを削除してよろしいですか？"
+    "ConfirmDeletePlaylist": "このプレイリストを削除してよろしいですか？",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

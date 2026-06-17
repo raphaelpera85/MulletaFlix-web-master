@@ -1904,5 +1904,7 @@
     "LabelProgressAndSpeed": "Fremgang / hastighet",
     "LabelReasons": "Årsaker",
     "LabelPlayerSizes": "Spillerstørrelser",
-    "LabelPlaybackQuality": "Ramme mistet/ødelagt"
+    "LabelPlaybackQuality": "Ramme mistet/ødelagt",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

@@ -1,5 +1,7 @@
 {
     "Absolute": "абсолют",
     "AccessRestrictedTryAgainLater": "Анеира иахьа иаԥыхуп. Ҳаԥшәышәала, ашьҭахь даҽазнык шәҽазышәа.",
-    "Actor": "Актер"
+    "Actor": "Актер",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

@@ -1875,5 +1875,7 @@
     "LabelAudioAttributes": "Audio atribūti",
     "LabelVideoBitDepth": "Video bitu dziļums",
     "LabelVideoColors": "Video krāsas",
-    "LabelVideoAttributes": "Video atribūti"
+    "LabelVideoAttributes": "Video atribūti",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

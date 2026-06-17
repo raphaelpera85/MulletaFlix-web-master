@@ -1701,5 +1701,7 @@
     "AudioSampleRateNotSupported": "La frecuencia de muestreo del audio no es compatible",
     "AnamorphicVideoNotSupported": "El video anamórfico no es compatible",
     "Trickplay": "Trickplay",
-    "LabelTrickplayAccel": "Habilitar decodificación por hardware"
+    "LabelTrickplayAccel": "Habilitar decodificación por hardware",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

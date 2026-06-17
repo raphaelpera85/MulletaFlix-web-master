@@ -273,6 +273,11 @@ export class BookPlayer {
         } else {
             this.rendition?.on('rendered', (e, i) => this.addSwipeGestures(i.document.documentElement));
         }
+
+        this.onWindowResize = () => {
+            this.rendition?.resize();
+        };
+        window.addEventListener('resize', this.onWindowResize);
     }
 
     unbindMediaElementEvents() {
@@ -305,6 +310,11 @@ export class BookPlayer {
         }
 
         this.touchHelper?.destroy();
+
+        if (this.onWindowResize) {
+            window.removeEventListener('resize', this.onWindowResize);
+            this.onWindowResize = null;
+        }
     }
 
     getPlayerHeight() {
@@ -465,7 +475,7 @@ export class BookPlayer {
         }
 
         // needs to be executed with a slight delay to give NativeShell time to process the request
-        setTimeout(() => this.rendition.resize(document.body.clientWidth, document.body.clientHeight * this.getPlayerHeight()), 200);
+        setTimeout(() => this.rendition?.resize(), 200);
 
         // required for mobile apps without browser fullscreen support
         this.fullscreen = !this.fullscreen;
@@ -846,7 +856,7 @@ export class BookPlayer {
 
                 const rendition = book.renderTo('bookPlayerContainer', {
                     width: '100%',
-                    height: document.body.clientHeight * this.getPlayerHeight(),
+                    height: '100%',
                     // TODO: Add option for scrolled-doc
                     flow: 'paginated'
                 });

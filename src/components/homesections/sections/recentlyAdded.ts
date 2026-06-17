@@ -88,6 +88,7 @@ function getLatestItemsHtmlFn(
             context: 'home',
             overlayText: false,
             centerText: !cardLayout,
+            lazy: true,
             overlayPlayButton: viewType !== 'photos',
             allowBottomPadding: !enableOverflow && !cardLayout,
             cardLayout: cardLayout,

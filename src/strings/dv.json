@@ -235,5 +235,7 @@
     "ConfigureDateAdded": "'ޑޭޓް އެޑްޑް' އަށް މެޓަޑޭޓާ ސެޓްއަޕް ކުރަން ޑޭޝްބޯޑް > ލައިބްރަރީތައް > ޑިސްޕްލޭ",
     "ConfirmDeleteRepository": "ރިޕޮޒިޓަރީ ޑިލީޓް ކުރަންވީތަ؟",
     "DeleteEntireSeries": "{0} އެޕިސޯޑް ޑިލީޓްކޮއްލާ",
-    "ActivitiesLoadError": "އެކްޓިވިޓީތައް ލޯޑު ނުވެވުނު"
+    "ActivitiesLoadError": "އެކްޓިވިޓީތައް ލޯޑު ނުވެވުނު",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

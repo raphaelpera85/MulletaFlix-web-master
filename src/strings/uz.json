@@ -643,5 +643,7 @@
     "Anime": "Anime",
     "ApiKeysLoadError": "API kalitlarni yuklashda xatolik ketdi",
     "Authors": "Mualliflar",
-    "Author": "Muallif"
+    "Author": "Muallif",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

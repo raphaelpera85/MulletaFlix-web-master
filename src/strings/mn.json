@@ -1864,5 +1864,7 @@
     "LabelMetadataReadersHelp": "Давуу эрхийн дарааллаар өөрийн дуртай локал метадата эх сурвалжийг эрэмбэлнэ. Олдсон эхний файл уншигдана.",
     "ConfirmDeleteRepository": "Сан устгах уу?",
     "ButtonAddProvider": "Дамжуулагч нэмэх",
-    "ButtonAddTunerDevice": "Tuner төхөөрөмж нэмэх"
+    "ButtonAddTunerDevice": "Tuner төхөөрөмж нэмэх",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

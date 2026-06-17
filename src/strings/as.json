@@ -12,5 +12,7 @@
     "Favorites": "পছন্দসই",
     "Folders": "ফোল্ডাৰ",
     "Genres": "শ্রেণী",
-    "HeaderContinueWatching": "দেখা চালিয়ে যান"
+    "HeaderContinueWatching": "দেখা চালিয়ে যান",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

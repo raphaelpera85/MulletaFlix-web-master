@@ -1910,5 +1910,7 @@
     "LabelBackupWarning": "Trwają zaplanowane zadania. Zaleca się ich zatrzymanie lub poczekanie na ich zakończenie przed uruchomieniem operacji tworzenia kopii zapasowej.",
     "HeaderBackupWarning": "OSTRZEŻENIE: trwają zaplanowane zadania",
     "HeaderTypeSimilarItemProviders": "Dostawcy podobnych elementów ({0})",
-    "LabelSimilarItemProvidersHelp": "Włącz i uporządkuj preferowanych dostawców podobnych elementów według priorytetu."
+    "LabelSimilarItemProvidersHelp": "Włącz i uporządkuj preferowanych dostawców podobnych elementów według priorytetu.",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

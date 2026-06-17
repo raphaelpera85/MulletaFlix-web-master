@@ -1,4 +1,4 @@
-{
+﻿{
   "includeCorsCredentials": false,
   "multiserver": false,
   "themes": [
@@ -38,6 +38,7 @@
     "htmlVideoPlayer/plugin",
     "photoPlayer/plugin",
     "comicsPlayer/plugin",
+    "universalBookPlayer/plugin",
     "bookPlayer/plugin",
     "youtubePlayer/plugin",
     "backdropScreensaver/plugin",
@@ -48,3 +49,4 @@
     "syncPlay/plugin"
   ]
 }
+

@@ -1914,5 +1914,7 @@
     "LabelProgressAndSpeed": "Progresso / velocidade",
     "LabelReasons": "Motivos",
     "LabelPlayerSizes": "Dimensões do Reprodutor",
-    "LabelPlaybackQuality": "Quadros perdidos / corrompidos"
+    "LabelPlaybackQuality": "Quadros perdidos / corrompidos",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

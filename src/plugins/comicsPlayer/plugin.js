@@ -369,7 +369,8 @@ export class ComicsPlayer {
     }
 
     canPlayItem(item) {
-        return item.Path && FILE_EXTENSIONS.some(ext => item.Path.endsWith(ext));
+        const path = item.Path?.toLowerCase();
+        return Boolean(path && FILE_EXTENSIONS.some(ext => path.endsWith(ext)));
     }
 }
 

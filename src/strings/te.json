@@ -1904,5 +1904,7 @@
     "LabelProgressAndSpeed": "పురోగతి / వేగం",
     "LabelReasons": "కారణాలు",
     "LabelPlayerSizes": "ప్లేయర్ పరిమాణాలు",
-    "LabelPlaybackQuality": "ఫ్రేమ్ పడిపోయింది / పాడైంది"
+    "LabelPlaybackQuality": "ఫ్రేమ్ పడిపోయింది / పాడైంది",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

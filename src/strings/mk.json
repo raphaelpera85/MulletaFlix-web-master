@@ -553,5 +553,7 @@
     "LabelBlastMessageIntervalHelp": "Определете го времетраењето во секунди помеѓу пораките на „blast alive“.",
     "LabelBlockContentWithTags": "Блокирај ставки со ознаки",
     "LabelBuildVersion": "Верзија",
-    "ActivitiesLoadError": "Не успеаа да се вчитаат активностите"
+    "ActivitiesLoadError": "Не успеаа да се вчитаат активностите",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

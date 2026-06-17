@@ -1481,5 +1481,7 @@
     "ConnectAnyway": "به هر حال متصل شوید",
     "LabelBackupsUnavailable": "پشتیبان گیری موجود نمی‌باشد",
     "DeleteRepositoryConfirmation": "آیا مطمئن هستید که می‌خواهید این بخش را حذف کنید؟",
-    "MessageBackupInProgress": "در حال پشتیبان گیری"
+    "MessageBackupInProgress": "در حال پشتیبان گیری",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

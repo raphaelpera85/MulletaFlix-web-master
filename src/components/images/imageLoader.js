@@ -5,8 +5,10 @@ import './style.scss';
 
 const worker = new Worker();
 const targetDic = {};
-const INITIAL_PRIORITY_IMAGE_LIMIT = 48;
-const INITIAL_PRIORITY_VIEWPORT_MARGIN = 2400;
+// Keep the initial pass focused on the visible viewport so the home screen
+// does not promote too many cards to high-priority image loads at once.
+const INITIAL_PRIORITY_IMAGE_LIMIT = 24;
+const INITIAL_PRIORITY_VIEWPORT_MARGIN = 1200;
 worker.addEventListener(
     'message',
     ({ data: { pixels, hsh, width, height } }) => {
@@ -155,9 +157,12 @@ function fillImageElement(elem, url) {
 }
 
 function queueBlurhash(target, hash) {
-    const schedule = window.requestIdleCallback || window.setTimeout;
+    if (window.requestIdleCallback) {
+        window.requestIdleCallback(() => itemBlurhashing(target, hash));
+        return;
+    }
 
-    schedule(() => itemBlurhashing(target, hash), 0);
+    window.setTimeout(() => itemBlurhashing(target, hash), 0);
 }
 
 function emptyImageElement(elem) {

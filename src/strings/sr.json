@@ -1905,5 +1905,7 @@
     "LabelReasons": "Разлози",
     "LabelPlayerSizes": "Величине играча",
     "LabelPlaybackQuality": "Оквир изгубљен / оштећен",
-    "LabelSyncPlayJoinGroup": "Придружи се групи"
+    "LabelSyncPlayJoinGroup": "Придружи се групи",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

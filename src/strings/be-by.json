@@ -1887,5 +1887,7 @@
     "TrickplayLoadError": "Не ўдалося загрузіць налады Trickplay",
     "LabelExternalServerUri": "Знешні URI",
     "LabelExternalServerUriHelp": "Апублікаваны URI сервера для знешняга доступу.",
-    "HeaderLatestMusicVideos": "Нядаўна дададзеныя музычныя відэа"
+    "HeaderLatestMusicVideos": "Нядаўна дададзеныя музычныя відэа",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

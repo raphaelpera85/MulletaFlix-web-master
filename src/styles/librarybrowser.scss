@@ -223,6 +223,12 @@
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
     padding-top: env(safe-area-inset-top);
+
+    /* Fix mobile: prevent contain collapse to 0x0px */
+    .layout-mobile & {
+        contain: none;
+        min-height: 3em;
+    }
 }
 
 .layout-tv .skinHeader {
@@ -328,6 +334,32 @@
 
 .mainDrawer-scrollContainer {
     padding-bottom: 10vh;
+}
+
+/* 
+ * Fix mobile drawer: ensure visibility when opened
+ * .touch-menu-la is the actual drawer element (navdrawer),
+ * .mainDrawer is the container inside it
+ */
+.layout-mobile .mainDrawer,
+.layout-mobile .touch-menu-la {
+    z-index: 1099;
+}
+
+.layout-mobile .drawer-open {
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Loading spinner for async library menu options */
+.libraryMenuOptions-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1em 0;
+}
+
+.libraryMenuOptions-loading .mdl-spinner {
+    display: inline-block;
 }
 
 @media all and (min-width: 40em) {

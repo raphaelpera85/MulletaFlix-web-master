@@ -111,5 +111,7 @@
     "Actor": "Umlingisi",
     "Absolute": "Impela",
     "HeaderAlbumArtists": "Abasethi wenkulumo",
-    "HeaderContinueWatching": "Buyela Ukubona"
+    "HeaderContinueWatching": "Buyela Ukubona",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

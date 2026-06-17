@@ -1906,5 +1906,7 @@
     "LabelBackupWarning": "Käimas on plaanilised toimingud. Enne varundamise alustamist on soovitatav need peatada või oodata nende lõpulejõudmist.",
     "HeaderBackupWarning": "HOIATUS: Käimasolevad plaanilised toimingud",
     "UsersEditPageError": "Kasutajate muutmise lehe laadimine nurjus",
-    "VideoRotationNotSupported": "Video pööramist ei toetata"
+    "VideoRotationNotSupported": "Video pööramist ei toetata",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

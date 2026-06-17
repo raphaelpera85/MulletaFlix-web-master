@@ -118,5 +118,7 @@
     "LogLoadFailure": "Couldn't open the ship log. The capt'n might be using it.",
     "PriorityIdle": "Doin' nothin'",
     "Unknown": "Unknown",
-    "HeaderAddUser": "Recruit a shipmate"
+    "HeaderAddUser": "Recruit a shipmate",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

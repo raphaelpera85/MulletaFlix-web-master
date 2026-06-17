@@ -756,5 +756,7 @@
     "ViewSettings": "सेटिंग पाहा",
     "LabelPlaybackInfo": "प्लेबॅक माहिती",
     "Select": "निवडा",
-    "Unknown": "अज्ञात"
+    "Unknown": "अज्ञात",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

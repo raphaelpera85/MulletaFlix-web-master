@@ -27,7 +27,7 @@ function populateLanguagesIntoSelect(select, languages) {
     let html = '';
     html += "<option value=''></option>";
     for (const culture of languages) {
-        html += `<option value='${culture.TwoLetterISOLanguageName}'>${culture.DisplayName}</option>`;
+        html += `<option value='${culture.Name}'>${culture.DisplayName}</option>`;
     }
     select.innerHTML = html;
 }
@@ -78,6 +78,30 @@ function syncMetadataLanguageFromCountry(parent) {
 
         return language;
     });
+}
+
+function resolveLanguageSelection(select, language, countryCode) {
+    if (!language) {
+        return '';
+    }
+
+    const values = Array.from(select.options).map(option => option.value);
+    if (values.includes(language)) {
+        return language;
+    }
+
+    const normalized = language.replace('_', '-');
+    if (values.includes(normalized)) {
+        return normalized;
+    }
+
+    if (countryCode && countryCode.toUpperCase() === 'BR' && values.includes('pt-BR')) {
+        return 'pt-BR';
+    }
+
+    const prefix = normalized.split('-')[0];
+    const fallback = values.find(value => value.toLowerCase().startsWith(prefix.toLowerCase() + '-'));
+    return fallback || language;
 }
 
 function getNewLibraryOptions(serverConfiguration) {
@@ -856,7 +880,7 @@ function getOrderedPlugins(plugins = [], configuredOrder = []) {
 export function setLibraryOptions(parent, options) {
     currentLibraryOptions = options;
     currentAvailableOptions = parent.availableOptions;
-    parent.querySelector('#selectLanguage').value = options.PreferredMetadataLanguage || '';
+    parent.querySelector('#selectLanguage').value = resolveLanguageSelection(parent.querySelector('#selectLanguage'), options.PreferredMetadataLanguage || '', options.MetadataCountryCode || '');
     parent.querySelector('#selectCountry').value = options.MetadataCountryCode || '';
     parent.querySelector('#selectAutoRefreshInterval').value = options.AutomaticRefreshIntervalDays || '0';
     parent.querySelector('#txtSeasonZeroName').value = options.SeasonZeroDisplayName || 'Specials';

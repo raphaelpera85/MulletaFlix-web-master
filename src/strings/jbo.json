@@ -71,5 +71,7 @@
     "ButtonExitApp": "se barkalri lo proga",
     "AddToPlayQueue": "jmina fe lo mencti depypoi",
     "HeaderStartNow": "ca tolsti",
-    "LabelDeathDate": "se detri lo nu nunmro"
+    "LabelDeathDate": "se detri lo nu nunmro",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

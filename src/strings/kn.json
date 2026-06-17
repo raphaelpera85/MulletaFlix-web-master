@@ -43,5 +43,7 @@
     "AllLibraries": "ಎಲ್ಲಾ ಲೈಬ್ರರಿ ಗಳು",
     "AddToPlayQueue": "ಪ್ಲೇ ಕ್ಯೂಗೆ ಸೇರಿಸಿ",
     "AgeValue": "({0} ವರ್ಷಗಳಷ್ಟು ಹಳೆಯದು)",
-    "AirDate": "ಪ್ರಸಾರ ದಿನಾಂಕ"
+    "AirDate": "ಪ್ರಸಾರ ದಿನಾಂಕ",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

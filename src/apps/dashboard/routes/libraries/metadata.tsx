@@ -20,6 +20,34 @@ import { type ActionFunctionArgs, Form, useActionData, useNavigation } from 'rea
 import { ActionData } from 'types/actionData';
 import { queryClient } from 'utils/query/queryClient';
 
+const resolveLanguageSelection = (language: string | undefined, countryCode: string | undefined, cultures: Array<{ Name: string }>) => {
+    if (!language) {
+        return '';
+    }
+
+    if (countryCode?.toUpperCase() === 'BR' && language.toLowerCase() === 'pt') {
+        const brazilianPortuguese = cultures.find(culture => culture.Name.toLowerCase() === 'pt-br');
+        if (brazilianPortuguese) {
+            return brazilianPortuguese.Name;
+        }
+    }
+
+    const exactMatch = cultures.find(culture => culture.Name.toLowerCase() === language.toLowerCase());
+    if (exactMatch) {
+        return exactMatch.Name;
+    }
+
+    const normalized = language.replace('_', '-');
+    const normalizedMatch = cultures.find(culture => culture.Name.toLowerCase() === normalized.toLowerCase());
+    if (normalizedMatch) {
+        return normalizedMatch.Name;
+    }
+
+    const prefix = normalized.split('-')[0];
+    const fallback = cultures.find(culture => culture.Name.toLowerCase().startsWith(`${prefix.toLowerCase()}-`));
+    return fallback?.Name ?? language;
+};
+
 export const action = async ({ request }: ActionFunctionArgs) => {
     const api = ServerConnections.getCurrentApi();
     if (!api) throw new Error('No Api instance available');
@@ -68,6 +96,7 @@ export const Component = () => {
     const isSubmitting = navigation.state === 'submitting';
 
     const imageResolutions = getImageResolutionOptions();
+    const selectedLanguage = resolveLanguageSelection(config.PreferredMetadataLanguage, config.MetadataCountryCode, cultures);
 
     if (isConfigPending || isCulturesPending || isCountriesPending) {
         return <Loading />;
@@ -96,13 +125,13 @@ export const Component = () => {
                             <TextField
                                 name={'Language'}
                                 label={globalize.translate('LabelLanguage')}
-                                defaultValue={config.PreferredMetadataLanguage}
+                                defaultValue={selectedLanguage}
                                 select
                             >
                                 {cultures.map(culture => {
                                     return <MenuItem
-                                        key={culture.TwoLetterISOLanguageName}
-                                        value={culture.TwoLetterISOLanguageName}
+                                        key={culture.Name}
+                                        value={culture.Name}
                                     >{culture.DisplayName}</MenuItem>;
                                 })}
                             </TextField>

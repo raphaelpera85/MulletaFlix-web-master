@@ -1905,5 +1905,7 @@
     "LabelProgressAndSpeed": "Dul chun cinn / luas",
     "LabelReasons": "Cúiseanna",
     "LabelPlayerSizes": "Méideanna imreoirí",
-    "LabelPlaybackQuality": "Fráma caillte / truaillithe"
+    "LabelPlaybackQuality": "Fráma caillte / truaillithe",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

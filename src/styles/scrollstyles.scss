@@ -2,10 +2,15 @@
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
 }
 
 .smoothScrollX {
     scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
 }
 
 .hiddenScrollX,

@@ -72,9 +72,9 @@ const postJson = async <T,>(url: string, body?: unknown): Promise<T> => {
         throw new Error('Cliente de API indisponível.');
     }
 
-    return apiClient!.ajax({
+    return apiClient.ajax({
         type: 'POST',
-        url: apiClient!.getUrl(url),
+        url: apiClient.getUrl(url),
         data: body ? JSON.stringify(body) : undefined,
         contentType: 'application/json'
     }) as Promise<T>;
@@ -148,7 +148,7 @@ const JobCard = ({ job, onCancel, isCancelling }: {
                         <Typography variant='body2'>{formatDate(job.CreatedAt)}</Typography>
                     </Grid>
                     <Grid item xs={12} md={4}>
-                        <Typography variant='caption' color='text.secondary'>Inicio</Typography>
+                        <Typography variant='caption' color='text.secondary'>Início</Typography>
                         <Typography variant='body2'>{formatDate(job.StartedAt)}</Typography>
                     </Grid>
                     <Grid item xs={12} md={4}>
@@ -157,14 +157,16 @@ const JobCard = ({ job, onCancel, isCancelling }: {
                     </Grid>
                 </Grid>
                 {latestLogs.length > 0 && (
-                    <Box sx={{
-                        bgcolor: 'rgba(0,0,0,.35)',
-                        borderRadius: 1,
-                        p: 1.5,
-                        fontFamily: 'monospace',
-                        fontSize: '.8rem',
-                        whiteSpace: 'pre-wrap'
-                    }}>
+                    <Box
+                        sx={{
+                            bgcolor: 'rgba(0,0,0,.35)',
+                            borderRadius: 1,
+                            p: 1.5,
+                            fontFamily: 'monospace',
+                            fontSize: '.8rem',
+                            whiteSpace: 'pre-wrap'
+                        }}
+                    >
                         {latestLogs.join('\n')}
                     </Box>
                 )}
@@ -174,7 +176,7 @@ const JobCard = ({ job, onCancel, isCancelling }: {
 };
 
 const JobsPage = () => {
-    const { api } = useApi();
+    const { __legacyApiClient__ } = useApi();
     const {
         data,
         isLoading,
@@ -182,13 +184,13 @@ const JobsPage = () => {
     } = useQuery({
         queryKey: QUERY_KEY,
         queryFn: async () => {
-            if (!api) {
+            if (!__legacyApiClient__) {
                 throw new Error('Cliente de API indisponível.');
             }
 
-            return api.getJSON(api.getUrl('JobQueue/Status')) as Promise<JobQueueStatus>;
+            return __legacyApiClient__.getJSON(__legacyApiClient__.getUrl('JobQueue/Status')) as Promise<JobQueueStatus>;
         },
-        enabled: !!api,
+        enabled: !!__legacyApiClient__,
         refetchInterval: 2500
     });
 
@@ -273,7 +275,7 @@ const JobsPage = () => {
                             {[
                                 ['Na fila', data.Queued],
                                 ['Executando', data.Running],
-                                ['Concluidos', data.Completed],
+                                ['Concluídos', data.Completed],
                                 ['Falhas', data.Failed],
                                 ['Cancelados', data.Cancelled],
                                 ['Workers', `${data.ActiveWorkers}/${data.MaxWorkers}`]

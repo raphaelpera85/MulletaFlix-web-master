@@ -1914,5 +1914,7 @@
     "LabelProgressAndSpeed": "Progress / speed",
     "LabelReasons": "Reasons",
     "LabelPlayerSizes": "Player sizes",
-    "LabelPlaybackQuality": "Frame dropped / corrupted"
+    "LabelPlaybackQuality": "Frame dropped / corrupted",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

@@ -35,17 +35,26 @@ function useCard({ item, cardOptions }: UseCardProps) {
         shape = resolveMixedShapeByAspectRatio(item.PrimaryImageAspectRatio);
     }
 
+    const cardImage = getCardImageUrl({
+        api,
+        item,
+        options: {
+            ...cardOptions,
+            serverId: item.ServerId || cardOptions.serverId
+        },
+        shape
+    });
     const {
         imgUrl,
         blurhash,
         forceName,
         coverImage
-    } = getCardImageUrl({
-        api,
-        item: item.ProgramInfo ?? item,
-        options: cardOptions,
-        shape
-    });
+    } = cardImage ?? {
+        imgUrl: undefined,
+        blurhash: undefined,
+        forceName: false,
+        coverImage: false
+    };
     const coveredImage = cardOptions.coverImage ?? coverImage;
     const overlayText = cardOptions.overlayText;
 

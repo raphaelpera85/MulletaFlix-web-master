@@ -1905,5 +1905,7 @@
     "TrickplayLoadError": "Neuspjelo učitavanje postavki brzokreta",
     "LabelPlayerSizes": "Veličine igrača",
     "LabelPlaybackQuality": "Okvir izgubljen / oštećen",
-    "LabelSyncPlayJoinGroup": "Pridruži se grupi"
+    "LabelSyncPlayJoinGroup": "Pridruži se grupi",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

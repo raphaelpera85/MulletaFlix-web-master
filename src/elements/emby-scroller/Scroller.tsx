@@ -29,7 +29,7 @@ const Scroller: FC<PropsWithChildren<ScrollerProps>> = ({
     isScrollButtonsEnabled = true,
     isSkipFocusWhenVisibleEnabled = false,
     isScrollEventEnabled = false,
-    isHideScrollbarEnabled = false,
+    isHideScrollbarEnabled = true,
     isAllowNativeSmoothScrollEnabled = false,
     children
 }) => {
@@ -238,7 +238,11 @@ const Scroller: FC<PropsWithChildren<ScrollerProps>> = ({
 
             <div
                 ref={scrollRef}
-                className={classNames('emby-scroller', className)}
+                className={classNames(
+                    'emby-scroller',
+                    { scrollX: true },
+                    className
+                )}
             >
                 {children}
 

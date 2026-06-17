@@ -1905,5 +1905,7 @@
     "LabelProgressAndSpeed": "התקדמות / מהירות",
     "LabelReasons": "סיבות",
     "LabelPlayerSizes": "גדלי נגן",
-    "LabelPlaybackQuality": "פריימים נפלו \\ נפגמו"
+    "LabelPlaybackQuality": "פריימים נפלו \\ נפגמו",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

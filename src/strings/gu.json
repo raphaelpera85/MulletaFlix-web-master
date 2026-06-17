@@ -111,5 +111,7 @@
     "ButtonAddImage": "છબી ઉમેરો",
     "ButtonLibraryAccess": "લાઇબ્રેરી એક્સેસ",
     "ButtonManualLogin": "મેન્યુઅલ લોગિન",
-    "BackupsPageLoadError": "બેકઅપ પેજ લોડ કરવામાં નિષ્ફળ થયાં"
+    "BackupsPageLoadError": "બેકઅપ પેજ લોડ કરવામાં નિષ્ફળ થયાં",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

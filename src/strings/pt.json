@@ -1905,5 +1905,7 @@
     "LabelReasons": "Motivos",
     "LabelPlayerSizes": "Tamanhos do leitor",
     "OnFilesystem": "No sistema de ficheiros: {0}",
-    "LabelSyncPlayJoinGroup": "Aderir a grupo"
+    "LabelSyncPlayJoinGroup": "Aderir a grupo",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

@@ -1868,5 +1868,7 @@
     "ConfirmDeleteCollection": "Ali ste prepričani da hočete izbrisati to kolekcijo?",
     "ConfirmDeletePlaylist": "Ali ste prepričani da hočete izbrisati ta seznam predvajanja?",
     "HeaderDeleteCollection": "Izbriši Kolekcijo",
-    "HeaderDeletePlaylist": "Izbriši Playlisto"
+    "HeaderDeletePlaylist": "Izbriši Playlisto",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

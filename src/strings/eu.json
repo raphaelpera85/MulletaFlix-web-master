@@ -1910,5 +1910,7 @@
     "HeaderTypeSimilarItemProviders": "Antzeko elementu hornitzaileak ({0})",
     "LabelBackupWarning": "Programatutako zereginak martxan daude. Gomendagarria da gelditzea edo amaitu arte itxarotea babeskopia-eragiketa exekutatu aurretik.",
     "LabelSimilarItemProvidersHelp": "Gaitu eta sailkatu zure antzeko elementuen hornitzaile hobetsiak lehentasunaren arabera.",
-    "HeaderBackupWarning": "OHARRA: Jarraian programatutako zereginak"
+    "HeaderBackupWarning": "OHARRA: Jarraian programatutako zereginak",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

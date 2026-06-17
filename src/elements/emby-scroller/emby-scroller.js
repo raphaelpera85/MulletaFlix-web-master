@@ -113,6 +113,9 @@ ScrollerPrototype.attachedCallback = function () {
 
     if (horizontal) {
         slider.style['white-space'] = 'nowrap';
+        this.classList.add('scrollX');
+    } else {
+        this.classList.remove('scrollX');
     }
 
     const scrollFrame = this;

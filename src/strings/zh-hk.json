@@ -1905,5 +1905,7 @@
     "LabelPlayerSizes": "播放器尺寸",
     "LabelPlaybackQuality": "跌格／損壞",
     "OnFilesystem": "檔案系統位置：{0}",
-    "LabelSyncPlayJoinGroup": "加入群組"
+    "LabelSyncPlayJoinGroup": "加入群組",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

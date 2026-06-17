@@ -52,6 +52,7 @@ function getOnNowItemsHtmlFn(
             showTitle: true,
             centerText: true,
             coverImage: true,
+            lazy: true,
             overlayText: false,
             allowBottomPadding: !enableOverflow,
             showAirTime: true,
@@ -162,6 +163,7 @@ function buildSection(
 
     const itemsContainer: SectionContainerElement | null = elem.querySelector('.itemsContainer');
     if (!itemsContainer) return;
+    itemsContainer.setAttribute('data-home-deferred', 'true');
     itemsContainer.parentContainer = elem;
     itemsContainer.fetchData = getOnNowFetchFn(apiClient);
     itemsContainer.getItemsHtml = getOnNowItemsHtmlFn(options);

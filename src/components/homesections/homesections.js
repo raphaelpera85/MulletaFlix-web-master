@@ -23,6 +23,14 @@ import './homesections.scss';
 
 const MAX_SECTIONS = 10;
 const MAX_SECTIONS_TV = MAX_SECTIONS + 1; // TV layout can have an extra section to ensure a library section is always visible
+const DEFERRED_HOME_SECTIONS = new Set([
+    HomeSectionType.ActiveRecordings,
+    HomeSectionType.LatestMedia
+]);
+
+function scheduleDeferredWork(callback) {
+    window.setTimeout(callback, 250);
+}
 
 export function getDefaultSection(index) {
     if (index < 0 || index > DEFAULT_SECTIONS.length) return '';
@@ -83,7 +91,18 @@ export function loadSections(elem, apiClient, user, userSettings) {
                 })))
                     // Timeout for polyfilled CustomElements (webOS 1.2)
                     .then(() => new Promise((resolve) => setTimeout(resolve, 0)))
-                    .then(() => resume(elem, { refresh: true }));
+                    .then(() => resume(elem, { refresh: true }, section => section.getAttribute('data-home-deferred') !== 'true')
+                        .catch(err => {
+                            console.error('Immediate home section failed to load', err);
+                        }))
+                    .then(() => {
+                        scheduleDeferredWork(() => {
+                            void resume(elem, { refresh: true }, section => section.getAttribute('data-home-deferred') === 'true')
+                                .catch(err => {
+                                    console.error('Deferred home section failed to load', err);
+                                });
+                        });
+                    });
             } else {
                 let noLibDescription;
                 if (user.Policy?.IsAdministrator) {
@@ -126,11 +145,15 @@ export function pause(elem) {
     }
 }
 
-export function resume(elem, options) {
+export function resume(elem, options, sectionFilter) {
     const elems = elem.querySelectorAll('.itemsContainer');
     const promises = [];
 
     Array.prototype.forEach.call(elems, section => {
+        if (sectionFilter && !sectionFilter(section)) {
+            return;
+        }
+
         if (section.resume) {
             promises.push(section.resume(options));
         }
@@ -142,6 +165,7 @@ export function resume(elem, options) {
 function loadSection(page, apiClient, user, userSettings, userViews, section, index) {
     const elem = page.querySelector('.section' + index);
     const options = { enableOverflow: enableScrollX() };
+    const isDeferred = DEFERRED_HOME_SECTIONS.has(section);
 
     switch (section) {
         case HomeSectionType.ActiveRecordings:
@@ -154,7 +178,21 @@ function loadSection(page, apiClient, user, userSettings, userViews, section, in
             loadLibraryButtons(elem, userViews);
             break;
         case HomeSectionType.LiveTv:
-            return loadLiveTV(elem, apiClient, user, options);
+            scheduleDeferredWork(() => {
+                void loadLiveTV(elem, apiClient, user, options)
+                    .then(() => {
+                        const liveTvItemsContainer = elem.querySelector('.itemsContainer');
+                        if (liveTvItemsContainer?.resume) {
+                            return liveTvItemsContainer.resume({ refresh: true });
+                        }
+
+                        return Promise.resolve();
+                    })
+                    .catch(err => {
+                        console.error('Deferred Live TV section failed to load', err);
+                    });
+            });
+            break;
         case HomeSectionType.NextUp:
             loadNextUp(elem, apiClient, userSettings, options);
             break;
@@ -174,6 +212,11 @@ function loadSection(page, apiClient, user, userSettings, userViews, section, in
             elem.innerHTML = '';
     }
 
+    const itemsContainer = elem.querySelector('.itemsContainer');
+    if (itemsContainer) {
+        itemsContainer.setAttribute('data-home-deferred', isDeferred ? 'true' : 'false');
+    }
+
     return Promise.resolve();
 }
 
@@ -188,5 +231,4 @@ export default {
     pause,
     resume
 };
-
 

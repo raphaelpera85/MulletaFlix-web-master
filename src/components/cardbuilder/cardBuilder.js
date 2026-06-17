@@ -746,7 +746,15 @@ function buildCard(index, item, apiClient, options) {
 
     // TODO move card creation code to Card component
 
-    const imgInfo = getCardImageUrl({ api: toApi(apiClient), item, options, shape });
+    const imgInfo = getCardImageUrl({
+        api: toApi(apiClient),
+        item,
+        options: {
+            ...options,
+            serverId: item.ServerId || options.serverId
+        },
+        shape
+    });
     const imgUrl = imgInfo.imgUrl;
     const blurhash = imgInfo.blurhash;
     const forceName = imgInfo.forceName;

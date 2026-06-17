@@ -26,5 +26,7 @@
     "Playlists": "Listas de reproducción",
     "Shows": "Series",
     "Songs": "Canciones",
-    "ValueSpecialEpisodeName": "Especial - {0}"
+    "ValueSpecialEpisodeName": "Especial - {0}",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

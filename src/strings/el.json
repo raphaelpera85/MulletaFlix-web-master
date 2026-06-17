@@ -1896,5 +1896,7 @@
     "NewPlaylist": "Νέα Λίστα Αναπαραγωγής",
     "OptionDatePlaylistUpdated": "Ημερομηνία Ενημέρωσης Λίστας Αναπαραγωγής",
     "LabelSimilarItemProvidersHelp": "Ενεργοποιήστε και κατατάξτε τους προτιμώμενους παρόχους παρόμοιων στοιχείων κατά σειρά προτεραιότητας.",
-    "HeaderTypeSimilarItemProviders": "Πάροχοι παρόμοιων στοιχείων ({0})"
+    "HeaderTypeSimilarItemProviders": "Πάροχοι παρόμοιων στοιχείων ({0})",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

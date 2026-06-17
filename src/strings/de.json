@@ -1910,5 +1910,7 @@
     "LabelBackupWarning": "Es laufen geplante Aufgaben ab. Es wird empfohlen, sie zu stoppen oder zu warten, bis sie fertig sind, bevor das Backup ausgeführt wird.",
     "HeaderBackupWarning": "WARNUNG: Laufende geplante Aufgaben",
     "HeaderTypeSimilarItemProviders": "Anbieter ähnlicher Artikel ({0})",
-    "LabelSimilarItemProvidersHelp": "Aktiviere und bewerte deine bevorzugten Anbieter ähnlicher Artikel in Reihenfolge der Wichtigkeit."
+    "LabelSimilarItemProvidersHelp": "Aktiviere und bewerte deine bevorzugten Anbieter ähnlicher Artikel in Reihenfolge der Wichtigkeit.",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

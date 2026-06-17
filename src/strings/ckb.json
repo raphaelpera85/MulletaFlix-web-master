@@ -39,5 +39,7 @@
     "LabelSegmentKeepSeconds": "کاتی هەڵگرتنی پارچەکان",
     "LabelSegmentKeepSecondsHelp": "کات بە چرکە کە تیایدا پارچەکان لە بیرگە هەڵدەگیرێن دوای ئەوەی لای بەکاربەر دابەزێنراون. تەنیا لە کاتی چالاککردنی سڕینەوەی پارچەکان کاردەکات.",
     "AllowMediaConversion": "ڕێگەدان بە وەرگەڕانی میدیا",
-    "AllowMediaConversionHelp": "ڕێگەپێدان یان پێنەدان بە تایبەتمەندی وەرگەڕانی میدیا."
+    "AllowMediaConversionHelp": "ڕێگەپێدان یان پێنەدان بە تایبەتمەندی وەرگەڕانی میدیا.",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

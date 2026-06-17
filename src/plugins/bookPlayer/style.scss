@@ -2,12 +2,19 @@
     position: relative;
     height: 100%;
     width: 100%;
-    overflow: auto;
+    overflow: hidden;
     z-index: 100;
     background: #fff;
 
     display: flex;
     flex-direction: column;
+
+    .bookPlayerContainer {
+        flex-grow: 1;
+        min-height: 0;
+        width: 100%;
+        overflow: hidden;
+    }
 
     .bookplayerButton {
         margin: 0.5vh;

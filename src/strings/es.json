@@ -1910,5 +1910,7 @@
     "LabelBackupWarning": "Hay tareas programadas en ejecución. Se recomienda detenerlas o esperar a que finalicen antes de ejecutar la operación de copia de seguridad.",
     "VideoRotationNotSupported": "La rotación del video no está soportada",
     "LabelSimilarItemProvidersHelp": "Habilite y ordene sus proveedores preferidos de elementos similares según el orden de prioridad.",
-    "HeaderTypeSimilarItemProviders": "Proveedores de elementos similares ({0})"
+    "HeaderTypeSimilarItemProviders": "Proveedores de elementos similares ({0})",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

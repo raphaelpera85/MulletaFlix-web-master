@@ -158,5 +158,7 @@
     "Next": "Nöchschts",
     "HeaderSortOrder": "Sortierreihefolg",
     "LabelSortOrder": "Sortierreihefolg",
-    "New": "Neu"
+    "New": "Neu",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

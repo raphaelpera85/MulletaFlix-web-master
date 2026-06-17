@@ -330,5 +330,7 @@
     "LabelSegmentKeepSeconds": "সেগমেন্ট সংরক্ষণের সময়",
     "LabelSegmentKeepSecondsHelp": "ক্লায়েন্ট ডাউনলোড করার পর কত সেকেন্ড পর্যন্ত সেগমেন্টগুলো সংরক্ষণ করা হবে তা নির্ধারণ করে। সেগমেন্ট মুছে ফেলার অপশন চালু থাকলেই এটি কাজ করবে।",
     "AlwaysRemuxFlacAudioFilesHelp": "যদি আপনার ব্রাউজার কোনো ফাইল প্লে করতে না পারে বা সময় গণনায় ভুল করে, তাহলে সমস্যা সমাধানের জন্য এই সেটিংটি চালু করুন।",
-    "AlwaysRemuxMp3AudioFilesHelp": "ব্রাউজার যদি টাইমস্ট্যাম্প ভুলভাবে গণনা করে, তাহলে এটি চালু করুন।"
+    "AlwaysRemuxMp3AudioFilesHelp": "ব্রাউজার যদি টাইমস্ট্যাম্প ভুলভাবে গণনা করে, তাহলে এটি চালু করুন।",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

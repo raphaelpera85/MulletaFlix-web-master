@@ -24,5 +24,7 @@
     "HeaderContinueWatching": "داۋاملىق كۆرۈش",
     "HeaderAlbumArtists": "پىلاستىنكا سەنئەتكارلىرى",
     "Genres": "ئۇسلۇبلار",
-    "Small": "كىچىك"
+    "Small": "كىچىك",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

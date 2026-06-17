@@ -1622,5 +1622,7 @@
     "LibraryNameInvalid": "لائبریری کا نام خالی نہیں چھوڑا جاسکتا۔",
     "LogLevel.Critical": "انتہائی اہم",
     "MessageForgotPasswordPinReset": "پاسورڈ ریسیٹ کرنے کے لئے یہاں پن کوڈ درج کریں",
-    "MessageRestoreSuccess": "بحالی کامیابے سے مکمل ہوگئی"
+    "MessageRestoreSuccess": "بحالی کامیابے سے مکمل ہوگئی",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

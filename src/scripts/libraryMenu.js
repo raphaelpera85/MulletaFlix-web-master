@@ -462,9 +462,12 @@ function updateLibraryMenu(user) {
         });
     }
 
-    const libraryMenuOptions = document.querySelector('.libraryMenuOptions');
+        const libraryMenuOptions = document.querySelector('.libraryMenuOptions');
 
     if (libraryMenuOptions) {
+        // Show loading spinner while fetching libraries
+        libraryMenuOptions.innerHTML = '<div class="libraryMenuOptions-loading"><div is="emby-loading" class="mdl-spinner mdlSpinnerActive"></div></div>';
+
         getUserViews(apiClient, userId).then(function (result) {
             const items = result;
             let html = `<h3 class="sidebarHeader">${globalize.translate('HeaderMedia')}</h3>`;

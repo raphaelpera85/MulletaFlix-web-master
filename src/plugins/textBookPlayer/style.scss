@@ -1,0 +1,42 @@
+#textBookPlayer {
+    background: #101010;
+    color: #f4f4f4;
+
+    .textBookToolbar {
+        align-items: center;
+        background: rgba(0, 0, 0, 0.72);
+        display: flex;
+        gap: 0.5rem;
+        justify-content: flex-end;
+        min-height: 3.25rem;
+        padding: 0.35rem 1rem;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .textBookContent {
+        box-sizing: border-box;
+        height: calc(100vh - 3.25rem);
+        overflow-y: auto;
+        padding: clamp(1rem, 3vw, 3rem);
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .textBookArticle {
+        line-height: 1.65;
+        margin: 0 auto;
+        max-width: 56rem;
+    }
+
+    .textBookArticle pre {
+        font-family: inherit;
+        margin: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+
+    .textBookButtonIcon {
+        color: #fff;
+    }
+}

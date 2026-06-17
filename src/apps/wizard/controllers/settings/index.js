@@ -30,7 +30,7 @@ function populateLanguages(select, languages) {
 
     for (let i = 0, length = languages.length; i < length; i++) {
         const culture = languages[i];
-        html += "<option value='" + culture.TwoLetterISOLanguageName + "'>" + culture.DisplayName + '</option>';
+        html += "<option value='" + culture.Name + "'>" + culture.DisplayName + '</option>';
     }
 
     select.innerHTML = html;
@@ -67,10 +67,35 @@ function syncMetadataLanguageFromCountry(page) {
     });
 }
 
+function resolveLanguageSelection(language, countryCode, cultures) {
+    if (!language) {
+        return '';
+    }
+
+    if (language.toLowerCase() === 'pt' && countryCode && countryCode.toUpperCase() === 'BR') {
+        return 'pt-BR';
+    }
+
+    const exactCulture = cultures.find(culture => culture.Name.toLowerCase() === language.toLowerCase());
+    if (exactCulture) {
+        return exactCulture.Name;
+    }
+
+    const normalized = language.replace('_', '-');
+    const normalizedCulture = cultures.find(culture => culture.Name.toLowerCase() === normalized.toLowerCase());
+    if (normalizedCulture) {
+        return normalizedCulture.Name;
+    }
+
+    const languagePrefix = normalized.split('-')[0];
+    const fallbackCulture = cultures.find(culture => culture.TwoLetterISOLanguageName.toLowerCase() === languagePrefix.toLowerCase());
+    return fallbackCulture ? fallbackCulture.Name : language;
+}
+
 function reloadData(page, config, cultures, countries) {
     populateLanguages(page.querySelector('#selectLanguage'), cultures);
     populateCountries(page.querySelector('#selectCountry'), countries);
-    page.querySelector('#selectLanguage').value = config.PreferredMetadataLanguage;
+    page.querySelector('#selectLanguage').value = resolveLanguageSelection(config.PreferredMetadataLanguage, config.MetadataCountryCode, cultures);
     page.querySelector('#selectCountry').value = config.MetadataCountryCode;
     if (!config.PreferredMetadataLanguage && config.MetadataCountryCode) {
         void syncMetadataLanguageFromCountry(page);

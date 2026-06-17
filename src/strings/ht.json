@@ -101,5 +101,7 @@
     "ButtonPreviousTrack": "Trak anvan",
     "AccessRestrictedTryAgainLater": "Aksè kounye a restriksyon. Tanpri eseye ankò pita.",
     "ActivitiesLoadError": "Echèk pou chaje aktivite yo",
-    "Playlists": "Pleliss"
+    "Playlists": "Pleliss",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

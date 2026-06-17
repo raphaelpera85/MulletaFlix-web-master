@@ -113,5 +113,7 @@
     "AllowOnTheFlySubtitleExtraction": "तुरुन्तै उपशीर्षक निकाल्न अनुमति दिनुहोस्",
     "AllowOnTheFlySubtitleExtractionHelp": "भिडियो ट्रान्सकोडिङ रोक्न मद्दत गर्नको लागि, इम्बेडेड उपशीर्षकहरू भिडियोहरूबाट निकाल्न सकिन्छ र क्लाइन्टहरूलाई सादा पाठमा डेलिभर गर्न सकिन्छ। केही प्रणालीहरूमा यसले लामो समय लिन सक्छ र निकासी प्रक्रियाको क्रममा भिडियो प्लेब्याक रोकिन सक्छ। क्लाइन्ट उपकरणद्वारा नेटिभ रूपमा समर्थित नभएको बेला भिडियो ट्रान्सकोडिङसँगै इम्बेडेड उपशीर्षकहरू जलाउन यसलाई असक्षम गर्नुहोस्।",
     "AllowRemoteAccess": "यस सर्भरमा बाहिरियलागि जडानहरूलाई अनुमति दिनुहोस्",
-    "AllowRemoteAccessHelp": "यदि जाँच नगरिएको खण्डमा, सबै रिमोट जडानहरू अवरुद्ध हुनेछन्।"
+    "AllowRemoteAccessHelp": "यदि जाँच नगरिएको खण्डमा, सबै रिमोट जडानहरू अवरुद्ध हुनेछन्।",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

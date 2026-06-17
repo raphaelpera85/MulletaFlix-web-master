@@ -1910,5 +1910,7 @@
     "VideoRotationNotSupported": "La rotació de vídeo no és compatible",
     "LabelBackupWarning": "Hi ha tasques programades en execució. Es recomana aturar-les o esperar a què acabin abans d'executar l'operació de còpia de seguretat.",
     "HeaderTypeSimilarItemProviders": "Proveïdors de títols semblants ({0})",
-    "LabelSimilarItemProvidersHelp": "Activa i classifica per ordre de prioritat els proveïdors seleccionats de títols similars."
+    "LabelSimilarItemProvidersHelp": "Activa i classifica per ordre de prioritat els proveïdors seleccionats de títols similars.",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }

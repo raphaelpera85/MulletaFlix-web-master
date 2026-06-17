@@ -6,5 +6,7 @@
     "Default": "Lexṣas",
     "Collections": "Tigrummiwin",
     "Channels": "Ibuda",
-    "Albums": "Iseɣraz"
+    "Albums": "Iseɣraz",
+    "LabelPublishedServerUriByRequest": "Use request host for public URL",
+    "LabelPublishedServerUriByRequestHelp": "Use the host accessed by the client to publish the correct public URL."
 }
