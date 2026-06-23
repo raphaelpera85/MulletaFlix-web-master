@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import IconButtonElement from './IconButtonElement';
+import IconButton from './emby-button/IconButton';
 
 type IProps = {
     SectionClassName?: string;
@@ -17,8 +17,7 @@ const SectionTitleContainer: FunctionComponent<IProps> = ({ SectionClassName, ti
                 {title}
             </h2>
 
-            {isBtnVisible && <IconButtonElement
-                is='emby-button'
+            {isBtnVisible && <IconButton
                 id={btnId}
                 className={btnClassName}
                 title={btnTitle}

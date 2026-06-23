@@ -85,6 +85,13 @@ function resolveLanguageSelection(select, language, countryCode) {
         return '';
     }
 
+    if (countryCode && countryCode.toUpperCase() === 'BR') {
+        const brazilianPortuguese = Array.from(select.options).find(option => option.value.toLowerCase() === 'pt-br');
+        if (brazilianPortuguese) {
+            return brazilianPortuguese.value;
+        }
+    }
+
     const values = Array.from(select.options).map(option => option.value);
     if (values.includes(language)) {
         return language;

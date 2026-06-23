@@ -99,7 +99,7 @@ export const Component = () => {
         if (devices) {
             Promise
                 .all(devices.map(item => {
-                    if (api && item.Id && api.deviceInfo.id === item.Id) {
+                    if (api && item.Id && api.deviceInfo?.id !== item.Id) {
                         return deleteDevice.mutateAsync({ id: item.Id });
                     }
                     return Promise.resolve();

@@ -10,10 +10,10 @@ export const useUpdateDevice = () => {
     const { api } = useApi();
 
     return useMutation({
-        mutationFn: (params: DevicesApiUpdateDeviceOptionsRequest) => (
-            getDevicesApi(api!)
-                .updateDeviceOptions(params)
-        ),
+        mutationFn: (params: DevicesApiUpdateDeviceOptionsRequest) => {
+            if (!api) throw new Error('API not available');
+            return getDevicesApi(api).updateDeviceOptions(params);
+        },
         onSuccess: () => {
             void queryClient.invalidateQueries({
                 queryKey: [ QUERY_KEY ]

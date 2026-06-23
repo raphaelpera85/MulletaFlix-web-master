@@ -212,7 +212,7 @@ function loadUserList(context, apiClient, users) {
         html += '</div>';
         html += '</div>';
         html += '<div class="cardFooter visualCardBox-cardFooter">';
-        html += '<div class="cardText singleCardText cardTextCentered">' + user.Name + '</div>';
+        html += '<div class="cardText singleCardText cardTextCentered">' + DOMPurify.sanitize(user.Name) + '</div>';
         html += '</div>';
         html += '</div>';
         html += '</button>';

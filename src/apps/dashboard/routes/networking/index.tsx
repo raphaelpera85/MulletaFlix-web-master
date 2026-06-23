@@ -92,7 +92,7 @@ export const Component = () => {
     const [ useSamePublishedUri, setUseSamePublishedUri ] = useState(true);
     const [ publishedUris, setPublishedUris ] = useState<PublishedServerUris | null>();
     const [ isUrisLoaded, setIsUrisLoaded ] = useState(false);
-    const enableUPnP = (Reflect.get(config, 'EnableUPnP') as boolean | undefined) ?? false;
+    const enableUPnP = (Reflect.get(config ?? {}, 'EnableUPnP') as boolean | undefined) ?? false;
 
     const onCertificatePathChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         setCertificatePath(event.target.value);
@@ -121,7 +121,7 @@ export const Component = () => {
     }, []);
 
     useEffect(() => {
-        if (!isPending && !isError) {
+        if (!isPending && !isError && config) {
             setCertificatePath(config.CertificatePath);
 
             if (config.PublishedServerUriBySubnet && config.PublishedServerUriBySubnet.length > 0) {
@@ -134,7 +134,7 @@ export const Component = () => {
         }
     }, [config, isPending, isError]);
 
-    if (isPending || !isUrisLoaded) return <Loading />;
+    if (isPending || (!isError && !isUrisLoaded)) return <Loading />;
 
     return (
         <Page

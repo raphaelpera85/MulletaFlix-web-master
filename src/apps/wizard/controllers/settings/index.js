@@ -72,8 +72,11 @@ function resolveLanguageSelection(language, countryCode, cultures) {
         return '';
     }
 
-    if (language.toLowerCase() === 'pt' && countryCode && countryCode.toUpperCase() === 'BR') {
-        return 'pt-BR';
+    if (countryCode && countryCode.toUpperCase() === 'BR') {
+        const brazilianPortuguese = cultures.find(culture => culture.Name.toLowerCase() === 'pt-br');
+        if (brazilianPortuguese) {
+            return brazilianPortuguese.Name;
+        }
     }
 
     const exactCulture = cultures.find(culture => culture.Name.toLowerCase() === language.toLowerCase());

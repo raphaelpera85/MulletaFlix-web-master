@@ -917,22 +917,16 @@ const getSectionsWithItems = async (
         sections = sections.filter((section) => sectionType.includes(section.type));
     }
 
-    const updatedSectionWithItems: SectionWithItems[] = [];
+    const results = await Promise.all(
+        sections.map(async (section) => {
+            const items = await fetchGetSectionItems(
+                currentApi, parentId, section, options
+            );
+            return { section, items };
+        })
+    );
 
-    for (const section of sections) {
-        const items = await fetchGetSectionItems(
-            currentApi, parentId, section, options
-        );
-
-        if (items && items.length > 0) {
-            updatedSectionWithItems.push({
-                section,
-                items
-            });
-        }
-    }
-
-    return updatedSectionWithItems;
+    return results.filter((r) => r.items && r.items.length > 0);
 };
 
 export const useGetSuggestionSectionsWithItems = (

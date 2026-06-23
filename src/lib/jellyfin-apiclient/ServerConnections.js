@@ -117,7 +117,6 @@ class ServerConnections extends ConnectionManager {
     setLocalApiClient(apiClient) {
         if (apiClient) {
             this.localApiClient = apiClient;
-            window.ApiClient = apiClient;
         }
     }
 

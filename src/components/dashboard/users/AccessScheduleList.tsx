@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useCallback } from 'react';
 import datetime from '../../../scripts/datetime';
 import globalize from '../../../lib/globalize';
-import IconButtonElement from '../../../elements/IconButtonElement';
+import IconButton from '../../../elements/emby-button/IconButton';
 
 type AccessScheduleListProps = {
     index?: number;
@@ -41,12 +41,11 @@ const AccessScheduleList: FunctionComponent<AccessScheduleListProps> = ({ index,
                     {getDisplayTime(StartHour) + ' - ' + getDisplayTime(EndHour)}
                 </div>
             </div>
-            <IconButtonElement
-                is='paper-icon-button-light'
+            <IconButton
                 className='btnDelete listItemButton'
                 title='Delete'
                 icon='delete'
-                dataIndex={index}
+                data-index={index}
                 onClick={onClick}
             />
         </div>

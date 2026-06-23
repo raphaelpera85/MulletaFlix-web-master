@@ -24,8 +24,10 @@ export const useLogEntries = (
     const { api } = useApi();
     return useQuery({
         queryKey: ['ActivityLogEntries', requestParams],
-        queryFn: ({ signal }) =>
-            fetchLogEntries(api!, requestParams, { signal }),
+        queryFn: ({ signal }) => {
+            if (!api) throw new Error('API not available');
+            return fetchLogEntries(api, requestParams, { signal });
+        },
         enabled: !!api,
         refetchOnMount: false
     });

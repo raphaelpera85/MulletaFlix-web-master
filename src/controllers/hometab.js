@@ -11,9 +11,12 @@ class HomeTab {
         this.params = params;
         this.apiClient = ServerConnections.currentApiClient();
         this.sectionsContainer = view.querySelector('.sections');
-        view.querySelector('.sections').addEventListener('settingschange', onHomeScreenSettingsChanged.bind(this));
+        this._onSettingsChangeRef = onHomeScreenSettingsChanged.bind(this);
+        view.querySelector('.sections').addEventListener('settingschange', this._onSettingsChangeRef);
     }
     onResume(options) {
+        this.paused = false;
+
         if (this.sectionsRendered) {
             const sectionsContainer = this.sectionsContainer;
 
@@ -44,8 +47,14 @@ class HomeTab {
         if (sectionsContainer) {
             homeSections.pause(sectionsContainer);
         }
+
+        this.paused = true;
     }
     destroy() {
+        if (this.sectionsContainer && this._onSettingsChangeRef) {
+            this.sectionsContainer.removeEventListener('settingschange', this._onSettingsChangeRef);
+        }
+        this._onSettingsChangeRef = null;
         this.view = null;
         this.params = null;
         this.apiClient = null;

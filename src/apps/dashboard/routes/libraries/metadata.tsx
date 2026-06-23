@@ -15,36 +15,36 @@ import Page from 'components/Page';
 import { QUERY_KEY, useConfiguration } from 'hooks/useConfiguration';
 import globalize from 'lib/globalize';
 import { ServerConnections } from 'lib/jellyfin-apiclient';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { type ActionFunctionArgs, Form, useActionData, useNavigation } from 'react-router-dom';
 import { ActionData } from 'types/actionData';
 import { queryClient } from 'utils/query/queryClient';
 
-const resolveLanguageSelection = (language: string | undefined, countryCode: string | undefined, cultures: Array<{ Name: string }>) => {
+const resolveLanguageSelection = (language: string | undefined, countryCode: string | undefined, cultures: Array<{ Name?: string }>) => {
     if (!language) {
         return '';
     }
 
-    if (countryCode?.toUpperCase() === 'BR' && language.toLowerCase() === 'pt') {
-        const brazilianPortuguese = cultures.find(culture => culture.Name.toLowerCase() === 'pt-br');
+    if (countryCode?.toUpperCase() === 'BR') {
+        const brazilianPortuguese = cultures.find(culture => culture.Name?.toLowerCase() === 'pt-br');
         if (brazilianPortuguese) {
             return brazilianPortuguese.Name;
         }
     }
 
-    const exactMatch = cultures.find(culture => culture.Name.toLowerCase() === language.toLowerCase());
+    const exactMatch = cultures.find(culture => culture.Name?.toLowerCase() === language.toLowerCase());
     if (exactMatch) {
         return exactMatch.Name;
     }
 
     const normalized = language.replace('_', '-');
-    const normalizedMatch = cultures.find(culture => culture.Name.toLowerCase() === normalized.toLowerCase());
+    const normalizedMatch = cultures.find(culture => culture.Name?.toLowerCase() === normalized.toLowerCase());
     if (normalizedMatch) {
         return normalizedMatch.Name;
     }
 
     const prefix = normalized.split('-')[0];
-    const fallback = cultures.find(culture => culture.Name.toLowerCase().startsWith(`${prefix.toLowerCase()}-`));
+    const fallback = cultures.find(culture => culture.Name?.toLowerCase().startsWith(`${prefix.toLowerCase()}-`));
     return fallback?.Name ?? language;
 };
 
@@ -57,8 +57,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
     const { data: config } = await getConfigurationApi(api).getConfiguration();
 
-    config.PreferredMetadataLanguage = data.Language.toString();
-    config.MetadataCountryCode = data.Country.toString();
+    const countryCode = data.Country.toString();
+    config.PreferredMetadataLanguage = countryCode.toUpperCase() === 'BR' ?
+        'pt-BR' :
+        data.Language.toString();
+    config.MetadataCountryCode = countryCode;
     config.DummyChapterDuration = parseInt(data.DummyChapterDuration.toString(), 10);
     config.ChapterImageResolution = data.ChapterImageResolution.toString() as ImageResolution;
 
@@ -96,7 +99,25 @@ export const Component = () => {
     const isSubmitting = navigation.state === 'submitting';
 
     const imageResolutions = getImageResolutionOptions();
-    const selectedLanguage = resolveLanguageSelection(config.PreferredMetadataLanguage, config.MetadataCountryCode, cultures);
+    const selectedLanguage = resolveLanguageSelection(
+        config?.PreferredMetadataLanguage,
+        config?.MetadataCountryCode,
+        cultures ?? []
+    );
+    const syncMetadataLanguageFromCountry = useCallback((countryCode: string) => {
+        if (countryCode.toUpperCase() !== 'BR') {
+            return;
+        }
+
+        const languageSelect = document.getElementById('selectLanguage') as HTMLSelectElement | null;
+        if (languageSelect) {
+            languageSelect.value = 'pt-BR';
+        }
+    }, []);
+
+    const onCountryChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        syncMetadataLanguageFromCountry(event.target.value);
+    }, [ syncMetadataLanguageFromCountry ]);
 
     if (isConfigPending || isCulturesPending || isCountriesPending) {
         return <Loading />;
@@ -123,12 +144,13 @@ export const Component = () => {
                             <Typography>{globalize.translate('DefaultMetadataLangaugeDescription')}</Typography>
 
                             <TextField
+                                id='selectLanguage'
                                 name={'Language'}
                                 label={globalize.translate('LabelLanguage')}
                                 defaultValue={selectedLanguage}
                                 select
                             >
-                                {cultures.map(culture => {
+                                {(cultures ?? []).map(culture => {
                                     return <MenuItem
                                         key={culture.Name}
                                         value={culture.Name}
@@ -137,12 +159,14 @@ export const Component = () => {
                             </TextField>
 
                             <TextField
+                                id='selectCountry'
                                 name={'Country'}
                                 label={globalize.translate('LabelCountry')}
-                                defaultValue={config.MetadataCountryCode}
+                                defaultValue={config?.MetadataCountryCode}
                                 select
+                                onChange={onCountryChange}
                             >
-                                {countries.map(country => {
+                                {(countries ?? []).map(country => {
                                     return <MenuItem
                                         key={country.DisplayName}
                                         value={country.TwoLetterISORegionName || ''}

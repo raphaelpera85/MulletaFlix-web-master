@@ -28,12 +28,89 @@ const DEFERRED_HOME_SECTIONS = new Set([
     HomeSectionType.LatestMedia
 ]);
 
-function scheduleDeferredWork(callback) {
-    window.setTimeout(callback, 250);
+function scheduleDeferredWork(elem, callback) {
+    if (elem._deferredTimerId) {
+        window.clearTimeout(elem._deferredTimerId);
+    }
+    elem._deferredTimerId = window.setTimeout(callback, 250);
+}
+
+const CONCURRENCY_LIMIT = 3;
+const OBSERVER_ROOT_MARGIN = '400px';
+const OBSERVER_TIMEOUT_MS = 30000;
+
+function promiseAllBatched(items, fn, concurrency = CONCURRENCY_LIMIT) {
+    let i = 0;
+    function next() {
+        const batch = items.slice(i, i + concurrency);
+        i += concurrency;
+        return Promise.all(batch.map(item => fn(item).catch(err => {
+            console.error('Home section failed to load', err);
+        }))).then(() => {
+            if (i < items.length) return next();
+        });
+    }
+    return next();
+}
+
+function observeAndResumeDeferred(elem, options) {
+    const selectors = elem.querySelectorAll('.itemsContainer[data-home-deferred="true"]');
+
+    return new Promise((resolve) => {
+        if (!selectors.length) {
+            resolve();
+            return;
+        }
+
+        let remaining = selectors.length;
+        let timedOut = false;
+
+        const timeout = window.setTimeout(() => {
+            timedOut = true;
+            Array.prototype.forEach.call(selectors, section => {
+                if (section.resume && !section._homeResumed) {
+                    section._homeResumed = true;
+                    section.resume(options).catch(err => {
+                        console.error('Deferred home section timed out', err);
+                    });
+                }
+            });
+            if (elem._homeObserver) elem._homeObserver.disconnect();
+            resolve();
+        }, OBSERVER_TIMEOUT_MS);
+
+        const observer = new IntersectionObserver((entries) => {
+            if (timedOut) return;
+            for (const entry of entries) {
+                if (entry.isIntersecting) {
+                    const section = entry.target;
+                    if (section.resume && !section._homeResumed) {
+                        section._homeResumed = true;
+                        remaining--;
+                        section.resume(options).catch(err => {
+                            console.error('Deferred home section failed to load', err);
+                        });
+                    }
+                    observer.unobserve(section);
+                }
+            }
+            if (remaining <= 0) {
+                observer.disconnect();
+                window.clearTimeout(timeout);
+                resolve();
+            }
+        }, { rootMargin: OBSERVER_ROOT_MARGIN });
+
+        elem._homeObserver = observer;
+
+        Array.prototype.forEach.call(selectors, section => {
+            observer.observe(section);
+        });
+    });
 }
 
 export function getDefaultSection(index) {
-    if (index < 0 || index > DEFAULT_SECTIONS.length) return '';
+    if (index < 0 || index >= DEFAULT_SECTIONS.length) return '';
     return DEFAULT_SECTIONS[index];
 }
 
@@ -91,18 +168,15 @@ export function loadSections(elem, apiClient, user, userSettings) {
                 })))
                     // Timeout for polyfilled CustomElements (webOS 1.2)
                     .then(() => new Promise((resolve) => setTimeout(resolve, 0)))
-                    .then(() => resume(elem, { refresh: true }, section => section.getAttribute('data-home-deferred') !== 'true')
-                        .catch(err => {
-                            console.error('Immediate home section failed to load', err);
-                        }))
                     .then(() => {
-                        scheduleDeferredWork(() => {
-                            void resume(elem, { refresh: true }, section => section.getAttribute('data-home-deferred') === 'true')
-                                .catch(err => {
-                                    console.error('Deferred home section failed to load', err);
-                                });
-                        });
-                    });
+                        const immediate = elem.querySelectorAll('.itemsContainer[data-home-deferred="false"]');
+                        return promiseAllBatched(
+                            Array.prototype.filter.call(immediate, s => s.resume),
+                            s => s.resume({ refresh: true }),
+                            CONCURRENCY_LIMIT
+                        );
+                    })
+                    .then(() => observeAndResumeDeferred(elem, { refresh: true }));
             } else {
                 let noLibDescription;
                 if (user.Policy?.IsAdministrator) {
@@ -128,6 +202,16 @@ export function loadSections(elem, apiClient, user, userSettings) {
 }
 
 export function destroySections(elem) {
+    if (elem._deferredTimerId) {
+        window.clearTimeout(elem._deferredTimerId);
+        elem._deferredTimerId = null;
+    }
+
+    if (elem._homeObserver) {
+        elem._homeObserver.disconnect();
+        elem._homeObserver = null;
+    }
+
     const elems = elem.querySelectorAll('.itemsContainer');
     for (const e of elems) {
         e.fetchData = null;
@@ -178,21 +262,21 @@ function loadSection(page, apiClient, user, userSettings, userViews, section, in
             loadLibraryButtons(elem, userViews);
             break;
         case HomeSectionType.LiveTv:
-            scheduleDeferredWork(() => {
-                void loadLiveTV(elem, apiClient, user, options)
-                    .then(() => {
-                        const liveTvItemsContainer = elem.querySelector('.itemsContainer');
-                        if (liveTvItemsContainer?.resume) {
-                            return liveTvItemsContainer.resume({ refresh: true });
-                        }
-
-                        return Promise.resolve();
-                    })
-                    .catch(err => {
-                        console.error('Deferred Live TV section failed to load', err);
-                    });
+            return new Promise((resolve) => {
+                scheduleDeferredWork(elem, () => {
+                    void loadLiveTV(elem, apiClient, user, options)
+                        .then(() => {
+                            const itemsContainers = elem.querySelectorAll('.itemsContainer');
+                            for (const itemsContainer of itemsContainers) {
+                                    itemsContainer.setAttribute('data-home-deferred', isDeferred ? 'true' : 'false');
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Deferred Live TV section failed to load', err);
+                        })
+                        .then(resolve);
+                });
             });
-            break;
         case HomeSectionType.NextUp:
             loadNextUp(elem, apiClient, userSettings, options);
             break;
@@ -212,8 +296,8 @@ function loadSection(page, apiClient, user, userSettings, userViews, section, in
             elem.innerHTML = '';
     }
 
-    const itemsContainer = elem.querySelector('.itemsContainer');
-    if (itemsContainer) {
+    const itemsContainers = elem.querySelectorAll('.itemsContainer');
+    for (const itemsContainer of itemsContainers) {
         itemsContainer.setAttribute('data-home-deferred', isDeferred ? 'true' : 'false');
     }
 

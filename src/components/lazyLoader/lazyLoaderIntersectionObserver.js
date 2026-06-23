@@ -14,7 +14,7 @@ export class LazyLoader {
                 });
             },
             {
-                rootMargin: '2400px 0px',
+                rootMargin: '400px 0px',
                 threshold: 0
             });
 
@@ -53,8 +53,14 @@ function unveilElements(elements, root, callback) {
     if (!elements.length) {
         return;
     }
+
+    const wrappedCallback = (entry, observer) => {
+        callback(entry, observer);
+        observer.unobserve(entry.target);
+    };
+
     const lazyLoader = new LazyLoader({
-        callback: callback
+        callback: wrappedCallback
     });
     lazyLoader.addElements(elements);
 }

@@ -16,6 +16,7 @@
     "checkJs": false,
     "strictNullChecks": true,
     "jsx": "react-jsx",
+    "types": ["vite/client"],
     "downlevelIteration": true
   },
   "include": [

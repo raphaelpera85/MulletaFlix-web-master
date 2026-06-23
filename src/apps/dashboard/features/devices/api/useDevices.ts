@@ -26,8 +26,10 @@ export const useDevices = (
     const { api } = useApi();
     return useQuery({
         queryKey: [QUERY_KEY, requestParams],
-        queryFn: ({ signal }) =>
-            fetchDevices(api!, requestParams, { signal }),
+        queryFn: ({ signal }) => {
+            if (!api) throw new Error('API not available');
+            return fetchDevices(api, requestParams, { signal });
+        },
         enabled: !!api
     });
 };

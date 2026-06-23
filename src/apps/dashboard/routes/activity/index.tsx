@@ -123,7 +123,7 @@ export const Component = () => {
         getQueryItems<ActivityLogEntry>(data)
     ), [ data ]);
     const rowCount = useMemo(() => (
-        Array.isArray(data) ? data.length : (data?.TotalRecordCount || logEntries.length)
+        Array.isArray(data) ? data.length : (data?.TotalRecordCount ?? logEntries.length)
     ), [ data, logEntries.length ]);
 
     const isLoading = isLogEntriesLoading;

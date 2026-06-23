@@ -12,8 +12,6 @@ import '../../../elements/emby-tabs/emby-tabs';
 import '../../../elements/emby-button/emby-button';
 import '../../../elements/emby-scroller/emby-scroller';
 
-const controllerModules = import.meta.glob('../../../controllers/*.js');
-
 type OnResumeOptions = {
     autoFocus?: boolean;
     refresh?: boolean
@@ -28,11 +26,19 @@ type ControllerProps = {
     destroy: () => void;
 };
 
+type ControllerFactory = new (element: Element, params: unknown) => ControllerProps;
+
+const controllerModules = import.meta.glob<{ default: ControllerFactory }>('../../../controllers/*.js');
+
 const Home = () => {
     const [ searchParams ] = useSearchParams();
     const initialTabIndex = parseInt(searchParams.get('tab') ?? '0', 10);
 
-    const libraryMenu = useMemo(async () => ((await import('../../../scripts/libraryMenu')).default), []);
+    const libraryMenuPromise = useMemo(() => import('../../../scripts/libraryMenu'), []);
+
+    useEffect(() => {
+        libraryMenuPromise.then(m => { /* preload */ });
+    }, [libraryMenuPromise]);
     const mainTabsManager = useMemo(() => import('../../../components/maintabsmanager'), []);
     const tabController = useRef<ControllerProps | null>();
     const tabControllers = useMemo<ControllerProps[]>(() => [], []);
@@ -41,7 +47,7 @@ const Home = () => {
     const element = useRef<HTMLDivElement>(null);
 
     const setTitle = async () => {
-        (await libraryMenu).setTitle(null);
+        (await libraryMenuPromise).default.setTitle(null);
     };
 
     const getTabs = () => {
@@ -109,7 +115,7 @@ const Home = () => {
             tabController.current = controller;
         }).catch(err => {
             if (err instanceof Error && err.message.startsWith('Home tab content not ready') && retryCount < 10) {
-                window.requestAnimationFrame(() => loadTab(index, previousIndex, retryCount + 1));
+                setTimeout(() => loadTab(index, previousIndex, retryCount + 1), 50 * (retryCount + 1));
                 return;
             }
 

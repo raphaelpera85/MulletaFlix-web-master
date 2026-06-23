@@ -30,8 +30,8 @@ const ScrollButtons: FC<ScrollButtonsProps> = ({ scrollerFactoryRef, scrollState
     const triggerScrollRight = useCallback(() => onScrollButtonClick(ScrollDirection.RIGHT), [ onScrollButtonClick ]);
 
     useEffect(() => {
-        const parent = scrollButtonsRef.current?.parentNode as HTMLDivElement;
-        parent.classList.add('emby-scroller-container');
+        const parent = scrollButtonsRef.current?.parentNode as HTMLDivElement | null;
+        parent?.classList.add('emby-scroller-container');
 
         let localeAwarePos = scrollState.scrollPos;
         if (globalize.getIsElementRTL(scrollButtonsRef.current)) {
@@ -56,7 +56,7 @@ const ScrollButtons: FC<ScrollButtonsProps> = ({ scrollerFactoryRef, scrollState
                 className='emby-scrollbuttons-button btnNext'
                 onClick={triggerScrollRight}
                 icon='chevron_right'
-                disabled={scrollState.scrollWidth > 0 && localeScrollPos + scrollState.scrollSize >= scrollState.scrollWidth}
+                disabled={scrollState.scrollWidth <= 0 || localeScrollPos + scrollState.scrollSize >= scrollState.scrollWidth}
             />
         </div>
     );

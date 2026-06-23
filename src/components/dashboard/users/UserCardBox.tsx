@@ -3,7 +3,7 @@ import React, { FunctionComponent } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { getLocaleWithSuffix } from '../../../utils/dateFnsLocale';
 import globalize from '../../../lib/globalize';
-import IconButtonElement from '../../../elements/IconButtonElement';
+import IconButton from '../../../elements/emby-button/IconButton';
 import LinkButton from '../../../elements/emby-button/LinkButton';
 import { getDefaultBackgroundClass } from '../../cardbuilder/utils/builder';
 import { useUserLicense } from 'apps/dashboard/features/users/api/useUserLicense';
@@ -46,6 +46,16 @@ const UserCardBox: FunctionComponent<IProps> = ({ user = {} }: IProps) => {
     }
 
     const lastSeen = getLastSeenText(user.LastActivityDate);
+    let licenseColor = '#4caf50';
+    let licenseLabel = '- Ativo';
+
+    if (license?.IsExpired) {
+        licenseColor = '#f44336';
+        licenseLabel = '- Exp';
+    } else if (license?.IsUnlimited) {
+        licenseColor = '#2196f3';
+        licenseLabel = '- Ilim';
+    }
 
     const renderImgUrl = imgUrl ?
         <div className={imageClass} style={{ backgroundImage: `url(${imgUrl})` }} /> :
@@ -68,8 +78,7 @@ const UserCardBox: FunctionComponent<IProps> = ({ user = {} }: IProps) => {
                     <div
                         style={{ textAlign: 'right', float: 'right', paddingTop: '5px' }}
                     >
-                        <IconButtonElement
-                            is='paper-icon-button-light'
+                        <IconButton
                             className='btnUserMenu flex-shrink-zero'
                             icon='more_vert'
                         />
@@ -77,15 +86,15 @@ const UserCardBox: FunctionComponent<IProps> = ({ user = {} }: IProps) => {
                     <div className='cardText'>
                         <span>{user.Name}</span>
                         {license && (
-                            <span 
-                                style={{ 
-                                    fontSize: '0.75em', 
-                                    marginLeft: '8px', 
+                            <span
+                                style={{
+                                    fontSize: '0.75em',
+                                    marginLeft: '8px',
                                     fontWeight: 'bold',
-                                    color: license.isExpired ? '#f44336' : license.isUnlimited ? '#2196f3' : '#4caf50' 
+                                    color: licenseColor
                                 }}
                             >
-                                {license.isExpired ? 'â€¢ Exp' : license.isUnlimited ? 'â€¢ Ilim' : `â€¢ Ativo`}
+                                {licenseLabel}
                             </span>
                         )}
                     </div>

@@ -207,9 +207,7 @@ const scrollerFactory = function (frame, options) {
     }
 
     function initFrameResizeObserver() {
-        const observerOptions = {};
-
-        self.frameResizeObserver = new ResizeObserver(onResize, observerOptions);
+        self.frameResizeObserver = new ResizeObserver(onResize);
 
         self.frameResizeObserver.observe(frame);
     }
@@ -271,7 +269,7 @@ const scrollerFactory = function (frame, options) {
         const pos = self._pos;
 
         if (layoutManager.tv && globalize.getIsRTL()) {
-            newPos = within(-newPos, pos.start);
+            newPos = within(-newPos, pos.start, -pos.end);
         } else if (layoutManager.tv) {
             newPos = within(newPos, pos.start);
         } else {

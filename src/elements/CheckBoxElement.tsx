@@ -1,42 +1,6 @@
-import escapeHTML from 'escape-html';
 import React, { type FC } from 'react';
 
 import globalize from 'lib/globalize';
-
-const createCheckBoxElement = ({
-    labelClassName,
-    className,
-    id,
-    dataFilter,
-    dataItemType,
-    dataId,
-    checkedAttribute,
-    renderContent
-}: {
-    labelClassName?: string;
-    type?: string;
-    className?: string;
-    id?: string;
-    dataFilter?: string;
-    dataItemType?: string;
-    dataId?: string;
-    checkedAttribute?: string;
-    renderContent?: string;
-}) => ({
-    __html: `<label ${labelClassName}>
-        <input
-            is="emby-checkbox"
-            type="checkbox"
-            class="${className}"
-            ${id}
-            ${dataFilter}
-            ${dataItemType}
-            ${dataId}
-            ${checkedAttribute}
-        />
-        ${renderContent}
-    </label>`
-});
 
 interface CheckBoxElementProps {
     labelClassName?: string;
@@ -60,28 +24,21 @@ const CheckBoxElement: FC<CheckBoxElementProps> = ({
     itemCheckedAttribute,
     itemName,
     title
-}) => {
-    const renderContent = itemName ?
-        `<span>${escapeHTML(itemName)}</span>` :
-        `<span>${globalize.translate(title)}</span>`;
-
-    return (
-        <div
-            className='sectioncheckbox'
-            dangerouslySetInnerHTML={createCheckBoxElement({
-                labelClassName: labelClassName ?
-                    `class='${labelClassName}'` :
-                    '',
-                className,
-                id: elementId ? `id='${elementId}'` : '',
-                dataFilter: dataFilter ? `data-filter='${dataFilter}'` : '',
-                dataItemType: itemType ? `data-itemtype='${itemType}'` : '',
-                dataId: itemId ? `data-id='${escapeHTML(itemId)}'` : '',
-                checkedAttribute: itemCheckedAttribute || '',
-                renderContent
-            })}
-        />
-    );
-};
+}) => (
+    <div className='sectioncheckbox'>
+        <label className={labelClassName}>
+            <input
+                type='checkbox'
+                className={`emby-checkbox ${className ?? ''}`}
+                id={elementId || undefined}
+                data-filter={dataFilter || undefined}
+                data-itemtype={itemType || undefined}
+                data-id={itemId ?? undefined}
+                defaultChecked={itemCheckedAttribute === 'checked'}
+            />
+            {itemName ? <span>{itemName}</span> : <span>{globalize.translate(title)}</span>}
+        </label>
+    </div>
+);
 
 export default CheckBoxElement;

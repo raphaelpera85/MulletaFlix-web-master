@@ -42,6 +42,7 @@ const Scroller: FC<PropsWithChildren<ScrollerProps>> = ({
         scrollWidth: 0
     });
     const scrollerFactoryRef = useRef<ScrollerFactory | null>(null);
+    const focusHandlerRef = useRef<((e: FocusEvent) => void) | null>(null);
 
     const getScrollSlider = useCallback(() => {
         if (scrollerFactoryRef.current) {
@@ -127,12 +128,14 @@ const Scroller: FC<PropsWithChildren<ScrollerProps>> = ({
     }, [getScrollPosition, getScrollSize, getScrollWidth]);
 
     const initCenterFocus = useCallback((elem: HTMLElement, scrollerInstance: ScrollerFactory) => {
-        dom.addEventListener(elem, 'focus', function (e: FocusEvent) {
+        const handler = function (e: FocusEvent) {
             const focused = focusManager.focusableParent(e.target);
             if (focused) {
                 scrollerInstance.toCenter(focused, false);
             }
-        }, {
+        };
+        focusHandlerRef.current = handler;
+        dom.addEventListener(elem, 'focus', handler, {
             capture: true,
             passive: true
         });
@@ -209,6 +212,14 @@ const Scroller: FC<PropsWithChildren<ScrollerProps>> = ({
                 capture: false,
                 passive: true
             });
+
+            if (layoutManager.tv && isCenterFocusEnabled && scrollRef.current && focusHandlerRef.current) {
+                dom.removeEventListener(scrollRef.current, 'focus', focusHandlerRef.current, {
+                    capture: true,
+                    passive: true
+                });
+                focusHandlerRef.current = null;
+            }
         };
     }, [
         addScrollEventListener,
@@ -240,7 +251,7 @@ const Scroller: FC<PropsWithChildren<ScrollerProps>> = ({
                 ref={scrollRef}
                 className={classNames(
                     'emby-scroller',
-                    { scrollX: true },
+                    { scrollX: isHorizontalEnabled },
                     className
                 )}
             >

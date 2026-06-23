@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useCallback } from 'react';
-import IconButtonElement from '../../../elements/IconButtonElement';
+import IconButton from '../../../elements/emby-button/IconButton';
 
 type IProps = {
     tag?: string,
@@ -19,12 +19,11 @@ const TagList: FunctionComponent<IProps> = ({ tag, tagType, removeTagCallback }:
                         {tag}
                     </h3>
                 </div>
-                <IconButtonElement
-                    is='paper-icon-button-light'
+                <IconButton
                     className={`${tagType} btnDeleteTag listItemButton`}
                     title='Delete'
                     icon='delete'
-                    dataTag={tag}
+                    data-tag={tag}
                     onClick={onClick}
                 />
             </div>

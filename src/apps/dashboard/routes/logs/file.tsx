@@ -75,7 +75,7 @@ export const Component = () => {
     useEffect(() => {
         const onScroll = () => {
             if (contentPrimaryRef.current) {
-                const isAtBottom = window.innerHeight + Math.round(window.scrollY) >= contentPrimaryRef.current.offsetHeight - 5;
+                const isAtBottom = window.innerHeight + Math.round(window.scrollY) >= contentPrimaryRef.current.scrollHeight - 5;
                 setWasAtBottom(isAtBottom);
             }
         };
@@ -95,7 +95,7 @@ export const Component = () => {
 
     return (
         <Page
-            id='logPage'
+            id='logFilePage'
             title={fileName}
             className='mainAnimatedPage type-interior'
         >

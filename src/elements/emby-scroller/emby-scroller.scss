@@ -10,11 +10,13 @@
     overscroll-behavior-x: contain;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-x;
+    overflow: hidden;
 }
 
 .emby-scroller.scrollX > .scrollSlider {
     width: max-content;
     min-width: 100%;
+    white-space: nowrap;
 }
 
 .servers > .card > .cardBox {

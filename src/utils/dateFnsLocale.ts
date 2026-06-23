@@ -67,13 +67,13 @@ const DEFAULT_LOCALE = 'en-US';
 let localeString = DEFAULT_LOCALE;
 let locale = enUS;
 
-const localeModules = import.meta.glob('../../node_modules/date-fns/locale/*/index.js');
+const localeModules = import.meta.glob<{ default: typeof enUS }>('../../node_modules/date-fns/locale/*/index.js');
 
 export function fetchLocale(localeName: string) {
     const globPath = `../../node_modules/date-fns/locale/${localeName}/index.js`;
     const loadFn = localeModules[globPath];
     if (loadFn) {
-        return loadFn().then(mod => mod.default || mod);
+        return loadFn().then(mod => mod.default);
     }
     return Promise.resolve(enUS);
 }

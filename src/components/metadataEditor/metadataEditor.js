@@ -360,6 +360,16 @@ function init(context) {
         context.querySelector('.btnSave').click();
     });
 
+    context.querySelector('#selectCountry').addEventListener('change', function (event) {
+        const countryCode = event.target.value;
+        if (countryCode && countryCode.toUpperCase() === 'BR') {
+            const languageSelect = context.querySelector('#selectLanguage');
+            if (languageSelect) {
+                languageSelect.value = 'pt-BR';
+            }
+        }
+    });
+
     context.querySelector('#chkLockData').addEventListener('click', function (e) {
         if (!e.target.checked) {
             showElement('.providerSettingsContainer');
@@ -1155,6 +1165,13 @@ export default {
 function resolveLanguageSelection(select, language, countryCode) {
     if (!language) {
         return '';
+    }
+
+    if (countryCode && countryCode.toUpperCase() === 'BR') {
+        const brazilianPortuguese = Array.from(select.options).find(option => option.value.toLowerCase() === 'pt-br');
+        if (brazilianPortuguese) {
+            return brazilianPortuguese.value;
+        }
     }
 
     const values = Array.from(select.options).map(option => option.value);

@@ -10,10 +10,10 @@ export const useDeleteDevice = () => {
     const { api } = useApi();
 
     return useMutation({
-        mutationFn: (params: DevicesApiDeleteDeviceRequest) => (
-            getDevicesApi(api!)
-                .deleteDevice(params)
-        ),
+        mutationFn: (params: DevicesApiDeleteDeviceRequest) => {
+            if (!api) throw new Error('API not available');
+            return getDevicesApi(api).deleteDevice(params);
+        },
         onSuccess: () => {
             void queryClient.invalidateQueries({
                 queryKey: [ QUERY_KEY ]
