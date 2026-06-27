@@ -17,7 +17,6 @@ import Loading from 'components/loading/LoadingComponent';
 import Page from 'components/Page';
 import toast from 'components/toast/toast';
 import { ServerConnections } from 'lib/jellyfin-apiclient';
-import { useApi } from 'hooks/useApi';
 import { queryClient } from 'utils/query/queryClient';
 
 const QUERY_KEY = ['JobQueueStatus'];
@@ -174,7 +173,6 @@ const JobCard = ({ job, onCancel, isCancelling }: {
 };
 
 const JobsPage = () => {
-    const { api } = useApi();
     const {
         data,
         isLoading,
@@ -182,13 +180,13 @@ const JobsPage = () => {
     } = useQuery({
         queryKey: QUERY_KEY,
         queryFn: async () => {
-            if (!api) {
+            const apiClient = getApiClient();
+            if (!apiClient) {
                 throw new Error('Cliente de API indisponível.');
             }
 
-            return api.getJSON(api.getUrl('JobQueue/Status')) as Promise<JobQueueStatus>;
+            return apiClient.getJSON(apiClient.getUrl('JobQueue/Status')) as Promise<JobQueueStatus>;
         },
-        enabled: !!api,
         refetchInterval: 2500
     });
 
