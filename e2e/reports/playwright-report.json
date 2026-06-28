@@ -1,0 +1,470 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--config",
+      "playwright.config.ts",
+      "--pass-with-no-tests"
+    ],
+    "configFile": "D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\playwright.config.ts",
+    "rootDir": "D:/Users/Raphael/Documents/Projetos/mulletaflix/MulletaFlix-web-master/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/Users/Raphael/Documents/Projetos/mulletaflix/MulletaFlix-web-master/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "D:/Users/Raphael/Documents/Projetos/mulletaflix/MulletaFlix-web-master/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "e2e/reports/playwright-report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.61.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "00-wizard.spec.ts",
+      "file": "00-wizard.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "00 - Wizard",
+          "file": "00-wizard.spec.ts",
+          "line": 5,
+          "column": 15,
+          "specs": [
+            {
+              "title": "stage starts clean and wizard pages are reachable",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 2199,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mfalse\u001b[39m\nReceived: \u001b[31mtrue\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mfalse\u001b[39m\nReceived: \u001b[31mtrue\u001b[39m\n    at D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\e2e\\00-wizard.spec.ts:8:51",
+                        "location": {
+                          "file": "D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\e2e\\00-wizard.spec.ts",
+                          "column": 51,
+                          "line": 8
+                        },
+                        "snippet": "   6 |     test('stage starts clean and wizard pages are reachable', async ({ page, request }) => {\n   7 |         const publicInfo = await apiJson(request, '/System/Info/Public');\n>  8 |         expect(publicInfo.StartupWizardCompleted).toBe(false);\n     |                                                   ^\n   9 |\n  10 |         await openRoot(page);\n  11 |         await expect(page.locator('#wizardStartPage')).toBeVisible({ timeout: 30_000 });"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\e2e\\00-wizard.spec.ts",
+                            "column": 51,
+                            "line": 8
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mfalse\u001b[39m\nReceived: \u001b[31mtrue\u001b[39m\n\n   6 |     test('stage starts clean and wizard pages are reachable', async ({ page, request }) => {\n   7 |         const publicInfo = await apiJson(request, '/System/Info/Public');\n>  8 |         expect(publicInfo.StartupWizardCompleted).toBe(false);\n     |                                                   ^\n   9 |\n  10 |         await openRoot(page);\n  11 |         await expect(page.locator('#wizardStartPage')).toBeVisible({ timeout: 30_000 });\n    at D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\e2e\\00-wizard.spec.ts:8:51"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-28T03:30:58.150Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\test-results\\00-wizard-00---Wizard-stag-07ae3--wizard-pages-are-reachable-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\test-results\\00-wizard-00---Wizard-stag-07ae3--wizard-pages-are-reachable-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\test-results\\00-wizard-00---Wizard-stag-07ae3--wizard-pages-are-reachable-chromium\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\test-results\\00-wizard-00---Wizard-stag-07ae3--wizard-pages-are-reachable-chromium\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\e2e\\00-wizard.spec.ts",
+                        "column": 51,
+                        "line": 8
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "568f1ca24fc67c076af1-cd10c2b78139ec098857",
+              "file": "00-wizard.spec.ts",
+              "line": 6,
+              "column": 9
+            },
+            {
+              "title": "completes the wizard end-to-end",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-28T03:31:01.262Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "568f1ca24fc67c076af1-0563e733b57853c3237c",
+              "file": "00-wizard.spec.ts",
+              "line": 18,
+              "column": 9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "10-admin.spec.ts",
+      "file": "10-admin.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "10 - Admin",
+          "file": "10-admin.spec.ts",
+          "line": 5,
+          "column": 15,
+          "specs": [
+            {
+              "title": "logs in and reaches the users dashboard",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 16378,
+                      "error": {
+                        "message": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.btnManual')\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" is=\"emby-button\" class=\"raised cancel block btnManual emby-button hide\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    29 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+                        "stack": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.btnManual')\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" is=\"emby-button\" class=\"raised cancel block btnManual emby-button hide\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    29 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\e2e\\10-admin.spec.ts:8:42",
+                        "location": {
+                          "file": "D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\e2e\\10-admin.spec.ts",
+                          "column": 42,
+                          "line": 8
+                        },
+                        "snippet": "   6 |     test('logs in and reaches the users dashboard', async ({ page }) => {\n   7 |         await openLogin(page);\n>  8 |         await page.locator('.btnManual').click();\n     |                                          ^\n   9 |         await page.locator('#txtManualName').fill(TEST_USERS.admin.name);\n  10 |         await page.locator('#txtManualPassword').fill(TEST_USERS.admin.password);\n  11 |         await page.locator('.manualLoginForm button[type=\"submit\"]').click();"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\e2e\\10-admin.spec.ts",
+                            "column": 42,
+                            "line": 8
+                          },
+                          "message": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.btnManual')\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" is=\"emby-button\" class=\"raised cancel block btnManual emby-button hide\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    29 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n\n   6 |     test('logs in and reaches the users dashboard', async ({ page }) => {\n   7 |         await openLogin(page);\n>  8 |         await page.locator('.btnManual').click();\n     |                                          ^\n   9 |         await page.locator('#txtManualName').fill(TEST_USERS.admin.name);\n  10 |         await page.locator('#txtManualPassword').fill(TEST_USERS.admin.password);\n  11 |         await page.locator('.manualLoginForm button[type=\"submit\"]').click();\n    at D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\e2e\\10-admin.spec.ts:8:42"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-28T03:31:01.712Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\test-results\\10-admin-10---Admin-logs-in-and-reaches-the-users-dashboard-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\test-results\\10-admin-10---Admin-logs-in-and-reaches-the-users-dashboard-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\test-results\\10-admin-10---Admin-logs-in-and-reaches-the-users-dashboard-chromium\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\test-results\\10-admin-10---Admin-logs-in-and-reaches-the-users-dashboard-chromium\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\e2e\\10-admin.spec.ts",
+                        "column": 42,
+                        "line": 8
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "456aee3854f22d4b8c6b-2ba5e2fb8ae4a42c9ccc",
+              "file": "10-admin.spec.ts",
+              "line": 6,
+              "column": 9
+            },
+            {
+              "title": "creates a common user and walks through profile, access, parental and password tabs",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-28T03:31:20.203Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "456aee3854f22d4b8c6b-ee99aef883fcd0562081",
+              "file": "10-admin.spec.ts",
+              "line": 19,
+              "column": 9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "20-user.spec.ts",
+      "file": "20-user.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "20 - Common user",
+          "file": "20-user.spec.ts",
+          "line": 5,
+          "column": 15,
+          "specs": [
+            {
+              "title": "logs in as a common user and sees the user landing area",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 16223,
+                      "error": {
+                        "message": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.btnManual')\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" is=\"emby-button\" class=\"raised cancel block btnManual emby-button hide\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    29 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+                        "stack": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.btnManual')\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" is=\"emby-button\" class=\"raised cancel block btnManual emby-button hide\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    29 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\e2e\\20-user.spec.ts:8:42",
+                        "location": {
+                          "file": "D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\e2e\\20-user.spec.ts",
+                          "column": 42,
+                          "line": 8
+                        },
+                        "snippet": "   6 |     test('logs in as a common user and sees the user landing area', async ({ page }) => {\n   7 |         await openLogin(page);\n>  8 |         await page.locator('.btnManual').click();\n     |                                          ^\n   9 |         await page.locator('#txtManualName').fill(TEST_USERS.common.name);\n  10 |         await page.locator('#txtManualPassword').fill(TEST_USERS.common.password);\n  11 |         await page.locator('.manualLoginForm button[type=\"submit\"]').click();"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\e2e\\20-user.spec.ts",
+                            "column": 42,
+                            "line": 8
+                          },
+                          "message": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.btnManual')\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" is=\"emby-button\" class=\"raised cancel block btnManual emby-button hide\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    29 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n\n   6 |     test('logs in as a common user and sees the user landing area', async ({ page }) => {\n   7 |         await openLogin(page);\n>  8 |         await page.locator('.btnManual').click();\n     |                                          ^\n   9 |         await page.locator('#txtManualName').fill(TEST_USERS.common.name);\n  10 |         await page.locator('#txtManualPassword').fill(TEST_USERS.common.password);\n  11 |         await page.locator('.manualLoginForm button[type=\"submit\"]').click();\n    at D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\e2e\\20-user.spec.ts:8:42"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-28T03:31:20.654Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\test-results\\20-user-20---Common-user-l-34c25--sees-the-user-landing-area-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\test-results\\20-user-20---Common-user-l-34c25--sees-the-user-landing-area-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\test-results\\20-user-20---Common-user-l-34c25--sees-the-user-landing-area-chromium\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\test-results\\20-user-20---Common-user-l-34c25--sees-the-user-landing-area-chromium\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\e2e\\20-user.spec.ts",
+                        "column": 42,
+                        "line": 8
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "7f79f5d47e61836f1f2f-9e0541f3fac0d3f81f73",
+              "file": "20-user.spec.ts",
+              "line": 6,
+              "column": 9
+            },
+            {
+              "title": "can open the main home shell after login",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-28T03:31:38.957Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7f79f5d47e61836f1f2f-b9caa23b7d235f0d5e57",
+              "file": "20-user.spec.ts",
+              "line": 17,
+              "column": 9
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-06-28T03:30:57.777Z",
+    "duration": 41208.869999999995,
+    "expected": 0,
+    "skipped": 3,
+    "unexpected": 3,
+    "flaky": 0
+  }
+}

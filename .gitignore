@@ -5,6 +5,9 @@ node_modules
 
 # test coverage
 coverage
+test-results
+reports/playwright
+playwright-report
 
 # config
 config.json

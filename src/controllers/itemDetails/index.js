@@ -1848,17 +1848,24 @@ export default function (view, params) {
         return params.serverId ? ServerConnections.getApiClient(params.serverId) : ApiClient;
     }
 
-    function reload(instance, page, pageParams) {
+    async function reload(instance, page, pageParams) {
         loading.show();
 
-        const apiClient = getApiClient();
-
-        Promise.all([getPromise(apiClient, pageParams), apiClient.getCurrentUser()]).then(([item, user]) => {
+        try {
+            const apiClient = getApiClient();
+            const [item, user] = await Promise.all([getPromise(apiClient, pageParams), apiClient.getCurrentUser()]);
             currentItem = item;
             reloadFromItem(instance, page, pageParams, item, user);
-        }).catch((error) => {
+        } catch (error) {
             console.error('failed to get item or current user: ', error);
-        });
+            const nameContainer = page.querySelector('.nameContainer');
+            if (nameContainer) {
+                nameContainer.innerHTML = '<h1 class="itemName infoText parentNameLast">Nao foi possivel carregar os detalhes da midia.</h1>';
+                nameContainer.classList.remove('hide');
+            }
+        } finally {
+            loading.hide();
+        }
     }
 
     function splitVersions(instance, page, apiClient, pageParams) {

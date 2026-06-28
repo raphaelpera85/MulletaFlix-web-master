@@ -1,6 +1,5 @@
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import Screenfull from 'screenfull';
-import EpubCFI from 'epubjs/src/epubcfi';
 
 import { ServerConnections } from 'lib/jellyfin-apiclient';
 import browser from 'scripts/browser';
@@ -538,8 +537,9 @@ export class BookPlayer {
     createVisiblePageRange(location) {
         const startCfi = location?.start?.cfi;
         const endCfi = location?.end?.cfi;
+        const EpubCFI = this.epubjs?.CFI;
 
-        if (!startCfi || !endCfi) {
+        if (!startCfi || !endCfi || !EpubCFI) {
             return null;
         }
 
@@ -840,6 +840,7 @@ export class BookPlayer {
 
         return new Promise((resolve, reject) => {
             import('epubjs').then(({ default: epubjs }) => {
+                this.epubjs = epubjs;
                 const api = toApi(ServerConnections.getApiClient(item));
                 const downloadHref = getLibraryApi(api).getDownloadUrl({ itemId: item.Id });
                 const book = epubjs(downloadHref, { openAs: 'epub' });

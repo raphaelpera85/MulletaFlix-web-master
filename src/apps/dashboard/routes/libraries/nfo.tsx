@@ -60,8 +60,6 @@ export const Component = () => {
     } = useNamedConfiguration<XbmcMetadataOptions>(CONFIG_KEY);
     const {
         data: users,
-        isPending: isUsersPending,
-        isError: isUsersError
     } = useUsers();
     const navigation = useNavigation();
     const actionData = useActionData() as ActionData | undefined;
@@ -76,7 +74,7 @@ export const Component = () => {
         setIsAlertOpen(true);
     }, []);
 
-    if (isConfigPending || isUsersPending) {
+    if (isConfigPending) {
         return <Loading />;
     }
 
@@ -92,7 +90,7 @@ export const Component = () => {
                 onClose={onAlertClose}
             />
             <Box className='content-primary'>
-                {isConfigError || isUsersError ? (
+                {isConfigError ? (
                     <Alert severity='error'>{globalize.translate('MetadataNfoLoadError')}</Alert>
                 ) : (
                     <Form method='POST' onSubmit={onSubmit}>
@@ -122,7 +120,7 @@ export const Component = () => {
                                 }}
                             >
                                 <MenuItem value=''>{globalize.translate('None')}</MenuItem>
-                                {users.map(user =>
+                                {(users ?? []).map(user =>
                                     <MenuItem key={user.Id} value={user.Id}>{user.Name}</MenuItem>
                                 )}
                             </TextField>

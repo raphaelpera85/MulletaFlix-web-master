@@ -155,9 +155,12 @@ function fillImageElement(elem, url) {
 }
 
 function queueBlurhash(target, hash) {
-    const schedule = window.requestIdleCallback || window.setTimeout;
+    if (window.requestIdleCallback) {
+        window.requestIdleCallback(() => itemBlurhashing(target, hash), { timeout: 0 });
+        return;
+    }
 
-    schedule(() => itemBlurhashing(target, hash), 0);
+    window.setTimeout(() => itemBlurhashing(target, hash), 0);
 }
 
 function emptyImageElement(elem) {

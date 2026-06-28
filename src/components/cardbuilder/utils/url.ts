@@ -155,9 +155,10 @@ export function getCardImageUrl({
             height = width / uiAspect;
         }
 
+        const isOverflowCard = typeof shape === 'string' && shape.indexOf('overflow') !== -1;
         // Cards are thumbnails; capping DPR avoids requesting oversized posters
         // that slow down scrolling and first paint without visible benefit.
-        const dpr = Math.min(window?.devicePixelRatio || 1, 1.5);
+        const dpr = Math.min(window?.devicePixelRatio || 1, isOverflowCard ? 1.2 : 1.5);
 
         imgUrl = getImageApi(api).getItemImageUrlById(
             itemId,
@@ -166,7 +167,7 @@ export function getCardImageUrl({
                 // Dimensions must be rounded or the API will reject the request
                 fillHeight: height ? Math.round(height * dpr) : undefined,
                 fillWidth: width ? Math.round(width * dpr) : undefined,
-                quality: 82,
+                quality: isOverflowCard ? 75 : 82,
                 tag: imgTag
             }
         );

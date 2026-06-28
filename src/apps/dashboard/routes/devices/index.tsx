@@ -48,9 +48,7 @@ export const Component = () => {
     ), [ data ]);
     const {
         usersById: users,
-        names: userNames,
-        isLoading: isUsersLoading,
-        isError: isUsersError
+        names: userNames
     } = useUsersDetails();
     const theme = useTheme();
 
@@ -60,7 +58,7 @@ export const Component = () => {
     const deleteDevice = useDeleteDevice();
     const updateDevice = useUpdateDevice();
 
-    const isLoading = isDevicesLoading || isUsersLoading;
+    const isLoading = isDevicesLoading;
 
     const onDeleteDevice = useCallback((id: string | null | undefined) => () => {
         if (id) {
@@ -267,7 +265,7 @@ export const Component = () => {
             title={globalize.translate('HeaderDevices')}
             className='mainAnimatedPage type-interior'
             table={mrTable}
-            isError={isDevicesError || isUsersError}
+            isError={isDevicesError}
             errorMessage={globalize.translate('DevicesLoadError')}
         >
             <ConfirmDialog
