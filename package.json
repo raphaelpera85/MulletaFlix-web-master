@@ -10,6 +10,7 @@
     "@babel/plugin-transform-modules-umd": "7.27.1",
     "@babel/preset-env": "7.29.2",
     "@babel/preset-react": "7.28.5",
+    "@cucumber/cucumber": "11.3.0",
     "@eslint-community/eslint-plugin-eslint-comments": "4.7.1",
     "@eslint/js": "9.39.4",
     "@stylistic/eslint-plugin": "4.4.1",
@@ -99,6 +100,7 @@
     "react-lazy-load-image-component": "1.6.3",
     "react-router-dom": "6.30.4",
     "screenfull": "6.0.2",
+    "selenium-webdriver": "4.33.0",
     "sortablejs": "1.15.7",
     "swiper": "12.1.2",
     "usehooks-ts": "3.1.1",
@@ -124,9 +126,12 @@
     "test:watch": "vitest --config vite.config.ts",
     "stylelint": "stylelint \"src/**/*.{css,scss}\"",
     "playwright": "node ./scripts/playwright/run-suite.mjs",
+    "selenium-cucumber": "node ./scripts/selenium-cucumber/run-suite.mjs",
     "test:playwright": "playwright test",
-    "test:playwright:admin": "playwright test tests/playwright/specs/10-admin.spec.ts",
-    "test:playwright:user": "playwright test tests/playwright/specs/20-user.spec.ts"
+    "test:playwright:admin": "playwright test tests/playwright/specs/10-admin.spec.ts tests/playwright/specs/11-admin-extended.spec.ts tests/playwright/specs/12-admin-surfaces.spec.ts",
+    "test:playwright:user": "playwright test tests/playwright/specs/20-user.spec.ts",
+    "test:playwright:full": "playwright test tests/playwright/specs/00-wizard.spec.ts tests/playwright/specs/10-admin.spec.ts tests/playwright/specs/11-admin-extended.spec.ts tests/playwright/specs/12-admin-surfaces.spec.ts tests/playwright/specs/20-user.spec.ts tests/playwright/specs/99-pagination.spec.ts",
+    "test:selenium-cucumber": "npm run selenium-cucumber"
   },
   "engines": {
     "node": ">=24.0.0",

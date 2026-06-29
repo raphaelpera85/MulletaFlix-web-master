@@ -27,7 +27,7 @@ function populateLanguagesIntoSelect(select, languages) {
     let html = '';
     html += "<option value=''></option>";
     for (const culture of languages) {
-        html += `<option value='${culture.TwoLetterISOLanguageName}'>${culture.DisplayName}</option>`;
+        html += `<option value='${culture.Name}' data-culture-name='${culture.Name}'>${culture.DisplayName}</option>`;
     }
     select.innerHTML = html;
 }
@@ -72,8 +72,21 @@ function syncMetadataLanguageFromCountry(parent) {
     }
 
     return getDefaultMetadataLanguage(countryCode).then(language => {
+        const selectLanguage = parent.querySelector('#selectLanguage');
+        if (!selectLanguage) {
+            return language;
+        }
+
+        if (countryCode.toUpperCase() === 'BR') {
+            const preferredOption = selectLanguage.querySelector("option[data-culture-name='pt-BR']");
+            if (preferredOption) {
+                selectLanguage.value = preferredOption.value;
+                return preferredOption.value;
+            }
+        }
+
         if (language) {
-            parent.querySelector('#selectLanguage').value = language;
+            selectLanguage.value = language;
         }
 
         return language;
@@ -901,7 +914,7 @@ export function setLibraryOptions(parent, options) {
     renderLyricFetchers(parent, parent.availableOptions, options);
     renderMediaSegmentProviders(parent, parent.availableOptions, options);
 
-    if (!options.PreferredMetadataLanguage && options.MetadataCountryCode) {
+    if (options.MetadataCountryCode) {
         void syncMetadataLanguageFromCountry(parent);
     }
 }

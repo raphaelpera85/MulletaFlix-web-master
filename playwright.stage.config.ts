@@ -23,6 +23,7 @@ export default defineConfig({
         baseURL,
         launchOptions: {
             headless: false,
+            args: [ '--allow-file-access-from-files' ],
             slowMo: process.env.PW_SLOW_MO ? Number(process.env.PW_SLOW_MO) : 50
         },
         viewport: {

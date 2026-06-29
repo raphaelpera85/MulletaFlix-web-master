@@ -222,21 +222,33 @@ const DeviceCard = ({ device }: DeviceCardProps) => {
                 <Stack direction='row' flexGrow={1} justifyContent='center'>
                     {canControl && isPlayingMedia && (
                         <>
-                            <IconButton onClick={onPlayPauseSession}>
+                            <IconButton
+                                aria-label={device.PlayState?.IsPaused ? 'Play' : globalize.translate('ButtonPause')}
+                                onClick={onPlayPauseSession}
+                            >
                                 {device.PlayState?.IsPaused ? <PlayArrow /> : <Pause />}
                             </IconButton>
-                            <IconButton onClick={onStopSession}>
+                            <IconButton
+                                aria-label={globalize.translate('Stop')}
+                                onClick={onStopSession}
+                            >
                                 <Stop />
                             </IconButton>
                         </>
                     )}
                     {isPlayingMedia && (
-                        <IconButton onClick={showPlaybackInfo}>
+                        <IconButton
+                            aria-label={globalize.translate('ViewPlaybackInfo')}
+                            onClick={showPlaybackInfo}
+                        >
                             <Info />
                         </IconButton>
                     )}
                     {canControl && (
-                        <IconButton onClick={showMessageDialog}>
+                        <IconButton
+                            aria-label={globalize.translate('HeaderSendMessage')}
+                            onClick={showMessageDialog}
+                        >
                             <Comment />
                         </IconButton>
                     )}

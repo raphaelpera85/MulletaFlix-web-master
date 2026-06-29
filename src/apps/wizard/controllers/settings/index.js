@@ -30,7 +30,7 @@ function populateLanguages(select, languages) {
 
     for (let i = 0, length = languages.length; i < length; i++) {
         const culture = languages[i];
-        html += "<option value='" + culture.TwoLetterISOLanguageName + "'>" + culture.DisplayName + '</option>';
+        html += "<option value='" + culture.Name + "' data-culture-name='" + culture.Name + "'>" + culture.DisplayName + '</option>';
     }
 
     select.innerHTML = html;
@@ -58,9 +58,27 @@ function syncMetadataLanguageFromCountry(page) {
     return apiClient.getJSON(apiClient.getUrl('Localization/DefaultMetadataLanguage', {
         countryCode
     })).then(language => {
-        if (language) {
-            page.querySelector('#selectLanguage').value = language;
+        const selectLanguage = page.querySelector('#selectLanguage');
+        const shouldPreferBrazilianPortuguese = countryCode.toUpperCase() === 'BR';
+
+        if (shouldPreferBrazilianPortuguese) {
+            const preferredOption = Array.prototype.find.call(selectLanguage.options, option => {
+                return (option.textContent || option.innerText || '').trim() === 'Portuguese (Brazil)';
+            });
+
+            if (preferredOption) {
+                selectLanguage.value = preferredOption.value;
+                return preferredOption.value || 'pt-BR';
+            }
+
+            selectLanguage.value = 'pt-BR';
+            return 'pt-BR';
         }
+
+        if (language) {
+            selectLanguage.value = language;
+        }
+
         return language || '';
     }).catch(() => {
         return '';
@@ -72,7 +90,7 @@ function reloadData(page, config, cultures, countries) {
     populateCountries(page.querySelector('#selectCountry'), countries);
     page.querySelector('#selectLanguage').value = config.PreferredMetadataLanguage;
     page.querySelector('#selectCountry').value = config.MetadataCountryCode;
-    if (!config.PreferredMetadataLanguage && config.MetadataCountryCode) {
+    if (config.MetadataCountryCode) {
         void syncMetadataLanguageFromCountry(page);
     }
     loading.hide();

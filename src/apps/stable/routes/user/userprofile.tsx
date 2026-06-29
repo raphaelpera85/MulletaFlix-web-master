@@ -194,6 +194,7 @@ const UserProfile: FunctionComponent = () => {
                             id='uploadImage'
                             type='file'
                             accept='image/*'
+                            aria-label={globalize.translate('ButtonAddImage')}
                             style={{ position: 'absolute', right: 0, width: '100%', height: '100%', opacity: 0, cursor: 'pointer' }}
                         />
                         <div

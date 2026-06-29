@@ -449,11 +449,12 @@ function executeCommand(item, id, options) {
                 };
                 const downloadSeasons = seasons => {
                     Promise.all(seasons.map(seasonItem => {
-                        return apiClient.getEpisodes(seasonItem.SeriesId, {
+                        const seriesId = seasonItem.SeriesId || seasonItem.ParentId;
+                        return seriesId ? apiClient.getEpisodes(seriesId, {
                             seasonId: seasonItem.Id,
                             userId: options.user.Id,
                             Fields: 'CanDownload,Path'
-                        });
+                        }) : Promise.resolve({ Items: [] });
                     }
                     )).then(seasonData => {
                         downloadItems(seasonData.map(season => season.Items).flat());

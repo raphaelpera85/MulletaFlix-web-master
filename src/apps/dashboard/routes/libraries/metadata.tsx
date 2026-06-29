@@ -68,6 +68,19 @@ export const Component = () => {
     const isSubmitting = navigation.state === 'submitting';
 
     const imageResolutions = getImageResolutionOptions();
+    const [language, setLanguage] = React.useState(config.PreferredMetadataLanguage ?? '');
+    const [country, setCountry] = React.useState(config.MetadataCountryCode ?? '');
+
+    React.useEffect(() => {
+        setLanguage(config.PreferredMetadataLanguage ?? '');
+        setCountry(config.MetadataCountryCode ?? '');
+    }, [config.PreferredMetadataLanguage, config.MetadataCountryCode]);
+
+    React.useEffect(() => {
+        if (country?.toUpperCase() === 'BR') {
+            setLanguage('pt-BR');
+        }
+    }, [country]);
 
     if (isConfigPending || isCulturesPending || isCountriesPending) {
         return <Loading />;
@@ -96,13 +109,16 @@ export const Component = () => {
                             <TextField
                                 name={'Language'}
                                 label={globalize.translate('LabelLanguage')}
-                                defaultValue={config.PreferredMetadataLanguage}
+                                value={language}
+                                onChange={event => {
+                                    setLanguage(event.target.value);
+                                }}
                                 select
                             >
                                 {cultures.map(culture => {
                                     return <MenuItem
-                                        key={culture.TwoLetterISOLanguageName}
-                                        value={culture.TwoLetterISOLanguageName}
+                                        key={culture.Name}
+                                        value={culture.Name}
                                     >{culture.DisplayName}</MenuItem>;
                                 })}
                             </TextField>
@@ -110,7 +126,10 @@ export const Component = () => {
                             <TextField
                                 name={'Country'}
                                 label={globalize.translate('LabelCountry')}
-                                defaultValue={config.MetadataCountryCode}
+                                value={country}
+                                onChange={event => {
+                                    setCountry(event.target.value);
+                                }}
                                 select
                             >
                                 {countries.map(country => {

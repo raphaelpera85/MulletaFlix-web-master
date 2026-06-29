@@ -23,6 +23,7 @@ import './homesections.scss';
 
 const MAX_SECTIONS = 10;
 const MAX_SECTIONS_TV = MAX_SECTIONS + 1; // TV layout can have an extra section to ensure a library section is always visible
+const INITIAL_SECTION_VIEWPORT_MARGIN = 1200;
 
 export function getDefaultSection(index) {
     if (index < 0 || index > DEFAULT_SECTIONS.length) return '';
@@ -83,7 +84,7 @@ export function loadSections(elem, apiClient, user, userSettings) {
                 })))
                     // Timeout for polyfilled CustomElements (webOS 1.2)
                     .then(() => new Promise((resolve) => setTimeout(resolve, 0)))
-                    .then(() => resume(elem, { refresh: true }));
+                    .then(() => resumeVisibleSections(elem));
             } else {
                 let noLibDescription;
                 if (user.Policy?.IsAdministrator) {
@@ -135,6 +136,59 @@ export function resume(elem, options) {
             promises.push(section.resume(options));
         }
     });
+
+    return Promise.all(promises);
+}
+
+function resumeVisibleSections(elem) {
+    const itemsContainers = Array.from(elem.querySelectorAll('.itemsContainer'));
+    if (!itemsContainers.length) {
+        return Promise.resolve();
+    }
+
+    const promises = [];
+    const observer = typeof window.IntersectionObserver === 'function'
+        ? new IntersectionObserver((entries, intersectionObserver) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    return;
+                }
+
+                intersectionObserver.unobserve(entry.target);
+                promises.push(Promise.resolve(entry.target.resume({ refresh: true })).catch(err => {
+                    console.error('Home section failed to refresh', err);
+                }));
+            });
+        }, {
+            rootMargin: INITIAL_SECTION_VIEWPORT_MARGIN + 'px 0px',
+            threshold: 0
+        })
+        : null;
+
+    for (const section of itemsContainers) {
+        const rect = section.getBoundingClientRect();
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+
+        if (rect.bottom >= -INITIAL_SECTION_VIEWPORT_MARGIN && rect.top <= viewportHeight + INITIAL_SECTION_VIEWPORT_MARGIN) {
+            promises.push(Promise.resolve(section.resume({ refresh: true })).catch(err => {
+                console.error('Home section failed to refresh', err);
+            }));
+            continue;
+        }
+
+        if (observer) {
+            observer.observe(section);
+            continue;
+        }
+
+        promises.push(Promise.resolve(section.resume({ refresh: true })).catch(err => {
+            console.error('Home section failed to refresh', err);
+        }));
+    }
+
+    if (observer) {
+        window.setTimeout(() => observer.disconnect(), 60000);
+    }
 
     return Promise.all(promises);
 }

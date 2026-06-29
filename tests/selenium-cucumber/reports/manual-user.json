@@ -1,0 +1,79 @@
+[
+  {
+    "description": "  As a common user\n  I want to log in and register from the login screen\n  So that the user path is validated independently from admin flows",
+    "elements": [
+      {
+        "description": "",
+        "id": "common-user;register-a-user-with-a-unique-email-from-the-login-screen",
+        "keyword": "Scenario",
+        "line": 6,
+        "name": "Register a user with a unique email from the login screen",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 722156800
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "I am on the login page",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\user.steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 523853499
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 8,
+            "name": "I register a common user with a unique email",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\user.steps.js:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1123175300
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 9,
+            "name": "I should log in successfully with that account",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\user.steps.js:42"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 404038500
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 42590299
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      }
+    ],
+    "id": "common-user",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Common user",
+    "tags": [],
+    "uri": "tests\\selenium-cucumber\\features\\20-user.feature"
+  }
+]

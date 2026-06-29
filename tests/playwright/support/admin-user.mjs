@@ -4,7 +4,8 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 
-import { navigateStage, openLogin, openStage, STAGE_ROUTES, waitForDashboardBridge } from './stage.mjs';
+import { fetchStagePublicInfo, navigateStage, openLogin, resolveStageUrl, seedStageConnection, waitForDashboardBridge } from './stage.mjs';
+import { ensureWizardCompleted } from './wizard.mjs';
 
 const ADMIN_USER = process.env.MFLX_ADMIN_USER || 'Raphael';
 const ADMIN_PASSWORD = process.env.MFLX_ADMIN_PASSWORD || 'Bug309c*';
@@ -56,17 +57,27 @@ export async function clearSharedUser() {
 }
 
 export async function loginWithManualForm(page, username, password) {
+    await seedStageConnection(page);
     await openLogin(page);
+    await waitForStageBridge(page);
+    const loginPage = page.locator('#loginPage:not(.hide)').first();
 
-    const manualButton = page.locator('.btnManual');
-    if (await manualButton.isVisible().catch(() => false)) {
-        await manualButton.click();
+    if (!(await loginPage.locator('.manualLoginForm').isVisible().catch(() => false))) {
+        await loginPage.locator('.btnManual').click({ force: true });
     }
 
-    await page.locator('#txtManualName').fill(username);
-    await page.locator('#txtManualPassword').fill(password);
-    await page.locator('.manualLoginForm button[type="submit"]').click();
-    await page.locator('.headerUserButton').waitFor({ state: 'visible', timeout: 30_000 });
+    await loginPage.locator('#txtManualName').waitFor({ state: 'visible', timeout: 30_000 });
+    await loginPage.locator('#txtManualName').fill(username);
+    await loginPage.locator('#txtManualPassword').fill(password);
+    await loginPage.locator('.manualLoginForm button[type="submit"]').click();
+
+    await page.locator('#indexPage').waitFor({ state: 'visible', timeout: 30_000 });
+    await expect(page.locator('.headerUserButton')).toHaveAttribute('title', username, { timeout: 30_000 });
+    return {
+        User: {
+            Name: username
+        }
+    };
 }
 
 export async function logoutViaDrawer(page) {
@@ -82,63 +93,90 @@ export async function logoutViaDashboard(page) {
     await page.evaluate(() => {
         window.Dashboard.logout();
     });
-    await page.locator('#loginPage').waitFor({ state: 'visible', timeout: 30_000 });
-}
-
-function parseUserIdFromHash(url) {
-    const hash = new URL(url).hash.replace(/^#\/?/, '/');
-    const parts = hash.split('/').filter(Boolean);
-    return parts[2] || '';
+    await page.locator('#loginPage:not(.hide)').first().waitFor({ state: 'visible', timeout: 30_000 });
 }
 
 export async function createCommonUser(page) {
+    const info = await fetchStagePublicInfo();
     const credentials = createCredentials();
 
-    await navigateStage(page, '/dashboard/users/add');
-    await page.locator('#newUserPage').waitFor({ state: 'visible', timeout: 30_000 });
-    await page.locator('#txtUsername').fill(credentials.username);
-    await page.locator('#txtPassword').fill(credentials.password);
+    const user = await page.evaluate(async ({ currentUsername, currentPassword }) => {
+        const createdUser = await window.ApiClient.createUser({
+            Name: currentUsername,
+            Password: currentPassword
+        });
 
-    const enableFolders = page.locator('.chkEnableAllFolders');
-    if (await enableFolders.count()) {
-        const folderToggle = enableFolders.first();
-        if (await folderToggle.isVisible().catch(() => false) && !(await folderToggle.isChecked())) {
-            await folderToggle.check();
+        if (!createdUser?.Id) {
+            throw new Error('User creation did not return an id.');
         }
-    }
 
-    const enableChannels = page.locator('.chkEnableAllChannels');
-    if (await enableChannels.count()) {
-        const channelToggle = enableChannels.first();
-        if (await channelToggle.isVisible().catch(() => false) && !(await channelToggle.isChecked())) {
-            await channelToggle.check();
-        }
-    }
+        return {
+            username: createdUser.Name || currentUsername,
+            password: currentPassword,
+            userId: createdUser.Id
+        };
+    }, {
+        currentUsername: credentials.username,
+        currentPassword: credentials.password
+    });
 
-    await page.locator('form.newUserProfileForm button[type="submit"]').click();
-    await page.locator('#usersEditPage').waitFor({ state: 'visible', timeout: 30_000 });
-
-    const user = {
-        ...credentials,
-        userId: parseUserIdFromHash(page.url())
+    const stagedUser = {
+        ...user,
+        serverId: info.Id
     };
 
-    await saveSharedUser(user);
-    return user;
+    await saveSharedUser(stagedUser);
+    return stagedUser;
 }
 
 export async function loadOrCreateSharedUser(page) {
+    const info = await fetchStagePublicInfo();
     const sharedUser = await readSharedUser();
-    if (sharedUser) {
+    if (sharedUser && sharedUser.serverId === info.Id) {
         return sharedUser;
+    }
+
+    if (sharedUser) {
+        await clearSharedUser();
     }
 
     return createCommonUser(page);
 }
 
 export async function openUserTab(page, userId, tab) {
-    await navigateStage(page, `/dashboard/users/${userId}/${tab}`);
+    const tabRoutes = {
+        profile: 'profile',
+        access: 'access',
+        parentalcontrol: 'parentalcontrol',
+        password: 'password'
+    };
+    const tabLabels = {
+        profile: /Perfil|Profile/i,
+        access: /Acesso|Access/i,
+        parentalcontrol: /Controle Parental|Parental Control/i,
+        password: /Senha|Password/i
+    };
+
+    await page.goto(resolveStageUrl(`/dashboard/users/${userId}/${tabRoutes[tab] || 'profile'}`), {
+        waitUntil: 'domcontentloaded'
+    });
     await page.locator('#usersEditPage').waitFor({ state: 'visible', timeout: 30_000 });
+
+    const tabSelectors = {
+        profile: '.editUserProfileForm',
+        access: '.userLibraryAccessForm',
+        parentalcontrol: '.userParentalControlForm',
+        password: '.updatePasswordForm'
+    };
+
+    const selector = tabSelectors[tab] || '.editUserProfileForm';
+    const tabLocator = page.getByRole('tab', { name: tabLabels[tab] || /Perfil|Profile/i }).first();
+
+    if (!(await page.locator(selector).isVisible().catch(() => false))) {
+        await tabLocator.click({ force: true });
+    }
+
+    await page.locator(selector).waitFor({ state: 'visible', timeout: 30_000 });
 }
 
 export async function deleteUserById(page, userId) {
@@ -150,3 +188,5 @@ export async function deleteUserById(page, userId) {
 export async function waitForStageBridge(page) {
     await waitForDashboardBridge(page);
 }
+
+export { ensureWizardCompleted };

@@ -13,14 +13,14 @@ import '../../../components/formdialog.scss';
 
 import template from './register.template.html';
 
-function registerUser(apiClient, username, password) {
+function registerUser(apiClient, email, password) {
     loading.show();
 
     return apiClient.ajax({
         type: 'POST',
         url: apiClient.getUrl('/Users/Register'),
         data: JSON.stringify({
-            Name: username,
+            Name: email,
             Password: password
         }),
         contentType: 'application/json'
@@ -70,7 +70,7 @@ export default function (apiClient) {
     });
 
     dlg.querySelector('form').addEventListener('submit', function (e) {
-        const username = dlg.querySelector('#txtRegisterName').value;
+        const email = dlg.querySelector('#txtRegisterName').value.trim().toLowerCase();
         const password = dlg.querySelector('#txtRegisterPassword').value;
         const confirmPassword = dlg.querySelector('#txtRegisterConfirmPassword').value;
 
@@ -80,7 +80,7 @@ export default function (apiClient) {
             return false;
         }
 
-        registerUser(apiClient, username, password).then(function (data) {
+        registerUser(apiClient, email, password).then(function (data) {
             if (data.Success) {
                 dialogHelper.close(dlg);
                 toast(globalize.translate(data.Message || 'MessageRegisterSuccess'));

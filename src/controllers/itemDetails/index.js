@@ -725,27 +725,40 @@ function showRecordingFields(instance, page, item, user) {
 
 function renderLinks(page, item) {
     const externalLinksElem = page.querySelector('.itemExternalLinks');
+    externalLinksElem.replaceChildren();
 
     const links = [];
 
     if (!layoutManager.tv && item.HomePageUrl) {
-        links.push(`<a is="emby-linkbutton" class="button-link" href="${item.HomePageUrl}" target="_blank">${globalize.translate('ButtonWebsite')}</a>`);
+        const homeLink = document.createElement('a');
+        homeLink.setAttribute('is', 'emby-linkbutton');
+        homeLink.className = 'button-link';
+        homeLink.href = item.HomePageUrl;
+        homeLink.target = '_blank';
+        homeLink.textContent = globalize.translate('ButtonWebsite');
+        links.push(homeLink);
     }
 
     if (item.ExternalUrls) {
         for (const url of item.ExternalUrls) {
-            links.push(`<a is="emby-linkbutton" class="button-link" href="${url.Url}" target="_blank">${escapeHtml(url.Name)}</a>`);
+            const externalLink = document.createElement('a');
+            externalLink.setAttribute('is', 'emby-linkbutton');
+            externalLink.className = 'button-link';
+            externalLink.href = url.Url;
+            externalLink.target = '_blank';
+            externalLink.textContent = url.Name || '';
+            links.push(externalLink);
         }
     }
 
-    const html = [];
     if (links.length) {
-        html.push(links.join(', '));
-    }
+        links.forEach((link, index) => {
+            if (index > 0) {
+                externalLinksElem.appendChild(document.createTextNode(', '));
+            }
 
-    externalLinksElem.innerHTML = html.join(', ');
-
-    if (html.length) {
+            externalLinksElem.appendChild(link);
+        });
         externalLinksElem.classList.remove('hide');
     } else {
         externalLinksElem.classList.add('hide');
@@ -777,9 +790,9 @@ function renderImage(page, item, apiClient) {
 
 function setPeopleHeader(page, item) {
     if (item.MediaType == 'Audio' || item.Type == 'MusicAlbum' || item.MediaType == 'Book' || item.MediaType == 'Photo') {
-        page.querySelector('#peopleHeader').innerHTML = globalize.translate('People');
+        page.querySelector('#peopleHeader').textContent = globalize.translate('People');
     } else {
-        page.querySelector('#peopleHeader').innerHTML = globalize.translate('HeaderCastAndCrew');
+        page.querySelector('#peopleHeader').textContent = globalize.translate('HeaderCastAndCrew');
     }
 }
 
@@ -828,7 +841,7 @@ function setInitialCollapsibleState(page, item, apiClient, context, user) {
         page.querySelector('#listChildrenCollapsible').classList.remove('hide');
         page.querySelector('#childrenCollapsible').classList.add('hide');
         renderItemsByName(page, item);
-    } else if (item.IsFolder) {
+    } else if (item.IsFolder || item.Type == 'Series' || item.Type == 'Season') {
         if (item.Type == 'BoxSet') {
             page.querySelector('#listChildrenCollapsible').classList.add('hide');
             page.querySelector('#childrenCollapsible').classList.add('hide');
@@ -892,10 +905,10 @@ function toggleLineClamp(clampTarget, e) {
 
     if (clampTarget.classList.contains(clampClassName)) {
         clampTarget.classList.remove(clampClassName);
-        expandButton.innerHTML = globalize.translate('ShowLess');
+        expandButton.textContent = globalize.translate('ShowLess');
     } else {
         clampTarget.classList.add(clampClassName);
-        expandButton.innerHTML = globalize.translate('ShowMore');
+        expandButton.textContent = globalize.translate('ShowMore');
     }
 }
 
@@ -908,7 +921,10 @@ function renderOverview(page, item) {
 
         if (overview) {
             for (const overviewElemnt of overviewElements) {
-                overviewElemnt.innerHTML = '<bdi>' + overview + '</bdi>';
+                overviewElemnt.replaceChildren();
+                const overviewWrapper = document.createElement('bdi');
+                overviewWrapper.innerHTML = overview;
+                overviewElemnt.appendChild(overviewWrapper);
                 overviewElemnt.classList.remove('hide');
                 overviewElemnt.classList.add('detail-clamp-text');
 
@@ -931,7 +947,7 @@ function renderOverview(page, item) {
             }
         } else {
             for (const overviewElemnt of overviewElements) {
-                overviewElemnt.innerHTML = '';
+                overviewElemnt.replaceChildren();
                 overviewElemnt.classList.add('hide');
             }
         }
@@ -975,7 +991,10 @@ function renderTagline(page, item) {
 
     if (item.Taglines?.length) {
         taglineElement.classList.remove('hide');
-        taglineElement.innerHTML = '<bdi>' + escapeHtml(item.Taglines[0]) + '</bdi>';
+        taglineElement.replaceChildren();
+        const taglineWrapper = document.createElement('bdi');
+        taglineWrapper.textContent = item.Taglines[0];
+        taglineElement.appendChild(taglineWrapper);
     } else {
         taglineElement.classList.add('hide');
     }
@@ -1231,7 +1250,7 @@ function renderSeriesAirTime(page, item) {
     }
     if (html) {
         html = (item.Status == 'Ended' ? 'Aired ' : 'Airs ') + html;
-        seriesAirTime.innerHTML = html;
+        seriesAirTime.textContent = html;
         seriesAirTime.classList.remove('hide');
     } else {
         seriesAirTime.classList.add('hide');
@@ -1240,30 +1259,35 @@ function renderSeriesAirTime(page, item) {
 
 function renderTags(page, item) {
     const itemTags = page.querySelector('.itemTags');
-    const tagElements = [];
     let tags = item.Tags || [];
 
     if (item.Type === 'Program') {
         tags = [];
     }
 
-    tags.forEach(tag => {
+    itemTags.replaceChildren();
+    itemTags.appendChild(document.createTextNode(globalize.translate('TagsValue', '') + ' '));
+
+    tags.forEach((tag, index) => {
         const href = appRouter.getRouteUrl('tag', {
             tag,
             serverId: item.ServerId
         });
-        tagElements.push(
-            `<a href="${href}" class="button-link" is="emby-linkbutton">`
-            + escapeHtml(tag)
-            + '</a>'
-        );
+        const tagLink = document.createElement('a');
+        tagLink.href = href;
+        tagLink.className = 'button-link';
+        tagLink.setAttribute('is', 'emby-linkbutton');
+        tagLink.textContent = tag;
+        itemTags.appendChild(tagLink);
+
+        if (index < tags.length - 1) {
+            itemTags.appendChild(document.createTextNode(', '));
+        }
     });
 
-    if (tagElements.length) {
-        itemTags.innerHTML = globalize.translate('TagsValue', tagElements.join(', '));
+    if (tags.length) {
         itemTags.classList.remove('hide');
     } else {
-        itemTags.innerHTML = '';
         itemTags.classList.add('hide');
     }
 }
@@ -1295,11 +1319,12 @@ function renderChildren(page, item) {
         });
     } else if (item.Type == 'Season') {
         fields += ',Overview';
-        promise = apiClient.getEpisodes(item.SeriesId, {
+        const seriesId = item.SeriesId || item.ParentId;
+        promise = seriesId ? apiClient.getEpisodes(seriesId, {
             seasonId: item.Id,
             userId: userId,
             Fields: fields
-        });
+        }) : Promise.resolve({ Items: [] });
     } else if (item.Type == 'MusicArtist') {
         query.SortBy = 'PremiereDate,ProductionYear,SortName';
     }

@@ -64,7 +64,7 @@ function getNextUpItemsHtmlFn(
             overlayText: false,
             showTitle: true,
             showParentTitle: true,
-            lazy: true,
+            lazy: false,
             overlayPlayButton: true,
             context: 'home',
             centerText: !cardLayout,

@@ -1079,7 +1079,14 @@ export function buildCards(items, options) {
             options.itemsContainer.cardBuilderHtml = html;
         }
 
-        imageLoader.lazyChildren(options.itemsContainer);
+        if (options.lazy === false) {
+            const lazyElems = options.itemsContainer.querySelectorAll('.lazy');
+            for (const lazyElem of lazyElems) {
+                imageLoader.lazyImage(lazyElem);
+            }
+        } else {
+            imageLoader.lazyChildren(options.itemsContainer);
+        }
     } else {
         options.itemsContainer.innerHTML = html;
         options.itemsContainer.cardBuilderHtml = null;

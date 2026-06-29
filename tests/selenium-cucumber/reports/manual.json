@@ -1,0 +1,273 @@
+[
+  {
+    "description": "  As a maintainer\n  I want to validate the first-run wizard\n  So that a clean stage can bootstrap the admin and system settings",
+    "elements": [
+      {
+        "description": "",
+        "id": "wizard;complete-the-wizard-from-a-clean-stage",
+        "keyword": "Scenario",
+        "line": 6,
+        "name": "Complete the wizard from a clean stage",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 22066549399
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "the stage is clean",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\wizard.steps.js:21"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4470400
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 8,
+            "name": "I open the wizard start page",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\wizard.steps.js:26"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 522080600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 9,
+            "name": "I complete the wizard with the admin user",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\wizard.steps.js:31"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1602874400
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 10,
+            "name": "I should reach the login page",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\wizard.steps.js:45"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 16677999
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 50456100
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      }
+    ],
+    "id": "wizard",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Wizard",
+    "tags": [],
+    "uri": "tests\\selenium-cucumber\\features\\00-wizard.feature"
+  },
+  {
+    "description": "  As an administrator\n  I want to inspect the dashboard and manage users\n  So that I can verify the full administrative surface",
+    "elements": [
+      {
+        "description": "",
+        "id": "admin-dashboard;open-dashboard-pages-and-user-management-tabs",
+        "keyword": "Scenario",
+        "line": 6,
+        "name": "Open dashboard pages and user management tabs",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 797093999
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "I am logged in as admin",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:22"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1806689699
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 8,
+            "name": "I open the dashboard users list",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:26"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 240549699
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 9,
+            "name": "I create or reuse a common user",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:31"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 927688500
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "I inspect the profile, access, parental control and password tabs",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:44"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 733905499
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 11,
+            "name": "I should remain on the user edit page",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:68"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 17856900
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 38397500
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      }
+    ],
+    "id": "admin-dashboard",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Admin dashboard",
+    "tags": [],
+    "uri": "tests\\selenium-cucumber\\features\\10-admin.feature"
+  },
+  {
+    "description": "  As a common user\n  I want to log in and register from the login screen\n  So that the user path is validated independently from admin flows",
+    "elements": [
+      {
+        "description": "",
+        "id": "common-user;register-a-user-with-a-unique-email-from-the-login-screen",
+        "keyword": "Scenario",
+        "line": 6,
+        "name": "Register a user with a unique email from the login screen",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 1068591800
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "I am on the login page",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\user.steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 438143400
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 8,
+            "name": "I register a common user with a unique email",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\user.steps.js:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1410921000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 9,
+            "name": "I should log in successfully with that account",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\user.steps.js:42"
+            },
+            "result": {
+              "status": "failed",
+              "duration": 30142394899,
+              "error_message": "TimeoutError: Waiting until element is visible\nWait timed out after 30116ms\n    at D:\\Users\\Raphael\\Documents\\Projetos\\mulletaflix\\MulletaFlix-web-master\\node_modules\\selenium-webdriver\\lib\\webdriver.js:929:22\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)"
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 171731200
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      }
+    ],
+    "id": "common-user",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Common user",
+    "tags": [],
+    "uri": "tests\\selenium-cucumber\\features\\20-user.feature"
+  }
+]

@@ -440,10 +440,32 @@ function populateLanguages(select, languages) {
     for (let i = 0, length = languages.length; i < length; i++) {
         const culture = languages[i];
 
-        html += "<option value='" + culture.TwoLetterISOLanguageName + "'>" + culture.DisplayName + '</option>';
+        html += "<option value='" + culture.Name + "' data-culture-name='" + culture.Name + "'>" + culture.DisplayName + '</option>';
     }
 
     select.innerHTML = html;
+}
+
+function syncMetadataLanguageFromCountry(context) {
+    const selectCountry = context.querySelector('#selectCountry');
+    const selectLanguage = context.querySelector('#selectLanguage');
+
+    if (!selectCountry || !selectLanguage) {
+        return;
+    }
+
+    const countryCode = selectCountry.value || '';
+    if (!countryCode) {
+        return;
+    }
+
+    if (countryCode.toUpperCase() === 'BR') {
+        const preferredOption = selectLanguage.querySelector("option[data-culture-name='pt-BR']");
+        if (preferredOption) {
+            selectLanguage.value = preferredOption.value;
+            return;
+        }
+    }
 }
 
 function renderContentTypeOptions(context, metadataInfo) {
@@ -1060,6 +1082,15 @@ function reload(context, itemId, serverId) {
         populateLanguages(context.querySelector('#selectOriginalLanguage'), languages);
         populateLanguages(context.querySelector('#selectLanguage'), languages);
         populateCountries(context.querySelector('#selectCountry'), countries);
+
+        const selectCountry = context.querySelector('#selectCountry');
+        if (selectCountry) {
+            selectCountry.onchange = () => {
+                syncMetadataLanguageFromCountry(context);
+            };
+        }
+
+        syncMetadataLanguageFromCountry(context);
 
         setFieldVisibilities(context, item);
         fillItemInfo(context, item, metadataEditorInfo.ParentalRatingOptions);

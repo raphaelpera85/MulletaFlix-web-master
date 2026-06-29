@@ -2049,13 +2049,14 @@ export class PlaybackManager {
             return new Promise(function (resolve, reject) {
                 const apiClient = ServerConnections.getApiClient(firstItem.ServerId);
 
-                const { SeriesId, Id } = firstItem;
-                if (!SeriesId) {
+                const { SeriesId, ParentId, Id } = firstItem;
+                const seriesId = SeriesId || ParentId;
+                if (!seriesId) {
                     resolve(null);
                     return;
                 }
 
-                apiClient.getEpisodes(SeriesId, {
+                apiClient.getEpisodes(seriesId, {
                     IsVirtualUnaired: false,
                     IsMissing: false,
                     UserId: apiClient.getCurrentUserId(),

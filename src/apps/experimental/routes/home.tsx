@@ -77,7 +77,8 @@ const Home = () => {
         if (!loadFn) {
             return Promise.reject(new Error(`Controller not found in glob: ${depends}`));
         }
-        return loadFn().then(({ default: ControllerFactory }) => {
+        return loadFn().then((mod: any) => {
+            const ControllerFactory = mod.default;
             let controller = tabControllers[index];
 
             if (!controller) {
@@ -97,7 +98,7 @@ const Home = () => {
     }, [ tabControllers ]);
 
     const loadTab = useCallback((index: number, previousIndex: number | null, retryCount = 0) => {
-        getTabController(index).then((controller) => {
+        getTabController(index).then((controller: any) => {
             const refresh = !controller.refreshed;
 
             controller.onResume({
@@ -107,7 +108,7 @@ const Home = () => {
 
             controller.refreshed = true;
             tabController.current = controller;
-        }).catch(err => {
+        }).catch((err: any) => {
             if (err instanceof Error && err.message.startsWith('Home tab content not ready') && retryCount < 10) {
                 window.requestAnimationFrame(() => loadTab(index, previousIndex, retryCount + 1));
                 return;

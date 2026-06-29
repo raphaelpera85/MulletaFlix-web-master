@@ -82,7 +82,9 @@ function getLatestItemsHtmlFn(
         return cardBuilder.getCardsHtml({
             items: items,
             shape: shape,
-            preferThumb: viewType !== 'movies' && viewType !== 'tvshows' && itemType !== 'Channel' && viewType !== 'music' ? 'auto' : null,
+            preferThumb: viewType === 'tvshows'
+                ? true
+                : (viewType !== 'movies' && itemType !== 'Channel' && viewType !== 'music' ? 'auto' : null),
             showUnplayedIndicator: false,
             showChildCountIndicator: true,
             context: 'home',
@@ -94,7 +96,8 @@ function getLatestItemsHtmlFn(
             showTitle: viewType !== 'photos',
             showYear: viewType === 'movies' || viewType === 'tvshows' || !viewType,
             showParentTitle: viewType === 'music' || viewType === 'tvshows' || !viewType || (cardLayout && (viewType === 'tvshows')),
-            lines: 2
+            lines: 2,
+            lazy: false
         });
     };
 }

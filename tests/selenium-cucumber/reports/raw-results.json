@@ -1,0 +1,1153 @@
+[
+  {
+    "description": "  As a maintainer\n  I want to validate the first-run wizard\n  So that a clean stage can bootstrap the admin and system settings",
+    "elements": [
+      {
+        "description": "",
+        "id": "wizard;complete-the-wizard-from-a-clean-stage",
+        "keyword": "Scenario",
+        "line": 6,
+        "name": "Complete the wizard from a clean stage",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 857285900
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "the stage is clean",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\wizard.steps.js:22"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 404099
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 8,
+            "name": "I open the wizard start page",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\wizard.steps.js:26"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 543876199
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 9,
+            "name": "I should see the wizard form controls",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\wizard.steps.js:31"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 45301799
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 10,
+            "name": "I complete the wizard with the admin user",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\wizard.steps.js:38"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1432387000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 11,
+            "name": "I should reach the login page",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\wizard.steps.js:67"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 11560099
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 43453199
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "wizard;wizard-can-be-completed-end-to-end",
+        "keyword": "Scenario",
+        "line": 13,
+        "name": "Wizard can be completed end-to-end",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 812764800
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 14,
+            "name": "the wizard has been completed with the admin user",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\wizard.steps.js:52"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 543201399
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 15,
+            "name": "I should reach the login page",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\wizard.steps.js:67"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 13390199
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 37832800
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      }
+    ],
+    "id": "wizard",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Wizard",
+    "tags": [],
+    "uri": "tests\\selenium-cucumber\\features\\00-wizard.feature"
+  },
+  {
+    "description": "  As an administrator\n  I want to inspect the dashboard and manage users\n  So that I can verify the full administrative surface",
+    "elements": [
+      {
+        "description": "",
+        "id": "admin-dashboard;open-dashboard-pages-and-user-management-tabs",
+        "keyword": "Scenario",
+        "line": 6,
+        "name": "Open dashboard pages and user management tabs",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 830974300
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "I am logged in as admin",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1406537500
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 8,
+            "name": "I open the dashboard users list",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:43"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 241326900
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 9,
+            "name": "I create or reuse a common user",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:48"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 685687600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "I inspect the profile, access, parental control and password tabs",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:61"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 452617800
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 11,
+            "name": "I should remain on the user edit page",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:85"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 11415300
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 46274199
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "admin-dashboard;smoke-the-main-dashboard-pages-and-form-shells",
+        "keyword": "Scenario",
+        "line": 13,
+        "name": "Smoke the main dashboard pages and form shells",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 959370600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 14,
+            "name": "I am logged in as admin",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 961435400
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 15,
+            "name": "I inspect the dashboard, settings, user, library, playback and branding pages",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:89"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3508227899
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 16,
+            "name": "the admin dashboard shells should be available",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:325"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 11666600
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 46942100
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "admin-dashboard;create-and-delete-a-disposable-user-from-the-add-user-form",
+        "keyword": "Scenario",
+        "line": 18,
+        "name": "Create and delete a disposable user from the add-user form",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 963475800
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 19,
+            "name": "I am logged in as admin",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 942090299
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 20,
+            "name": "I create a disposable admin-form user",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:126"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 746608499
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 21,
+            "name": "the disposable admin-form user should be removed",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:161"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 331062400
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 42186000
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "admin-dashboard;save-general,-streaming-and-branding-settings-shells",
+        "keyword": "Scenario",
+        "line": 23,
+        "name": "Save general, streaming and branding settings shells",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 760992200
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 24,
+            "name": "I am logged in as admin",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 896883400
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 25,
+            "name": "I save the general, streaming and branding settings shells",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:178"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 24982878400
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 26,
+            "name": "the admin dashboard shells should be available",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:325"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 10776600
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 51754000
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "admin-dashboard;cover-live-tv-status-and-recordings-settings",
+        "keyword": "Scenario",
+        "line": 28,
+        "name": "Cover live tv status and recordings settings",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 964569299
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 29,
+            "name": "I am logged in as admin",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 977706200
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 30,
+            "name": "I inspect live tv status and recordings settings",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:198"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1384933000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 31,
+            "name": "the admin dashboard shells should be available",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:325"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 22588900
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 40448700
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "admin-dashboard;cover-api-keys,-jobs-and-backups-surfaces",
+        "keyword": "Scenario",
+        "line": 33,
+        "name": "Cover api keys, jobs and backups surfaces",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 938781699
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 34,
+            "name": "I am logged in as admin",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 910233099
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 35,
+            "name": "I inspect api keys, jobs and backup dialogs",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:217"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3319311399
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 36,
+            "name": "the admin dashboard shells should be available",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:325"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 12528200
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 41691599
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "admin-dashboard;save-networking-and-library-metadata-shells",
+        "keyword": "Scenario",
+        "line": 38,
+        "name": "Save networking and library metadata shells",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 779394699
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 39,
+            "name": "I am logged in as admin",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 885044099
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 40,
+            "name": "I save networking and library metadata shells",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:256"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 34315962499
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 41,
+            "name": "the admin dashboard shells should be available",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:325"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 15367999
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 45675300
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "admin-dashboard;cover-all-dashboard-management-surfaces",
+        "keyword": "Scenario",
+        "line": 43,
+        "name": "Cover all dashboard management surfaces",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 896107099
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 44,
+            "name": "I am logged in as admin",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1017143800
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 45,
+            "name": "I inspect every admin management surface",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:286"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5597938699
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 46,
+            "name": "the admin dashboard shells should be available",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:325"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 12876399
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 74070099
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      }
+    ],
+    "id": "admin-dashboard",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Admin dashboard",
+    "tags": [],
+    "uri": "tests\\selenium-cucumber\\features\\10-admin.feature"
+  },
+  {
+    "description": "  As a common user\n  I want to log in and register from the login screen\n  So that the user path is validated independently from admin flows",
+    "elements": [
+      {
+        "description": "",
+        "id": "common-user;log-in-as-a-created-user-and-prove-the-home-session",
+        "keyword": "Scenario",
+        "line": 6,
+        "name": "Log in as a created user and prove the home session",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 1075288700
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "a shared common user exists",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\user.steps.js:57"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1310886099
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 8,
+            "name": "I log in as the shared common user",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\user.steps.js:63"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 158373000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 9,
+            "name": "I should see the common user preference menu without admin controls",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\user.steps.js:68"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 200989699
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 30128400
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "common-user;open-the-common-user-profile-and-preference-menu",
+        "keyword": "Scenario",
+        "line": 11,
+        "name": "Open the common user profile and preference menu",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 907716100
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 12,
+            "name": "a shared common user exists",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\user.steps.js:57"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1064432899
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 13,
+            "name": "I log in as the shared common user",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\user.steps.js:63"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 168020199
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "I open the common user profile and preferences",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\user.steps.js:80"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 331255600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 15,
+            "name": "I should see the common user profile and preference links",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\user.steps.js:92"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 125605599
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 50501600
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "common-user;register-a-user-with-a-unique-email-from-the-login-screen",
+        "keyword": "Scenario",
+        "line": 17,
+        "name": "Register a user with a unique email from the login screen",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 779371400
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 18,
+            "name": "I am on the login page",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\user.steps.js:103"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 536118999
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 19,
+            "name": "I register a common user with a unique email",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\user.steps.js:109"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1607900000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 20,
+            "name": "I should log in successfully with that account",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\user.steps.js:150"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 205454200
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 48232900
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      }
+    ],
+    "id": "common-user",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Common user",
+    "tags": [],
+    "uri": "tests\\selenium-cucumber\\features\\20-user.feature"
+  },
+  {
+    "description": "  As an administrator and common user\n  I want to browse recognized media and paged libraries\n  So that home, carousels and library pagination match the Playwright coverage",
+    "elements": [
+      {
+        "description": "",
+        "id": "pagination-and-home-media;admin-sees-media-libraries,-home-carousels-and-paged-library-views-after-recognition",
+        "keyword": "Scenario",
+        "line": 6,
+        "name": "Admin sees media libraries, home carousels and paged library views after recognition",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 966801399
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "I am logged in as admin",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 901950899
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 8,
+            "name": "I ensure movies and series libraries are recognized",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\media.steps.js:127"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 92643696400
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 9,
+            "name": "I should see media libraries and home carousels",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\media.steps.js:209"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 9558997600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "I should page through movies and series when pagination is available",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\media.steps.js:249"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 578405499
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "I should inspect media metadata, plugin, task and log details",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\media.steps.js:254"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1911296099
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 44495699
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "pagination-and-home-media;common-user-can-browse-home-and-page-through-movies-and-series",
+        "keyword": "Scenario",
+        "line": 13,
+        "name": "Common user can browse home and page through movies and series",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 1131706199
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 14,
+            "name": "I am logged in as admin",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\admin.steps.js:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1146821800
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 15,
+            "name": "I ensure movies and series libraries are recognized",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\media.steps.js:127"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 45966073800
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 16,
+            "name": "I create a temporary common media user",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\media.steps.js:299"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 176061600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 17,
+            "name": "I log in as the temporary common media user",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\media.steps.js:327"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 152746400
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 18,
+            "name": "I should see media libraries and home carousels",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\media.steps.js:209"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 39065000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 19,
+            "name": "I should page through movies and series when pagination is available",
+            "match": {
+              "location": "tests\\selenium-cucumber\\steps\\media.steps.js:249"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1567973499
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 56172500
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      }
+    ],
+    "id": "pagination-and-home-media",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Pagination and home media",
+    "tags": [],
+    "uri": "tests\\selenium-cucumber\\features\\99-pagination.feature"
+  }
+]
