@@ -29,6 +29,7 @@ import RootApp from './RootApp';
 // Import the button webcomponent for use throughout the site
 // NOTE: This is a bit of a hack, files should ensure the component is imported before use
 import './elements/emby-button/emby-button';
+import './lib/legacy/patchCreateElement';
 
 // Import auto-running components
 // NOTE: This is an anti-pattern

@@ -68,13 +68,13 @@ export const Component = () => {
     const isSubmitting = navigation.state === 'submitting';
 
     const imageResolutions = getImageResolutionOptions();
-    const [language, setLanguage] = React.useState(config.PreferredMetadataLanguage ?? '');
-    const [country, setCountry] = React.useState(config.MetadataCountryCode ?? '');
+    const [language, setLanguage] = React.useState(config?.PreferredMetadataLanguage ?? '');
+    const [country, setCountry] = React.useState(config?.MetadataCountryCode ?? '');
 
     React.useEffect(() => {
-        setLanguage(config.PreferredMetadataLanguage ?? '');
-        setCountry(config.MetadataCountryCode ?? '');
-    }, [config.PreferredMetadataLanguage, config.MetadataCountryCode]);
+        setLanguage(config?.PreferredMetadataLanguage ?? '');
+        setCountry(config?.MetadataCountryCode ?? '');
+    }, [config?.PreferredMetadataLanguage, config?.MetadataCountryCode]);
 
     React.useEffect(() => {
         if (country?.toUpperCase() === 'BR') {

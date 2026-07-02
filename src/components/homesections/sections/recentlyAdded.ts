@@ -70,6 +70,16 @@ function getLatestItemsHtmlFn(
 ) {
     return function (items: BaseItemDto[]) {
         const cardLayout = false;
+        let preferThumb: boolean | string | null;
+
+        if (viewType === 'tvshows') {
+            preferThumb = false;
+        } else if (viewType !== 'movies' && itemType !== 'Channel' && viewType !== 'music') {
+            preferThumb = 'auto';
+        } else {
+            preferThumb = null;
+        }
+
         let shape;
         if (itemType === 'Channel' || viewType === 'movies' || viewType === 'books' || viewType === 'tvshows') {
             shape = getPortraitShape(enableOverflow);
@@ -82,9 +92,7 @@ function getLatestItemsHtmlFn(
         return cardBuilder.getCardsHtml({
             items: items,
             shape: shape,
-            preferThumb: viewType === 'tvshows'
-                ? true
-                : (viewType !== 'movies' && itemType !== 'Channel' && viewType !== 'music' ? 'auto' : null),
+            preferThumb,
             showUnplayedIndicator: false,
             showChildCountIndicator: true,
             context: 'home',

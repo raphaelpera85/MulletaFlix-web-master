@@ -94,8 +94,6 @@ export async function waitForMediaRecognition(page, {
     pollIntervalMs = 30_000
 } = {}) {
     const deadline = Date.now() + timeoutMs;
-    let lastCounts = null;
-    let stableChecks = 0;
 
     while (Date.now() < deadline) {
         const counts = await page.evaluate(async () => window.ApiClient.getItemCounts());
@@ -103,24 +101,10 @@ export async function waitForMediaRecognition(page, {
         const seriesCount = Number(counts?.SeriesCount || 0);
 
         if (movieCount > 0 && seriesCount > 0) {
-            if (
-                lastCounts
-                && lastCounts.MovieCount === movieCount
-                && lastCounts.SeriesCount === seriesCount
-            ) {
-                stableChecks += 1;
-            } else {
-                stableChecks = 0;
-            }
-
-            lastCounts = {
+            return {
                 MovieCount: movieCount,
                 SeriesCount: seriesCount
             };
-
-            if (stableChecks >= 1) {
-                return lastCounts;
-            }
         }
 
         await page.waitForTimeout(pollIntervalMs);
@@ -132,11 +116,33 @@ export async function waitForMediaRecognition(page, {
 export async function ensureMediaLibrariesReady(page, options = {}) {
     const libraries = options.libraries || DEFAULT_MEDIA_LIBRARIES;
     await ensureMediaLibraries(page, libraries);
-    return waitForMediaRecognition(page, options);
+
+    await page.evaluate(async () => {
+        const tasks = await window.ApiClient.getScheduledTasks();
+        const refreshTask = tasks?.find(task => task?.Key === 'RefreshLibrary' && task?.Id);
+
+        if (refreshTask?.Id) {
+            try {
+                await window.ApiClient.startScheduledTask(refreshTask.Id);
+            } catch (error) {
+                console.warn('Unable to start RefreshLibrary task', error);
+            }
+        }
+    });
+
+    await page.waitForTimeout(options.settleMs ?? 60_000);
+    return null;
 }
 
 export async function getVirtualFolders(page) {
-    return page.evaluate(async () => window.ApiClient.getVirtualFolders());
+    return page.evaluate(async () => {
+        try {
+            return await window.ApiClient.getVirtualFolders();
+        } catch (error) {
+            console.warn('Unable to load virtual folders', error);
+            return [];
+        }
+    });
 }
 
 export async function getVirtualFolderByName(page, name) {

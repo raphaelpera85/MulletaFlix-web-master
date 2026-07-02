@@ -205,8 +205,20 @@ async function clickVisible(driver, locator, timeout = 30000) {
 
 async function fillVisible(driver, locator, value, timeout = 30000) {
     const element = await waitForVisible(driver, locator, timeout);
-    await element.clear();
-    await element.sendKeys(value);
+    await driver.executeScript((target, nextValue) => {
+        const input = target;
+        const descriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')
+            || Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value');
+
+        if (descriptor?.set) {
+            descriptor.set.call(input, nextValue);
+        } else {
+            input.value = nextValue;
+        }
+
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+    }, element, value);
     return element;
 }
 

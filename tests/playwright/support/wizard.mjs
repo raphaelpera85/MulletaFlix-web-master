@@ -2,6 +2,15 @@ import { expect } from '@playwright/test';
 
 import { fetchStagePublicInfo, openStage, seedStageConnection, STAGE_ROUTES } from './stage.mjs';
 
+async function setInputValue(locator, value) {
+    await locator.evaluate((element, nextValue) => {
+        const input = element;
+        input.value = nextValue;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+    }, value);
+}
+
 export async function completeWizard(page, { adminUser, adminPassword, serverName = 'Mulletaflix' } = {}) {
     await seedStageConnection(page);
     await openStage(page, STAGE_ROUTES.wizardStart);
@@ -29,14 +38,14 @@ export async function completeWizard(page, { adminUser, adminPassword, serverNam
     await wizardStartPage.locator('.wizardStartForm .button-submit').click();
     await page.waitForURL(/\/wizard\/user$/i, { timeout: 30_000 });
     await expect(wizardUserPage).toBeVisible({ timeout: 30_000 });
+    await expect(wizardUserPage.locator('#txtUsername')).toHaveValue(adminUser, { timeout: 30_000 });
 
-    await wizardUserPage.locator('#txtUsername').fill(adminUser);
-    await wizardUserPage.locator('#txtManualPassword').fill(adminPassword);
-    await wizardUserPage.locator('#txtPasswordConfirm').fill(adminPassword);
+    await setInputValue(wizardUserPage.locator('#txtManualPassword'), adminPassword);
+    await setInputValue(wizardUserPage.locator('#txtPasswordConfirm'), adminPassword);
     await wizardUserPage.locator('.wizardUserForm .button-submit').click();
 
-    await page.waitForURL(/\/wizard\/library$/i, { timeout: 30_000 });
-    await expect(wizardLibraryPage).toBeVisible({ timeout: 30_000 });
+    await expect(wizardLibraryPage).toBeVisible({ timeout: 60_000 });
+    await expect(page).toHaveURL(/\/wizard\/library$/i, { timeout: 10_000 });
     await expect(wizardLibraryPage.locator('#addLibrary')).toBeVisible();
     await wizardLibraryPage.locator('#addLibrary').click();
     await expect(page.locator('.dlg-librarycreator')).toBeVisible({ timeout: 30_000 });

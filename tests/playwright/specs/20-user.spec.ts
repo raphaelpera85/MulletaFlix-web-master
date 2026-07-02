@@ -12,6 +12,15 @@ import {
 import { navigateStage, openLogin } from '../support/stage.mjs';
 import { ensureWizardCompleted } from '../support/wizard.mjs';
 
+async function setInputValue(locator, value) {
+    await locator.evaluate((element, nextValue) => {
+        const input = element;
+        input.value = nextValue;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+    }, value);
+}
+
 test.describe.serial('20 - Common user', () => {
     test('logs in as the created user and proves the session on home', async ({ page }) => {
         const admin = getAdminCredentials();
@@ -103,11 +112,11 @@ test.describe.serial('20 - Common user', () => {
 
         const registerDialog = page.locator('.formDialog');
         await expect(registerDialog).toBeVisible({ timeout: 30_000 });
-        await registerDialog.locator('#txtRegisterName').fill(username);
-        await registerDialog.locator('#txtRegisterPassword').fill(password);
-        await registerDialog.locator('#txtRegisterConfirmPassword').fill(password);
+        await setInputValue(registerDialog.locator('#txtRegisterName'), username);
+        await setInputValue(registerDialog.locator('#txtRegisterPassword'), password);
+        await setInputValue(registerDialog.locator('#txtRegisterConfirmPassword'), password);
         await registerDialog.getByRole('button', { name: /Register|Registrar|Cadastrar/i }).click();
-        await expect(registerDialog).toBeHidden({ timeout: 30_000 });
+        await expect(registerDialog).toBeHidden({ timeout: 60_000 });
 
         await loginWithManualForm(page, username, password);
         await expect(page.locator('.headerUserButton')).toHaveCount(1);

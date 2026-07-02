@@ -17,8 +17,10 @@ const getNowPlayingName = (session: SessionInfo): NowPlayingInfo => {
     // FIXME: It seems that, sometimes, server sends date in the future, so date-fns displays messages like 'in less than a minute'. We should fix
     // how dates are returned by the server when the session is active and show something like 'Active now', instead of past/future sentences
     if (!nowPlayingItem) {
+        const lastActivityTime = Date.parse(session.LastActivityDate!);
+        const safeDate = new Date(Math.min(Date.now(), lastActivityTime));
         return {
-            bottomText: globalize.translate('LastSeen', formatDistanceToNow(Date.parse(session.LastActivityDate!), getLocaleWithSuffix()))
+            bottomText: globalize.translate('LastSeen', formatDistanceToNow(safeDate, getLocaleWithSuffix()))
         };
     }
 

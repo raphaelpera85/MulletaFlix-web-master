@@ -62,7 +62,27 @@ async function loadJson(filePath) {
         return null;
     }
 
-    return JSON.parse(await readFile(filePath, 'utf8'));
+    const content = await readFile(filePath, 'utf8');
+    if (!content.trim()) {
+        return null;
+    }
+
+    return JSON.parse(content);
+}
+
+async function loadJsonWithRetry(filePath, attempts = 20, delayMs = 500) {
+    for (let attempt = 1; attempt <= attempts; attempt++) {
+        const parsed = await loadJson(filePath);
+        if (parsed !== null) {
+            return parsed;
+        }
+
+        if (attempt < attempts) {
+            await sleep(delayMs);
+        }
+    }
+
+    return null;
 }
 
 function sleep(ms) {
@@ -294,7 +314,7 @@ async function main() {
     });
     console.error(`[selenium-cucumber] cucumber exit code: ${String(result.status)} signal=${String(result.signal || '')} error=${String(result.error?.message || '')}`);
 
-    const rawReport = await loadJson(cucumberJson);
+    const rawReport = await loadJsonWithRetry(cucumberJson);
 
     const summary = {
         status: result.status === 0 ? 'success' : 'failed',

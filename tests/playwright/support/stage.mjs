@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 
-export const DEFAULT_STAGE_BASE_URL = 'http://localhost:8096';
-export const DEFAULT_STAGE_CLIENT_INDEX = 'http://localhost:8096/web/index.html';
+export const DEFAULT_STAGE_BASE_URL = 'http://127.0.0.1:8096';
+export const DEFAULT_STAGE_CLIENT_INDEX = 'http://127.0.0.1:8096/web/index.html';
 
 export const STAGE_ROUTES = {
     wizardStart: '/wizard/start',
