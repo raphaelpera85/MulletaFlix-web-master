@@ -67,16 +67,16 @@ function getDefaultMetadataLanguage(countryCode) {
 
 function syncMetadataLanguageFromCountry(parent) {
     const countryCode = parent.querySelector('#selectCountry').value;
-    if (!countryCode) {
+    const selectLanguage = parent.querySelector('#selectLanguage');
+    if (!countryCode || !selectLanguage) {
         return Promise.resolve('');
     }
 
-    return getDefaultMetadataLanguage(countryCode).then(language => {
-        const selectLanguage = parent.querySelector('#selectLanguage');
-        if (!selectLanguage) {
-            return language;
-        }
+    if (selectLanguage.value) {
+        return Promise.resolve(selectLanguage.value);
+    }
 
+    return getDefaultMetadataLanguage(countryCode).then(language => {
         if (countryCode.toUpperCase() === 'BR') {
             const preferredOption = selectLanguage.querySelector("option[data-culture-name='pt-BR']");
             if (preferredOption) {
@@ -89,7 +89,7 @@ function syncMetadataLanguageFromCountry(parent) {
             selectLanguage.value = language;
         }
 
-        return language;
+        return selectLanguage.value || language;
     });
 }
 

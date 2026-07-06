@@ -77,10 +77,10 @@ export const Component = () => {
     }, [config?.PreferredMetadataLanguage, config?.MetadataCountryCode]);
 
     React.useEffect(() => {
-        if (country?.toUpperCase() === 'BR') {
+        if (!language && country?.toUpperCase() === 'BR') {
             setLanguage('pt-BR');
         }
-    }, [country]);
+    }, [country, language]);
 
     if (isConfigPending || isCulturesPending || isCountriesPending) {
         return <Loading />;

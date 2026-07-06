@@ -459,6 +459,10 @@ function syncMetadataLanguageFromCountry(context) {
         return;
     }
 
+    if (selectLanguage.value) {
+        return;
+    }
+
     if (countryCode.toUpperCase() === 'BR') {
         const preferredOption = selectLanguage.querySelector("option[data-culture-name='pt-BR']");
         if (preferredOption) {
@@ -1090,10 +1094,9 @@ function reload(context, itemId, serverId) {
             };
         }
 
-        syncMetadataLanguageFromCountry(context);
-
         setFieldVisibilities(context, item);
         fillItemInfo(context, item, metadataEditorInfo.ParentalRatingOptions);
+        syncMetadataLanguageFromCountry(context);
 
         if (item.MediaType === 'Video' && item.Type !== 'Episode' && item.Type !== 'TvChannel') {
             showElement('#fldTagline', context);

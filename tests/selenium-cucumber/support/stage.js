@@ -160,6 +160,10 @@ async function createDriver(headless = true) {
     options.addArguments('--window-size=1600,1000');
     options.addArguments('--disable-dev-shm-usage');
     options.addArguments('--allow-file-access-from-files');
+    if (process.platform === 'win32') {
+        // ponytail: Selenium/Cucumber runs only in tests; Chromium sandbox is noisy on the bundled Windows binary.
+        options.addArguments('--no-sandbox');
+    }
     if (headless) {
         options.addArguments('--headless=new');
     }
