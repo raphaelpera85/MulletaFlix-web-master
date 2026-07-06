@@ -59,6 +59,8 @@ export const Component = () => {
     const {
         usersById: users,
         names: userNames,
+        isLoading: isUsersLoading,
+        isError: isUsersError
     } = useUsersDetails();
 
     const theme = useTheme();
@@ -121,7 +123,7 @@ export const Component = () => {
         data?.TotalRecordCount || 0
     ), [ data ]);
 
-    const isLoading = isLogEntriesLoading;
+    const isLoading = isUsersLoading || isLogEntriesLoading;
 
     const userColumn: MRT_ColumnDef<ActivityLogEntry>[] = useMemo(() =>
         (activityView === ActivityView.System) ? [] : [{
@@ -282,7 +284,7 @@ export const Component = () => {
             title={globalize.translate('HeaderActivity')}
             className='mainAnimatedPage type-interior'
             table={table}
-            isError={isLogEntriesError}
+            isError={isUsersError || isLogEntriesError}
             errorMessage={globalize.translate('ActivitiesLoadError')}
         />
     );
