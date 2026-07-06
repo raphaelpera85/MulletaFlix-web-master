@@ -36,6 +36,8 @@ const Home = () => {
     const mainTabsManager = useMemo(() => import('../../../components/maintabsmanager'), []);
     const tabController = useRef<ControllerProps | null>();
     const tabControllers = useMemo<ControllerProps[]>(() => [], []);
+    // ponytail: HEADER_RENDERED and the mount effect can race; only start the first tab load once.
+    const homeTabLoadPending = useRef(false);
 
     const documentRef = useRef<Document>(document);
     const element = useRef<HTMLDivElement>(null);
@@ -108,12 +110,14 @@ const Home = () => {
 
             controller.refreshed = true;
             tabController.current = controller;
+            homeTabLoadPending.current = false;
         }).catch((err: any) => {
             if (err instanceof Error && err.message.startsWith('Home tab content not ready') && retryCount < 10) {
                 window.requestAnimationFrame(() => loadTab(index, previousIndex, retryCount + 1));
                 return;
             }
 
+            homeTabLoadPending.current = false;
             console.error('[Home] failed to get tab controller', err);
         });
     }, [ getTabController ]);
@@ -141,6 +145,11 @@ const Home = () => {
         const currentTabController = tabController.current;
 
         if (!currentTabController) {
+            if (homeTabLoadPending.current) {
+                return;
+            }
+
+            homeTabLoadPending.current = true;
             (await mainTabsManager).selectedTabIndex(initialTabIndex);
         } else if (currentTabController?.onResume) {
             currentTabController.onResume({});
@@ -156,14 +165,14 @@ const Home = () => {
         (documentRef.current.querySelector('.skinHeader') as HTMLDivElement).classList.remove('noHomeButtonHeader');
     }, []);
 
-    const renderHome = useCallback(() => {
-        void onSetTabs();
-        void onResume();
+    const renderHome = useCallback(async () => {
+        await onSetTabs();
+        await onResume();
     }, [ onResume, onSetTabs ]);
 
     useEffect(() => {
         if (documentRef.current?.querySelector('.headerTabs')) {
-            renderHome();
+            void renderHome();
         }
 
         return () => {

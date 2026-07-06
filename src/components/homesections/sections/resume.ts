@@ -67,7 +67,7 @@ function getItemsToResumeHtmlFn(
             overlayText: false,
             showTitle: true,
             showParentTitle: true,
-            lazy: false,
+            lazy: true,
             showDetailsMenu: true,
             overlayPlayButton: true,
             context: 'home',

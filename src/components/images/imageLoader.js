@@ -121,7 +121,8 @@ function fillImageElement(elem, url) {
     const preloaderImg = new Image();
     preloaderImg.decoding = 'async';
     preloaderImg.fetchPriority = elem.getAttribute('data-priority') === 'high' ? 'high' : 'auto';
-    preloaderImg.loading = elem.getAttribute('data-priority') === 'high' ? 'eager' : 'lazy';
+    // ponytail: IntersectionObserver already gates when a card may load.
+    preloaderImg.loading = 'eager';
     preloaderImg.src = url;
 
     elem.classList.add('lazy-hidden');
