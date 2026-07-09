@@ -25,7 +25,7 @@ copySync(path.join(srcDir, 'serviceworker.js'), path.join(distDir, 'serviceworke
 copySync(path.join(srcDir, 'themes'), path.join(distDir, 'themes'));
 
 const sass = require('sass');
-const themes = ['appletv', 'blueradiance', 'dark', 'light', 'purplehaze', 'wmc'];
+const themes = ['appletv', 'blueradiance', 'dark', 'light', 'netflix', 'purplehaze', 'wmc'];
 themes.forEach(theme => {
     const scssPath = path.join(srcDir, 'themes', theme, 'theme.scss');
     const destPath = path.join(distDir, 'themes', theme, 'theme.css');

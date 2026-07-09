@@ -6,7 +6,11 @@ import Upload from '@mui/icons-material/Upload';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select, { type SelectChangeEvent } from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
@@ -19,6 +23,7 @@ import Loading from 'components/loading/LoadingComponent';
 import Image from 'components/Image';
 import Page from 'components/Page';
 import { SPLASHSCREEN_URL } from 'constants/branding';
+import { useThemes } from 'hooks/useThemes';
 import { useApi } from 'hooks/useApi';
 import globalize from 'lib/globalize';
 import { ServerConnections } from 'lib/jellyfin-apiclient';
@@ -26,8 +31,13 @@ import { queryClient } from 'utils/query/queryClient';
 import { ActionData } from 'types/actionData';
 
 const BRANDING_CONFIG_KEY = 'branding';
+type BrandingOptionsWithTheme = BrandingOptions & {
+    DefaultTheme?: string;
+};
+
 const BrandingOption = {
     CustomCss: 'CustomCss',
+    DefaultTheme: 'DefaultTheme',
     LoginDisclaimer: 'LoginDisclaimer',
     SplashscreenEnabled: 'SplashscreenEnabled'
 };
@@ -39,8 +49,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
 
-    const brandingOptions: BrandingOptions = {
+    const brandingOptions: BrandingOptionsWithTheme = {
         CustomCss: data.CustomCss?.toString(),
+        DefaultTheme: data.DefaultTheme?.toString(),
         LoginDisclaimer: data.LoginDisclaimer?.toString(),
         SplashscreenEnabled: data.SplashscreenEnabled?.toString() === 'on'
     };
@@ -79,12 +90,20 @@ export const Component = () => {
         isPending,
         isError
     } = useBrandingOptions();
-    const [ brandingOptions, setBrandingOptions ] = useState(defaultBrandingOptions || {});
+    const { themes } = useThemes();
+    const [ brandingOptions, setBrandingOptions ] = useState<BrandingOptionsWithTheme>(defaultBrandingOptions || {});
 
     const [ error, setError ] = useState<string>();
 
     const [ isSplashscreenEnabled, setIsSplashscreenEnabled ] = useState(brandingOptions.SplashscreenEnabled ?? false);
     const [ splashscreenUrl, setSplashscreenUrl ] = useState<string>();
+
+    useEffect(() => {
+        if (defaultBrandingOptions) {
+            setBrandingOptions(defaultBrandingOptions as BrandingOptionsWithTheme);
+            setIsSplashscreenEnabled(defaultBrandingOptions.SplashscreenEnabled ?? false);
+        }
+    }, [ defaultBrandingOptions ]);
     useEffect(() => {
         if (!api || isSubmitting) return;
 
@@ -164,7 +183,7 @@ export const Component = () => {
         });
     }, [ api, defaultBrandingOptions ]);
 
-    const setBrandingOption = useCallback((event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    const setBrandingOption = useCallback((event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement> | SelectChangeEvent) => {
         if (Object.keys(BrandingOption).includes(event.target.name)) {
             setBrandingOptions({
                 ...brandingOptions,
@@ -308,6 +327,30 @@ export const Component = () => {
                                     }
                                 }}
                             />
+
+                            <FormControl fullWidth>
+                                <InputLabel id='branding-default-theme-label'>
+                                    {globalize.translate('LabelTheme')}
+                                </InputLabel>
+                                <Select
+                                    labelId='branding-default-theme-label'
+                                    name={BrandingOption.DefaultTheme}
+                                    onChange={setBrandingOption}
+                                    value={brandingOptions.DefaultTheme || ''}
+                                >
+                                    <MenuItem value=''>
+                                        {globalize.translate('Auto')}
+                                    </MenuItem>
+                                    {themes.map(({ id, name }) => (
+                                        <MenuItem
+                                            key={id}
+                                            value={id}
+                                        >
+                                            {name}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
 
                             <Button
                                 type='submit'

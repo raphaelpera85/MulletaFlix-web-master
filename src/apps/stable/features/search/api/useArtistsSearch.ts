@@ -35,6 +35,7 @@ export const useArtistsSearch = (
 
     return useQuery({
         queryKey: ['Search', 'Artists', collectionType, parentId, searchTerm],
+        staleTime: 60_000,
         queryFn: ({ signal }) => fetchArtists(
             api!,
             userId!,

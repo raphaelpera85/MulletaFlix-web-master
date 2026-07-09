@@ -1,0 +1,261 @@
+@use '../_base/theme';
+
+html[data-theme='netflix'] {
+    font-family: 'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: #000;
+}
+
+html[data-theme='netflix'],
+html[data-theme='netflix'] .skinHeader,
+html[data-theme='netflix'] .formDialogHeader:not(.formDialogHeader-clear),
+html[data-theme='netflix'] .appfooter,
+html[data-theme='netflix'] .formDialogFooter:not(.formDialogFooter-clear),
+html[data-theme='netflix'] .dialog,
+html[data-theme='netflix'] .nowPlayingPlaylist,
+html[data-theme='netflix'] .nowPlayingContextMenu {
+    color: #f5f5f1;
+}
+
+html[data-theme='netflix'] .skinHeader-withBackground,
+html[data-theme='netflix'] .formDialogHeader:not(.formDialogHeader-clear),
+html[data-theme='netflix'] .appfooter,
+html[data-theme='netflix'] .formDialogFooter:not(.formDialogFooter-clear) {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.96), rgba(0, 0, 0, 0.82));
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+html[data-theme='netflix'] .backgroundContainer,
+html[data-theme='netflix'] .dialog,
+html[data-theme='netflix'] .nowPlayingPlaylist,
+html[data-theme='netflix'] .nowPlayingContextMenu {
+    background:
+        radial-gradient(circle at top, rgba(229, 9, 20, 0.16), transparent 35%),
+        linear-gradient(180deg, #000 0%, #0a0a0a 45%, #000 100%);
+}
+
+html[data-theme='netflix'] .backgroundContainer.withBackdrop {
+    opacity: 0.92;
+}
+
+html[data-theme='netflix'] .pageTitleWithDefaultLogo {
+    background-image: url(../../assets/branding/search-brand-tile.png);
+    background-size: contain;
+}
+
+html[data-theme='netflix'] .sectionTitle,
+html[data-theme='netflix'] .pageTitle {
+    color: #f5f5f1;
+    letter-spacing: 0.02em;
+}
+
+html[data-theme='netflix'] .sectionTitle {
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-transform: none;
+}
+
+html[data-theme='netflix'] .sectionTitleContainer {
+    margin-top: 0.8rem;
+    margin-bottom: 0.35rem;
+}
+
+html[data-theme='netflix'] .homeSectionsContainer-netflix .sectionTitle {
+    font-size: 1.55rem;
+}
+
+html[data-theme='netflix'] .homeSectionsContainer-netflix .verticalSection:first-child .sectionTitle {
+    font-size: 1.75rem;
+}
+
+html[data-theme='netflix'] .homeSectionsContainer-netflix .verticalSection:first-child {
+    margin-top: 0.4rem;
+    margin-bottom: 1rem;
+    position: relative;
+    isolation: isolate;
+    padding-bottom: 0.75rem;
+}
+
+html[data-theme='netflix'] .homeSectionsContainer-netflix .verticalSection:first-child::before {
+    content: '';
+    position: absolute;
+    inset: -0.75rem -1rem -0.5rem;
+    z-index: -1;
+    background:
+        radial-gradient(circle at 20% 10%, rgba(229, 9, 20, 0.26), transparent 30%),
+        linear-gradient(180deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.25) 38%, rgba(0, 0, 0, 0.92));
+    border-radius: 1rem;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+}
+
+html[data-theme='netflix'] .homeSectionsContainer-netflix .verticalSection:first-child .itemsContainer,
+html[data-theme='netflix'] .homeSectionsContainer-netflix .verticalSection:first-child .scrollSlider {
+    padding-top: 0.35rem;
+    padding-bottom: 1.1rem;
+}
+
+html[data-theme='netflix'] .homeSectionsContainer-netflix .verticalSection:first-child .cardBox {
+    transform-origin: left center;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    html[data-theme='netflix'] .homeSectionsContainer-netflix .verticalSection:first-child .cardBox:hover,
+    html[data-theme='netflix'] .homeSectionsContainer-netflix .verticalSection:first-child .cardBox:focus-within {
+        transform: scale(1.12);
+    }
+}
+
+html[data-theme='netflix'] .homeSectionsContainer-netflix .verticalSection:first-child .bannerCard,
+html[data-theme='netflix'] .homeSectionsContainer-netflix .verticalSection:first-child .overflowBackdropCard {
+    min-height: 13rem;
+}
+
+html[data-theme='netflix'] .netflixHeroActions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.15rem 0 0.35rem 1rem;
+    flex-wrap: wrap;
+}
+
+html[data-theme='netflix'] .netflixHeroCta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.3rem;
+    padding: 0.35rem 1rem;
+    border-radius: 0.2rem;
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+html[data-theme='netflix'] .netflixHeroCta-primary {
+    background: #fff;
+    color: #000;
+}
+
+html[data-theme='netflix'] .netflixHeroCta-secondary {
+    background: rgba(255, 255, 255, 0.16);
+    color: #f5f5f1;
+}
+
+html[data-theme='netflix'] .homePage .itemsContainer,
+html[data-theme='netflix'] .homePage .scrollSlider {
+    padding-bottom: 0.8rem;
+}
+
+html[data-theme='netflix'] .homePage .cardBox,
+html[data-theme='netflix'] .homePage .cardImageContainer {
+    border-radius: 0.45rem;
+}
+
+html[data-theme='netflix'] .homePage .cardBox {
+    transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+    transform-origin: center center;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    html[data-theme='netflix'] .homePage .cardBox:hover,
+    html[data-theme='netflix'] .homePage .cardBox:focus-within {
+        transform: scale(1.08);
+        z-index: 2;
+        filter: brightness(1.08);
+        box-shadow: 0 18px 36px rgba(0, 0, 0, 0.5);
+    }
+}
+
+html[data-theme='netflix'] .homePage .cardText-secondary,
+html[data-theme='netflix'] .homePage .secondaryText {
+    color: rgba(255, 255, 255, 0.65);
+}
+
+html[data-theme='netflix'] .homePage .cardText,
+html[data-theme='netflix'] .homePage .itemName {
+    color: #f5f5f1;
+}
+
+html[data-theme='netflix'] .loginPage {
+    background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.92)),
+        url(../../assets/branding/backgroundmask.png) center center / cover no-repeat #000;
+}
+
+html[data-theme='netflix'] .loginBranding {
+    gap: 0.6rem;
+}
+
+html[data-theme='netflix'] .loginBrandLogo {
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 30px rgba(229, 9, 20, 0.18);
+}
+
+html[data-theme='netflix'] .loginBrandName {
+    letter-spacing: 0.14em;
+}
+
+html[data-theme='netflix'] .loginBrandNameMulleta,
+html[data-theme='netflix'] .loginBrandNameFlix {
+    color: #e50914;
+}
+
+html[data-theme='netflix'] .loginBrandNameMulleta {
+    -webkit-text-stroke: 1px #000;
+    text-shadow:
+        1px 0 0 #000,
+        -1px 0 0 #000,
+        0 1px 0 #000,
+        0 -1px 0 #000;
+}
+
+html[data-theme='netflix'] .loginActionCard {
+    background: rgba(0, 0, 0, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6);
+}
+
+html[data-theme='netflix'] .button-submit,
+html[data-theme='netflix'] .button-alt,
+html[data-theme='netflix'] .btnOption {
+    background: #e50914;
+    color: #fff;
+}
+
+html[data-theme='netflix'] .page#loginPage .readOnlyContent button[is='emby-button'],
+html[data-theme='netflix'] .page#loginPage .manualLoginForm .button-submit,
+html[data-theme='netflix'] .page#loginPage .manualLoginForm .btnCancel,
+html[data-theme='netflix'] .page#loginPage .readOnlyContent .btnManual,
+html[data-theme='netflix'] .page#loginPage .readOnlyContent .btnQuick,
+html[data-theme='netflix'] .page#loginPage .readOnlyContent .btnForgotPassword,
+html[data-theme='netflix'] .page#loginPage .readOnlyContent .btnRegister,
+html[data-theme='netflix'] .page#loginPage .readOnlyContent .btnSelectServer {
+    background: linear-gradient(180deg, #e50914 0%, #b20710 100%) !important;
+    color: #fff !important;
+    border: 0 !important;
+    box-shadow: 0 10px 24px rgba(229, 9, 20, 0.22);
+}
+
+html[data-theme='netflix'] .page#loginPage .readOnlyContent button[is='emby-button']:hover,
+html[data-theme='netflix'] .page#loginPage .readOnlyContent button[is='emby-button']:focus,
+html[data-theme='netflix'] .page#loginPage .manualLoginForm .button-submit:hover,
+html[data-theme='netflix'] .page#loginPage .manualLoginForm .button-submit:focus,
+html[data-theme='netflix'] .page#loginPage .manualLoginForm .btnCancel:hover,
+html[data-theme='netflix'] .page#loginPage .manualLoginForm .btnCancel:focus,
+html[data-theme='netflix'] .page#loginPage .readOnlyContent .btnManual:hover,
+html[data-theme='netflix'] .page#loginPage .readOnlyContent .btnManual:focus,
+html[data-theme='netflix'] .page#loginPage .readOnlyContent .btnQuick:hover,
+html[data-theme='netflix'] .page#loginPage .readOnlyContent .btnQuick:focus,
+html[data-theme='netflix'] .page#loginPage .readOnlyContent .btnForgotPassword:hover,
+html[data-theme='netflix'] .page#loginPage .readOnlyContent .btnForgotPassword:focus,
+html[data-theme='netflix'] .page#loginPage .readOnlyContent .btnRegister:hover,
+html[data-theme='netflix'] .page#loginPage .readOnlyContent .btnRegister:focus,
+html[data-theme='netflix'] .page#loginPage .readOnlyContent .btnSelectServer:hover,
+html[data-theme='netflix'] .page#loginPage .readOnlyContent .btnSelectServer:focus {
+    background: linear-gradient(180deg, #f6121d 0%, #d60f19 100%) !important;
+    color: #fff !important;
+}
+
+html[data-theme='netflix'] .button-submit:hover,
+html[data-theme='netflix'] .button-submit:focus {
+    background: #f6121d;
+}

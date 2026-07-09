@@ -14,12 +14,16 @@ const COLLECTION_TYPE_PARAM = 'collectionType';
 const PARENT_ID_PARAM = 'parentId';
 const QUERY_PARAM = 'query';
 
+const MIN_QUERY_LENGTH = 2;
+
 const Search: FC = () => {
     const [searchParams] = useSearchParams();
     const parentIdQuery = searchParams.get(PARENT_ID_PARAM) || undefined;
     const collectionTypeQuery = (searchParams.get(COLLECTION_TYPE_PARAM) || undefined) as CollectionType | undefined;
     const [ query, setQuery ] = useSearchParam(QUERY_PARAM);
-    const [debouncedQuery] = useDebounceValue(query, 500);
+    const [debouncedQuery] = useDebounceValue(query, 350);
+
+    const shouldSearch = debouncedQuery && debouncedQuery.length >= MIN_QUERY_LENGTH;
 
     return (
         <Page
@@ -28,7 +32,7 @@ const Search: FC = () => {
             className='mainAnimatedPage libraryPage allLibraryPage noSecondaryNavPage'
         >
             <SearchFields query={query} onSearch={setQuery} />
-            {!debouncedQuery ? (
+            {!shouldSearch ? (
                 <SearchSuggestions
                     parentId={parentIdQuery}
                 />

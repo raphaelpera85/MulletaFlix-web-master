@@ -4,6 +4,7 @@ import type { ApiClient } from 'jellyfin-apiclient';
 
 import { getRecordingsQuery } from 'apps/stable/features/liveTv/api/useRecordings';
 import cardBuilder from 'components/cardbuilder/cardBuilder';
+import { appRouter } from 'components/router/appRouter';
 import globalize from 'lib/globalize';
 import { ServerConnections } from 'lib/jellyfin-apiclient';
 import { toApi } from 'utils/jellyfin-apiclient/compat';
@@ -31,12 +32,15 @@ function getLatestRecordingsFetchFn(
 
 function getLatestRecordingItemsHtml(
     activeRecordingsOnly: boolean,
-    { enableOverflow }: SectionOptions
+    { enableOverflow, featured, netflix }: SectionOptions & { featured?: boolean, netflix?: boolean }
 ) {
     return function (items: BaseItemDto[]) {
+        const heroItem = featured && netflix ? items[0] : undefined;
+        const heroHref = heroItem ? appRouter.getRouteUrl(heroItem, { serverId: heroItem.ServerId }) : undefined;
+        const heroHtml = heroHref ? '<div class="netflixHeroActions"><a class="netflixHeroCta netflixHeroCta-primary" href="' + heroHref + '">WATCH</a></div>' : '';
         return cardBuilder.getCardsHtml({
             items: items,
-            shape: enableOverflow ? 'autooverflow' : 'auto',
+            shape: featured && netflix ? 'banner' : (enableOverflow ? 'autooverflow' : 'auto'),
             showTitle: true,
             showParentTitle: true,
             coverImage: true,
@@ -53,7 +57,7 @@ function getLatestRecordingItemsHtml(
             overlayMoreButton: activeRecordingsOnly,
             action: activeRecordingsOnly ? 'none' : null,
             centerPlayButton: activeRecordingsOnly
-        });
+        }).replace(/^/, heroHtml);
     };
 }
 
@@ -61,7 +65,7 @@ export function loadRecordings(
     elem: HTMLElement,
     activeRecordingsOnly: boolean,
     apiClient: ApiClient,
-    options: SectionOptions
+    options: SectionOptions & { featured?: boolean, netflix?: boolean }
 ) {
     const title = activeRecordingsOnly ?
         globalize.translate('HeaderActiveRecordings') :

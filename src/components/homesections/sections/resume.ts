@@ -7,6 +7,7 @@ import type { ApiClient } from 'jellyfin-apiclient';
 import { getResumeItemsQuery } from 'apps/stable/features/libraries/api/useResumeItems';
 import cardBuilder from 'components/cardbuilder/cardBuilder';
 import { getBackdropShape, getPortraitShape } from 'components/cardbuilder/utils/shape';
+import { appRouter } from 'components/router/appRouter';
 import globalize from 'lib/globalize';
 import { queryClient } from 'utils/query/queryClient';
 import type { UserSettings } from 'scripts/settings/userSettings';
@@ -53,17 +54,20 @@ function getItemsToResumeFn(
 function getItemsToResumeHtmlFn(
     useEpisodeImages: boolean,
     mediaType: MediaType,
-    { enableOverflow }: SectionOptions
+    { enableOverflow, featured, netflix }: SectionOptions & { featured?: boolean, netflix?: boolean }
 ) {
     return function (items: BaseItemDto[]) {
         const cardLayout = false;
+        const heroItem = featured && netflix ? items[0] : undefined;
+        const heroHref = heroItem ? appRouter.getRouteUrl(heroItem, { serverId: heroItem.ServerId }) : undefined;
+        const heroHtml = heroHref ? '<div class="netflixHeroActions"><a class="netflixHeroCta netflixHeroCta-primary" href="' + heroHref + '">CONTINUE</a></div>' : '';
         return cardBuilder.getCardsHtml({
             items: items,
             preferThumb: true,
             inheritThumb: !useEpisodeImages,
-            shape: (mediaType === 'Book') ?
+            shape: featured && netflix ? 'banner' : ((mediaType === 'Book') ?
                 getPortraitShape(enableOverflow) :
-                getBackdropShape(enableOverflow),
+                getBackdropShape(enableOverflow)),
             overlayText: false,
             showTitle: true,
             showParentTitle: true,
@@ -76,7 +80,7 @@ function getItemsToResumeHtmlFn(
             cardLayout: cardLayout,
             showYear: true,
             lines: 2
-        });
+        }).replace(/^/, heroHtml);
     };
 }
 
@@ -86,7 +90,7 @@ export function loadResume(
     titleLabel: string,
     mediaType: MediaType,
     userSettings: UserSettings,
-    options: SectionOptions
+    options: SectionOptions & { featured?: boolean, netflix?: boolean }
 ) {
     let html = '';
 

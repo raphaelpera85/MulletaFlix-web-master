@@ -66,11 +66,14 @@ function getFetchLatestItemsFn(
 function getLatestItemsHtmlFn(
     itemType: BaseItemKind | undefined,
     viewType: string | null | undefined,
-    { enableOverflow }: SectionOptions
+    { enableOverflow, featured, netflix }: SectionOptions & { featured?: boolean, netflix?: boolean }
 ) {
     return function (items: BaseItemDto[]) {
         const cardLayout = false;
         let preferThumb: boolean | string | null;
+        const heroItem = featured && netflix ? items[0] : undefined;
+        const heroHref = heroItem ? appRouter.getRouteUrl(heroItem, { serverId: heroItem.ServerId }) : undefined;
+        const heroHtml = heroHref ? '<div class="netflixHeroActions"><a class="netflixHeroCta netflixHeroCta-primary" href="' + heroHref + '">WATCH NOW</a></div>' : '';
 
         if (viewType === 'tvshows') {
             preferThumb = false;
@@ -91,7 +94,7 @@ function getLatestItemsHtmlFn(
 
         return cardBuilder.getCardsHtml({
             items: items,
-            shape: shape,
+            shape: featured && netflix ? 'banner' : shape,
             preferThumb,
             showUnplayedIndicator: false,
             showChildCountIndicator: true,
@@ -106,7 +109,7 @@ function getLatestItemsHtmlFn(
             showParentTitle: viewType === 'music' || viewType === 'tvshows' || !viewType || (cardLayout && (viewType === 'tvshows')),
             lines: 2,
             lazy: true
-        });
+        }).replace(/^/, heroHtml);
     };
 }
 
@@ -115,7 +118,7 @@ function renderLatestSection(
     apiClient: ApiClient,
     user: UserDto,
     parent: BaseItemDto,
-    options: SectionOptions
+    options: SectionOptions & { featured?: boolean, netflix?: boolean }
 ) {
     let html = '';
 
@@ -160,7 +163,7 @@ export function loadRecentlyAdded(
     apiClient: ApiClient,
     user: UserDto,
     userViews: BaseItemDto[],
-    options: SectionOptions
+    options: SectionOptions & { featured?: boolean, netflix?: boolean }
 ) {
     elem.classList.remove('verticalSection');
     const excludeViewTypes = ['playlists', 'livetv', 'boxsets', 'channels', 'folders'];

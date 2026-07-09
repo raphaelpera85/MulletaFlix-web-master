@@ -2,6 +2,7 @@ import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client/models/base
 
 import cardBuilder from 'components/cardbuilder/cardBuilder';
 import { getBackdropShape } from 'components/cardbuilder/utils/shape';
+import { appRouter } from 'components/router/appRouter';
 import imageLoader from 'components/images/imageLoader';
 import globalize from 'lib/globalize';
 
@@ -11,12 +12,18 @@ export function loadLibraryTiles(
     elem: HTMLElement,
     userViews: BaseItemDto[],
     {
-        enableOverflow
-    }: SectionOptions
+        enableOverflow,
+        featured,
+        netflix
+    }: SectionOptions & { featured?: boolean, netflix?: boolean }
 ) {
     let html = '';
     if (userViews.length) {
+        const heroHref = featured && netflix ? userViews[0] ? appRouter.getRouteUrl(userViews[0], { serverId: userViews[0].ServerId }) : undefined : undefined;
         html += '<h2 class="sectionTitle sectionTitle-cards padded-left">' + globalize.translate('HeaderMyMedia') + '</h2>';
+        if (heroHref) {
+            html += '<div class="netflixHeroActions"><a class="netflixHeroCta netflixHeroCta-primary" href="' + heroHref + '">BROWSE</a></div>';
+        }
         if (enableOverflow) {
             html += '<div is="emby-scroller" class="padded-top-focusscale padded-bottom-focusscale" data-centerfocus="true">';
             html += '<div is="emby-itemscontainer" class="itemsContainer scrollSlider focuscontainer-x">';
@@ -26,7 +33,7 @@ export function loadLibraryTiles(
 
         html += cardBuilder.getCardsHtml({
             items: userViews,
-            shape: getBackdropShape(enableOverflow),
+            shape: featured && netflix ? 'banner' : getBackdropShape(enableOverflow),
             showTitle: true,
             centerText: true,
             overlayText: false,

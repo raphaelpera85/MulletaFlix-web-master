@@ -37,6 +37,7 @@ export const useStudiosSearch = (
 
     return useQuery({
         queryKey: ['Search', 'Studios', collectionType, parentId, searchTerm],
+        staleTime: 60_000,
         queryFn: ({ signal }) => fetchStudios(
             api!,
             userId!,

@@ -5,14 +5,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { appHost } from 'components/apphost';
 import layoutManager from 'components/layoutManager';
 import { AppFeature } from 'constants/appFeature';
+import { useBrandingTheme } from 'hooks/useBrandingTheme';
 import { useApi } from 'hooks/useApi';
+import { FALLBACK_THEME_ID } from 'hooks/useUserTheme';
 import themeManager from 'scripts/themeManager';
 import { currentSettings, UserSettings } from 'scripts/settings/userSettings';
 
 import type { DisplaySettingsValues } from '../types/displaySettingsValues';
-import { useThemes } from 'hooks/useThemes';
-import { Theme } from 'types/webConfig';
-import { FALLBACK_THEME_ID } from 'hooks/useUserTheme';
 
 interface UseDisplaySettingsParams {
     userId?: string | null;
@@ -23,7 +22,7 @@ export function useDisplaySettings({ userId }: UseDisplaySettingsParams) {
     const [userSettings, setUserSettings] = useState<UserSettings>();
     const [displaySettings, setDisplaySettings] = useState<DisplaySettingsValues>();
     const { __legacyApiClient__, user: currentUser } = useApi();
-    const { defaultTheme } = useThemes();
+    const { defaultThemeId } = useBrandingTheme();
 
     useEffect(() => {
         if (!userId || !currentUser || !__legacyApiClient__) {
@@ -33,7 +32,7 @@ export function useDisplaySettings({ userId }: UseDisplaySettingsParams) {
         setLoading(true);
 
         void (async () => {
-            const loadedSettings = await loadDisplaySettings({ api: __legacyApiClient__, currentUser, userId, defaultTheme });
+            const loadedSettings = await loadDisplaySettings({ api: __legacyApiClient__, currentUser, userId, defaultThemeId });
 
             setDisplaySettings(loadedSettings.displaySettings);
             setUserSettings(loadedSettings.userSettings);
@@ -69,14 +68,14 @@ interface LoadDisplaySettingsParams {
     currentUser: UserDto
     userId?: string
     api: ApiClient
-    defaultTheme?: Theme
+    defaultThemeId?: string
 }
 
 async function loadDisplaySettings({
     currentUser,
     userId,
     api,
-    defaultTheme
+    defaultThemeId
 }: LoadDisplaySettingsParams) {
     const settings = (!userId || userId === currentUser?.Id) ? currentSettings : new UserSettings();
     const user = (!userId || userId === currentUser?.Id) ? currentUser : await api.getUser(userId);
@@ -85,7 +84,7 @@ async function loadDisplaySettings({
 
     const displaySettings = {
         customCss: settings.customCss() || '',
-        dashboardTheme: settings.dashboardTheme() || defaultTheme?.id || FALLBACK_THEME_ID,
+        dashboardTheme: settings.dashboardTheme() || defaultThemeId || FALLBACK_THEME_ID,
         dateTimeLocale: settings.dateTimeLocale() || 'auto',
         disableCustomCss: Boolean(settings.disableCustomCss()),
         displayMissingEpisodes: user?.Configuration?.DisplayMissingEpisodes ?? false,
@@ -104,7 +103,7 @@ async function loadDisplaySettings({
         screensaver: settings.screensaver() || 'none',
         screensaverInterval: settings.backdropScreensaverInterval(),
         slideshowInterval: settings.slideshowInterval(),
-        theme: settings.theme() || defaultTheme?.id || FALLBACK_THEME_ID
+        theme: settings.theme() || defaultThemeId || FALLBACK_THEME_ID
     };
 
     return {

@@ -78,7 +78,9 @@ function syncMetadataLanguageFromCountry(parent) {
 
     return getDefaultMetadataLanguage(countryCode).then(language => {
         if (countryCode.toUpperCase() === 'BR') {
-            const preferredOption = selectLanguage.querySelector("option[data-culture-name='pt-BR']");
+            const preferredOption = Array.prototype.find.call(selectLanguage.options, option => {
+                return (option.textContent || option.innerText || '').trim() === 'Portuguese (Brazil)';
+            });
             if (preferredOption) {
                 selectLanguage.value = preferredOption.value;
                 return preferredOption.value;

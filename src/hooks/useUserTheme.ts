@@ -1,14 +1,14 @@
-import { useThemes } from './useThemes';
+import { useBrandingTheme } from './useBrandingTheme';
 import { useUserSettings } from './useUserSettings';
 
 export const FALLBACK_THEME_ID = 'dark';
 
 export function useUserTheme() {
     const { theme, dashboardTheme } = useUserSettings();
-    const { defaultTheme } = useThemes();
+    const { defaultThemeId } = useBrandingTheme();
 
     return {
-        theme: theme || defaultTheme?.id || FALLBACK_THEME_ID,
-        dashboardTheme: dashboardTheme || defaultTheme?.id || FALLBACK_THEME_ID
+        theme: theme || defaultThemeId || FALLBACK_THEME_ID,
+        dashboardTheme: dashboardTheme || defaultThemeId || FALLBACK_THEME_ID
     };
 }

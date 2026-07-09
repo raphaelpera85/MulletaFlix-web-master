@@ -38,6 +38,7 @@ export const useSearchItems = (
 
     return useQuery({
         queryKey: ['Search', 'Items', collectionType, parentId, searchTerm],
+        staleTime: 60_000,
         queryFn: async ({ signal }) => {
             if (liveTvSections && collectionType && isLivetv(collectionType)) {
                 return sortSections(liveTvSections);
@@ -81,13 +82,19 @@ export const useSearchItems = (
             );
 
             if (searchData.Items) {
-                for (const itemType of itemTypes) {
-                    const items: BaseItemDto[] = [];
-                    for (const searchItem of searchData.Items) {
-                        if (searchItem.Type === itemType) {
-                            items.push(searchItem);
-                        }
+                const typeMap = new Map<BaseItemKind, BaseItemDto[]>();
+                for (const searchItem of searchData.Items) {
+                    const type = searchItem.Type;
+                    if (!type) continue;
+                    const list = typeMap.get(type);
+                    if (list) {
+                        list.push(searchItem);
+                    } else {
+                        typeMap.set(type, [searchItem]);
                     }
+                }
+                for (const itemType of itemTypes) {
+                    const items = typeMap.get(itemType);
                     addSection(sections, getTitleFromType(itemType), items, getCardOptionsFromType(itemType));
                 }
             }

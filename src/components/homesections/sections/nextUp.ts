@@ -52,15 +52,18 @@ function getNextUpFetchFn(
 
 function getNextUpItemsHtmlFn(
     useEpisodeImages: boolean,
-    { enableOverflow }: SectionOptions
+    { enableOverflow, featured, netflix }: SectionOptions & { featured?: boolean, netflix?: boolean }
 ) {
     return function (items: BaseItemDto[]) {
         const cardLayout = false;
+        const heroItem = featured && netflix ? items[0] : undefined;
+        const heroHref = heroItem ? appRouter.getRouteUrl(heroItem, { serverId: heroItem.ServerId }) : undefined;
+        const heroHtml = heroHref ? '<div class="netflixHeroActions"><a class="netflixHeroCta netflixHeroCta-primary" href="' + heroHref + '">PLAY NEXT</a></div>' : '';
         return cardBuilder.getCardsHtml({
             items: items,
             preferThumb: true,
             inheritThumb: !useEpisodeImages,
-            shape: getBackdropShape(enableOverflow),
+            shape: featured && netflix ? 'banner' : getBackdropShape(enableOverflow),
             overlayText: false,
             showTitle: true,
             showParentTitle: true,
@@ -70,7 +73,7 @@ function getNextUpItemsHtmlFn(
             centerText: !cardLayout,
             allowBottomPadding: !enableOverflow,
             cardLayout: cardLayout
-        });
+        }).replace(/^/, heroHtml);
     };
 }
 
@@ -78,7 +81,7 @@ export function loadNextUp(
     elem: HTMLElement,
     apiClient: ApiClient,
     userSettings: UserSettings,
-    options: SectionOptions
+    options: SectionOptions & { featured?: boolean, netflix?: boolean }
 ) {
     let html = '';
 

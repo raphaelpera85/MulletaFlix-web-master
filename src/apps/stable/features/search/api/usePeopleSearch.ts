@@ -38,12 +38,12 @@ export const usePeopleSearch = (
 
     return useQuery({
         queryKey: ['Search', 'People', collectionType, parentId, searchTerm],
+        staleTime: 60_000,
         queryFn: ({ signal }) => fetchPeople(
             api!,
             userId!,
             {
                 searchTerm,
-                // TODO remove this exclusion when artists are migrated to the persons endpoint
                 excludePersonTypes: [
                     PersonKind.Artist,
                     PersonKind.AlbumArtist

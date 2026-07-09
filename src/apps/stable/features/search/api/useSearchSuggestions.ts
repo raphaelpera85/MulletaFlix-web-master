@@ -42,6 +42,8 @@ export const useSearchSuggestions = (parentId?: string) => {
         queryKey: ['SearchSuggestions', { parentId }],
         queryFn: ({ signal }) =>
             fetchGetItems(api!, userId!, parentId, { signal }),
+        staleTime: 120_000,
+        gcTime: 300_000,
         refetchOnWindowFocus: false,
         enabled: !!api && !!userId
     });

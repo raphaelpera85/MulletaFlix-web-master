@@ -2,6 +2,8 @@ import * as userSettings from '../scripts/settings/userSettings';
 import focusManager from '../components/focusManager';
 import homeSections from '../components/homesections/homesections';
 import { ServerConnections } from 'lib/jellyfin-apiclient';
+import Events from '../utils/events';
+import { EventType } from '../constants/eventType';
 
 import '../elements/emby-itemscontainer/emby-itemscontainer';
 
@@ -12,6 +14,8 @@ class HomeTab {
         this.apiClient = ServerConnections.currentApiClient();
         this.sectionsContainer = view.querySelector('.sections');
         view.querySelector('.sections').addEventListener('settingschange', onHomeScreenSettingsChanged.bind(this));
+        this.onThemeChange = this.onThemeChange.bind(this);
+        Events.on(document, EventType.THEME_CHANGE, this.onThemeChange);
     }
     onResume(options) {
         if (this.sectionsRendered) {
@@ -26,10 +30,13 @@ class HomeTab {
 
         const view = this.view;
         const apiClient = this.apiClient;
+        const isNetflixTheme = document.documentElement.getAttribute('data-theme') === 'netflix';
         this.destroyHomeSections();
         this.sectionsRendered = true;
         return apiClient.getCurrentUser()
-            .then(user => homeSections.loadSections(view.querySelector('.sections'), apiClient, user, userSettings))
+            .then(user => homeSections.loadSections(view.querySelector('.sections'), apiClient, user, userSettings, {
+                netflix: isNetflixTheme
+            }))
             .then(() => {
                 if (options.autoFocus) {
                     focusManager.autoFocus(view);
@@ -49,8 +56,18 @@ class HomeTab {
         this.view = null;
         this.params = null;
         this.apiClient = null;
+        Events.off(document, EventType.THEME_CHANGE, this.onThemeChange);
         this.destroyHomeSections();
         this.sectionsContainer = null;
+    }
+    onThemeChange() {
+        this.sectionsRendered = false;
+
+        if (!this.paused) {
+            this.onResume({
+                refresh: true
+            });
+        }
     }
     destroyHomeSections() {
         const sectionsContainer = this.sectionsContainer;

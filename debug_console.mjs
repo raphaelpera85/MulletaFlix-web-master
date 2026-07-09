@@ -9,15 +9,16 @@ import { chromium } from '@playwright/test';
     });
 
     page.on('request', req => {
-        // Log API requests
-        if (req.url().includes('/Users') || req.url().includes('/Devices') || req.url().includes('/Activity') || req.url().includes('/System')) {
-            console.log(`[REQUEST] ${req.method()} ${req.url()}`);
+        const url = req.url();
+        if (url.includes('8096') && !url.includes('/web/')) {
+            console.log(`[REQUEST] ${req.method()} ${url}`);
         }
     });
 
     page.on('response', res => {
-        if (res.url().includes('/Users') || res.url().includes('/Devices') || res.url().includes('/Activity') || res.url().includes('/System')) {
-            console.log(`[RESPONSE] ${res.status()} ${res.url()}`);
+        const url = res.url();
+        if (url.includes('8096') && !url.includes('/web/')) {
+            console.log(`[RESPONSE] ${res.status()} ${url}`);
         }
     });
 
@@ -49,13 +50,14 @@ import { chromium } from '@playwright/test';
         await page.locator('#txtManualPassword').first().fill('Bug309c*');
         await page.locator('button[type="submit"]').first().click();
 
-        console.log('Logged in. Waiting for devices page to render...');
+        console.log('Logged in. Navigating to home page...');
+        await page.goto('http://127.0.0.1:8096/web/#/home');
         await page.waitForTimeout(5000);
         
-        console.log('Checking DOM on devices page...');
-        const devicesPageHtml = await page.locator('#devicesPage').innerHTML().catch(e => `Error: ${e.message}`);
-        console.log('Devices Page Inner HTML Length:', devicesPageHtml.length);
-        console.log('Has table element:', devicesPageHtml.includes('<table') || devicesPageHtml.includes('role="table"'));
+        console.log('Checking DOM on home page...');
+        const homePageHtml = await page.content().catch(e => `Error: ${e.message}`);
+        console.log('Home Page Inner HTML Length:', homePageHtml.length);
+        console.log('Has library section:', homePageHtml.includes('section'));
         
         // Layout measurements
         const measurements = await page.evaluate(() => {
@@ -100,21 +102,31 @@ import { chromium } from '@playwright/test';
         
         console.log('DOM Measurements:', JSON.stringify(measurements, null, 2));
         
-        console.log('Taking screenshot...');
+        console.log('Taking screenshot of devices...');
         await page.screenshot({ path: 'scratch_devices.png' });
 
-        console.log('Navigating to activity...');
-        await page.goto('http://127.0.0.1:8096/web/#/dashboard/activity');
+        console.log('Navigating to search page via window.location.hash...');
+        await page.evaluate(() => { window.location.hash = '#/search'; });
         await page.waitForTimeout(5000);
+        console.log('Current URL after hash change:', page.url());
 
-        console.log('Checking DOM on activity page...');
-        const activityPageHtml = await page.locator('#serverActivityPage').innerHTML().catch(e => `Error: ${e.message}`);
-        console.log('Activity Page Inner HTML Length:', activityPageHtml.length);
-        console.log('Has table element:', activityPageHtml.includes('<table') || activityPageHtml.includes('role="table"'));
-        
-        console.log('Taking screenshot...');
-        await page.screenshot({ path: 'scratch_activity.png' });
-
+        console.log('Locating search input...');
+        const searchInput = page.locator('#searchTextInput, input[type="search"], .searchfields-txtSearch').first();
+        if (await searchInput.isVisible().catch(() => false)) {
+            console.log('Search input found. Typing query "a"...');
+            await searchInput.fill('a');
+            await page.waitForTimeout(5000);
+            
+            console.log('Taking search page screenshot...');
+            await page.screenshot({ path: 'scratch_search.png' });
+            
+            console.log('Checking search results DOM...');
+            const searchHtml = await page.content();
+            console.log('Search Page Content Length:', searchHtml.length);
+        } else {
+            console.error('Search input NOT found! Current page body text:', await page.locator('body').innerText().catch(() => 'no body'));
+            await page.screenshot({ path: 'scratch_search_not_found.png' });
+        }
     } catch (e) {
         console.error('Error during test execution:', e);
     } finally {

@@ -1,5 +1,5 @@
 {
-  description = "jellyfin-web nix flake";
+  description = "mulletaflix-web nix flake";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs";

@@ -30,7 +30,7 @@ export function getDefaultSection(index) {
     return DEFAULT_SECTIONS[index];
 }
 
-function getAllSectionsToShow(userSettings) {
+function getAllSectionsToShow(userSettings, options = {}) {
     const sections = [];
     for (let i = 0, length = MAX_SECTIONS; i < length; i++) {
         let section = userSettings.get('homesection' + i) || getDefaultSection(i);
@@ -53,10 +53,29 @@ function getAllSectionsToShow(userSettings) {
         ];
     }
 
+    if (options.netflix) {
+        const preferredOrder = [
+            HomeSectionType.Resume,
+            HomeSectionType.LatestMedia,
+            HomeSectionType.NextUp,
+            HomeSectionType.SmallLibraryTiles,
+            HomeSectionType.LibraryButtons,
+            HomeSectionType.ResumeAudio,
+            HomeSectionType.ResumeBook,
+            HomeSectionType.LiveTv,
+            HomeSectionType.ActiveRecordings
+        ];
+
+        return [
+            ...preferredOrder.filter(section => sections.includes(section)),
+            ...sections.filter(section => section !== HomeSectionType.None && !preferredOrder.includes(section))
+        ];
+    }
+
     return sections;
 }
 
-export function loadSections(elem, apiClient, user, userSettings) {
+export function loadSections(elem, apiClient, user, userSettings, options = {}) {
     const userId = user.Id || apiClient.getCurrentUserId();
     return queryClient
         .fetchQuery(getUserViewsQuery(toApi(apiClient), { userId }))
@@ -73,10 +92,11 @@ export function loadSections(elem, apiClient, user, userSettings) {
 
                 elem.innerHTML = html;
                 elem.classList.add('homeSectionsContainer');
+                elem.classList.toggle('homeSectionsContainer-netflix', !!options.netflix);
 
-                const promises = getAllSectionsToShow(userSettings)
+                const promises = getAllSectionsToShow(userSettings, options)
                     .map((section, index) => (
-                        loadSection(elem, apiClient, user, userSettings, userViews, section, index)
+                        loadSection(elem, apiClient, user, userSettings, userViews, section, index, options)
                     ));
 
                 return Promise.all(promises.map(promise => Promise.resolve(promise).catch(err => {
@@ -193,36 +213,40 @@ function resumeVisibleSections(elem) {
     return Promise.all(promises);
 }
 
-function loadSection(page, apiClient, user, userSettings, userViews, section, index) {
+function loadSection(page, apiClient, user, userSettings, userViews, section, index, options) {
     const elem = page.querySelector('.section' + index);
-    const options = { enableOverflow: enableScrollX() };
+    const sectionOptions = {
+        enableOverflow: enableScrollX(),
+        netflix: !!options.netflix,
+        featured: !!options.netflix && index === 0
+    };
 
     switch (section) {
         case HomeSectionType.ActiveRecordings:
-            loadRecordings(elem, true, apiClient, options);
+            loadRecordings(elem, true, apiClient, sectionOptions);
             break;
         case HomeSectionType.LatestMedia:
-            loadRecentlyAdded(elem, apiClient, user, userViews, options);
+            loadRecentlyAdded(elem, apiClient, user, userViews, sectionOptions);
             break;
         case HomeSectionType.LibraryButtons:
             loadLibraryButtons(elem, userViews);
             break;
         case HomeSectionType.LiveTv:
-            return loadLiveTV(elem, apiClient, user, options);
+            return loadLiveTV(elem, apiClient, user, sectionOptions);
         case HomeSectionType.NextUp:
-            loadNextUp(elem, apiClient, userSettings, options);
+            loadNextUp(elem, apiClient, userSettings, sectionOptions);
             break;
         case HomeSectionType.Resume:
-            loadResume(elem, apiClient, 'HeaderContinueWatching', 'Video', userSettings, options);
+            loadResume(elem, apiClient, 'HeaderContinueWatching', 'Video', userSettings, sectionOptions);
             break;
         case HomeSectionType.ResumeAudio:
-            loadResume(elem, apiClient, 'HeaderContinueListening', 'Audio', userSettings, options);
+            loadResume(elem, apiClient, 'HeaderContinueListening', 'Audio', userSettings, sectionOptions);
             break;
         case HomeSectionType.ResumeBook:
-            loadResume(elem, apiClient, 'HeaderContinueReading', 'Book', userSettings, options);
+            loadResume(elem, apiClient, 'HeaderContinueReading', 'Book', userSettings, sectionOptions);
             break;
         case HomeSectionType.SmallLibraryTiles:
-            loadLibraryTiles(elem, userViews, options);
+            loadLibraryTiles(elem, userViews, sectionOptions);
             break;
         default:
             elem.innerHTML = '';
