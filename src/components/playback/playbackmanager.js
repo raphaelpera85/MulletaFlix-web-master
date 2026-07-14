@@ -262,7 +262,7 @@ function enableIntros(item) {
 }
 
 function getIntros(firstItem, apiClient, options) {
-    if (options.startPositionTicks || options.startIndex || options.fullscreen === false || !enableIntros(firstItem) || !userSettings.enableCinemaMode()) {
+    if (options.startPositionTicks || options.startIndex || !enableIntros(firstItem)) {
         return Promise.resolve({
             Items: []
         });
@@ -270,7 +270,8 @@ function getIntros(firstItem, apiClient, options) {
 
     return apiClient.getIntros(firstItem.Id).then(function (result) {
         return result;
-    }, function () {
+    }, function (error) {
+        console.warn('[playbackmanager] getIntros failed:', firstItem.Id, error);
         return Promise.resolve({
             Items: []
         });
@@ -440,6 +441,10 @@ async function getPlaybackInfo(player, apiClient, item, deviceProfile, mediaSour
         UserId: apiClient.getCurrentUserId(),
         StartTimeTicks: options.startPosition || 0
     };
+
+    if (item.IsIntro && item.Path) {
+        query.Path = item.Path;
+    }
 
     const api = toApi(apiClient);
     const mediaInfoApi = getMediaInfoApi(api);
@@ -2320,10 +2325,15 @@ export class PlaybackManager {
             const apiClient = ServerConnections.getApiClient(firstItem.ServerId);
 
             return getIntros(firstItem, apiClient, options).then(function (introsResult) {
-                const introItems = introsResult.Items;
+                const introItems = (introsResult.Items || []).map(function (item) {
+                    item.IsIntro = true;
+                    return item;
+                });
+                const introStartIndex = introItems.length ? 0 : playStartIndex;
                 let introPlayOptions;
 
                 firstItem.playOptions = truncatePlayOptions(options);
+                firstItem.playOptions.hasIntros = introItems.length > 0;
 
                 if (introItems.length) {
                     introPlayOptions = {
@@ -2335,15 +2345,29 @@ export class PlaybackManager {
 
                 items = introItems.concat(items);
 
+                // Register the full playlist before playback starts so the intro is current from the first event.
+                self._playQueueManager.setPlaylist(items);
+
                 // Needed by players that manage their own playlist
                 introPlayOptions.items = items;
-                introPlayOptions.startIndex = playStartIndex;
+                introPlayOptions.startIndex = introStartIndex;
 
-                return playInternal(items[playStartIndex], introPlayOptions, function () {
-                    self._playQueueManager.setPlaylist(items);
-
-                    setPlaylistState(items[playStartIndex].PlaylistItemId, playStartIndex);
+                return playInternal(items[introStartIndex], introPlayOptions, function () {
+                    setPlaylistState(items[introStartIndex].PlaylistItemId, introStartIndex);
                     loading.hide();
+                }).catch(function (error) {
+                    console.warn('[playbackmanager] intro playback failed, falling back to main item:', error);
+                    const fallbackIndex = introItems.length + playStartIndex;
+                    const fallbackPlayOptions = Object.assign({}, firstItem.playOptions, {
+                        hasIntros: false
+                    });
+                    fallbackPlayOptions.items = items;
+                    fallbackPlayOptions.startIndex = fallbackIndex;
+
+                    return playInternal(items[fallbackIndex], fallbackPlayOptions, function () {
+                        setPlaylistState(items[fallbackIndex].PlaylistItemId, fallbackIndex);
+                        loading.hide();
+                    });
                 });
             });
         }

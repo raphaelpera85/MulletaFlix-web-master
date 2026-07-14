@@ -130,7 +130,7 @@
     "test:playwright": "playwright test",
     "test:playwright:admin": "playwright test tests/playwright/specs/10-admin.spec.ts tests/playwright/specs/11-admin-extended.spec.ts tests/playwright/specs/12-admin-surfaces.spec.ts",
     "test:playwright:user": "playwright test tests/playwright/specs/20-user.spec.ts",
-    "test:playwright:full": "playwright test tests/playwright/specs/00-wizard.spec.ts tests/playwright/specs/10-admin.spec.ts tests/playwright/specs/11-admin-extended.spec.ts tests/playwright/specs/12-admin-surfaces.spec.ts tests/playwright/specs/20-user.spec.ts tests/playwright/specs/99-pagination.spec.ts",
+    "test:playwright:full": "playwright test tests/playwright/specs/00-wizard.spec.ts tests/playwright/specs/10-admin.spec.ts tests/playwright/specs/11-admin-extended.spec.ts tests/playwright/specs/12-admin-surfaces.spec.ts tests/playwright/specs/20-user.spec.ts tests/playwright/specs/21-multi-user-playback.spec.ts tests/playwright/specs/22-adsense-flow.spec.ts tests/playwright/specs/99-pagination.spec.ts",
     "test:selenium-cucumber": "npm run selenium-cucumber"
   },
   "engines": {

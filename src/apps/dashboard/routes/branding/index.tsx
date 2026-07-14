@@ -1,7 +1,9 @@
 import type { BrandingOptions } from '@jellyfin/sdk/lib/generated-client/models/branding-options';
 import { getConfigurationApi } from '@jellyfin/sdk/lib/utils/api/configuration-api';
 import { getImageApi } from '@jellyfin/sdk/lib/utils/api/image-api';
+import Description from '@mui/icons-material/Description';
 import Delete from '@mui/icons-material/Delete';
+import FolderOpen from '@mui/icons-material/FolderOpen';
 import Upload from '@mui/icons-material/Upload';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
@@ -20,6 +22,7 @@ import { type ActionFunctionArgs, Form, useActionData, useNavigation } from 'rea
 
 import { getBrandingOptionsQuery, QUERY_KEY, useBrandingOptions } from 'apps/dashboard/features/branding/api/useBrandingOptions';
 import Loading from 'components/loading/LoadingComponent';
+import DirectoryBrowser from 'components/directorybrowser/directorybrowser';
 import Image from 'components/Image';
 import Page from 'components/Page';
 import { SPLASHSCREEN_URL } from 'constants/branding';
@@ -33,13 +36,35 @@ import { ActionData } from 'types/actionData';
 const BRANDING_CONFIG_KEY = 'branding';
 type BrandingOptionsWithTheme = BrandingOptions & {
     DefaultTheme?: string;
+    IntroEnabled?: boolean;
+    IntroPath?: string;
+    PrebufferEnabled?: boolean;
+    PrebufferSizeMb?: number;
+    AdSenseEnabled?: boolean;
+    AdSenseClientId?: string;
+    AdSenseSlotId?: string;
+    AdSenseHoldSeconds?: number;
+    AdSenseShowOnLogin?: boolean;
+    AdSenseShowOnHome?: boolean;
+    AdSenseShowAfterIntro?: boolean;
 };
 
 const BrandingOption = {
     CustomCss: 'CustomCss',
     DefaultTheme: 'DefaultTheme',
     LoginDisclaimer: 'LoginDisclaimer',
-    SplashscreenEnabled: 'SplashscreenEnabled'
+    SplashscreenEnabled: 'SplashscreenEnabled',
+    IntroEnabled: 'IntroEnabled',
+    IntroPath: 'IntroPath',
+    PrebufferEnabled: 'PrebufferEnabled',
+    PrebufferSizeMb: 'PrebufferSizeMb',
+    AdSenseEnabled: 'AdSenseEnabled',
+    AdSenseClientId: 'AdSenseClientId',
+    AdSenseSlotId: 'AdSenseSlotId',
+    AdSenseHoldSeconds: 'AdSenseHoldSeconds',
+    AdSenseShowOnLogin: 'AdSenseShowOnLogin',
+    AdSenseShowOnHome: 'AdSenseShowOnHome',
+    AdSenseShowAfterIntro: 'AdSenseShowAfterIntro'
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -53,7 +78,18 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         CustomCss: data.CustomCss?.toString(),
         DefaultTheme: data.DefaultTheme?.toString(),
         LoginDisclaimer: data.LoginDisclaimer?.toString(),
-        SplashscreenEnabled: data.SplashscreenEnabled?.toString() === 'on'
+        SplashscreenEnabled: data.SplashscreenEnabled?.toString() === 'on',
+        IntroEnabled: data.IntroEnabled?.toString() === 'on',
+        IntroPath: data.IntroPath?.toString(),
+        PrebufferEnabled: data.PrebufferEnabled?.toString() === 'on',
+        PrebufferSizeMb: Number(data.PrebufferSizeMb || 32),
+        AdSenseEnabled: data.AdSenseEnabled?.toString() === 'on',
+        AdSenseClientId: data.AdSenseClientId?.toString(),
+        AdSenseSlotId: data.AdSenseSlotId?.toString(),
+        AdSenseHoldSeconds: Number(data.AdSenseHoldSeconds || 8),
+        AdSenseShowOnLogin: data.AdSenseShowOnLogin?.toString() === 'on',
+        AdSenseShowOnHome: data.AdSenseShowOnHome?.toString() === 'on',
+        AdSenseShowAfterIntro: data.AdSenseShowAfterIntro?.toString() === 'on'
     };
 
     await getConfigurationApi(api)
@@ -165,6 +201,27 @@ export const Component = () => {
 
         reader.readAsDataURL(file);
     }, [ api ]);
+
+    const showIntroPathPicker = useCallback((includeFiles: boolean) => {
+        const picker = new DirectoryBrowser();
+
+        picker.show({
+            path: brandingOptions.IntroPath,
+            includeFiles,
+            callback: (path: string) => {
+                if (path) {
+                    setBrandingOptions((current) => ({
+                        ...current,
+                        IntroPath: path
+                    }));
+                }
+
+                picker.close();
+            },
+            header: includeFiles ? 'Selecionar arquivo da intro' : 'Selecionar pasta da intro',
+            instruction: includeFiles ? 'Escolha um arquivo de video para usar como intro.' : 'Escolha uma pasta com o video da intro.'
+        });
+    }, [ brandingOptions ]);
 
     const setSplashscreenEnabled = useCallback(async (_: React.ChangeEvent<HTMLInputElement>, isEnabled: boolean) => {
         setIsSplashscreenEnabled(isEnabled);
@@ -291,6 +348,103 @@ export const Component = () => {
                                         {globalize.translate('DeleteCustomImage')}
                                     </Button>
                                 </Stack>
+                            </Stack>
+
+                            <Typography variant='h2'>Intro e pre-buffer STRM</Typography>
+
+                            <FormControlLabel
+                                control={<Switch name={BrandingOption.IntroEnabled} defaultChecked={brandingOptions.IntroEnabled ?? false} />}
+                                label='Ativar intro nativa antes das midias'
+                            />
+
+                            <TextField
+                                fullWidth
+                                name={BrandingOption.IntroPath}
+                                label='Caminho do arquivo ou pasta da intro'
+                                helperText='O caminho precisa existir no servidor.'
+                                value={brandingOptions.IntroPath || ''}
+                                onChange={setBrandingOption}
+                            />
+
+                            <Stack direction='row' spacing={2} flexWrap='wrap'>
+                                <Button
+                                    variant='outlined'
+                                    startIcon={<FolderOpen />}
+                                    onClick={() => showIntroPathPicker(false)}
+                                >
+                                    Selecionar pasta
+                                </Button>
+                                <Button
+                                    variant='outlined'
+                                    startIcon={<Description />}
+                                    onClick={() => showIntroPathPicker(true)}
+                                >
+                                    Selecionar arquivo
+                                </Button>
+                            </Stack>
+
+                            <FormControlLabel
+                                control={<Switch name={BrandingOption.PrebufferEnabled} defaultChecked={brandingOptions.PrebufferEnabled ?? false} />}
+                                label='Ativar pre-buffer para arquivos STRM'
+                            />
+
+                            <TextField
+                                name={BrandingOption.PrebufferSizeMb}
+                                type='number'
+                                label='Tamanho maximo do pre-buffer (MB)'
+                                inputProps={{ min: 1, max: 256 }}
+                                value={brandingOptions.PrebufferSizeMb ?? 32}
+                                onChange={setBrandingOption}
+                            />
+
+                            <Typography variant='h2'>AdSense Web</Typography>
+
+                            <FormControlLabel
+                                control={<Switch name={BrandingOption.AdSenseEnabled} defaultChecked={brandingOptions.AdSenseEnabled ?? false} />}
+                                label='Ativar propaganda apos a intro'
+                            />
+
+                            <TextField
+                                fullWidth
+                                name={BrandingOption.AdSenseClientId}
+                                label='AdSense Client ID'
+                                helperText='Exemplo: ca-pub-1234567890'
+                                value={brandingOptions.AdSenseClientId || ''}
+                                onChange={setBrandingOption}
+                            />
+
+                            <TextField
+                                fullWidth
+                                name={BrandingOption.AdSenseSlotId}
+                                label='AdSense Slot ID'
+                                helperText='Identificador do bloco de anuncio.'
+                                value={brandingOptions.AdSenseSlotId || ''}
+                                onChange={setBrandingOption}
+                            />
+
+                            <TextField
+                                name={BrandingOption.AdSenseHoldSeconds}
+                                type='number'
+                                label='Segundos antes de permitir continuar'
+                                inputProps={{ min: 0, max: 60 }}
+                                value={brandingOptions.AdSenseHoldSeconds ?? 8}
+                                onChange={setBrandingOption}
+                            />
+
+                            <Stack spacing={1}>
+                                <Typography variant='subtitle1'>Telas de exibicao</Typography>
+                                <FormControlLabel
+                                    control={<Switch name={BrandingOption.AdSenseShowAfterIntro} defaultChecked={brandingOptions.AdSenseShowAfterIntro ?? true} />}
+                                    label='Mostrar depois da intro'
+                                />
+                                <FormControlLabel
+                                    control={<Switch name={BrandingOption.AdSenseShowOnLogin} defaultChecked={brandingOptions.AdSenseShowOnLogin ?? false} />}
+                                    label='Mostrar na tela de login'
+                                />
+                                <FormControlLabel
+                                    control={<Switch name={BrandingOption.AdSenseShowOnHome} defaultChecked={brandingOptions.AdSenseShowOnHome ?? false} />}
+                                    label='Mostrar na tela inicial'
+                                />
                             </Stack>
 
                             <TextField

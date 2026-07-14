@@ -4,6 +4,8 @@ import '../elements/emby-tabs/emby-tabs';
 import '../elements/emby-button/emby-button';
 import '../elements/emby-scroller/emby-scroller';
 import LibraryMenu from '../scripts/libraryMenu';
+import { ServerConnections } from '../lib/jellyfin-apiclient';
+import { showAdSenseInterstitial } from '../components/branding/adsense';
 
 const controllerModules = import.meta.glob('../controllers/*.js');
 
@@ -20,6 +22,11 @@ class HomeView extends TabbedView {
     onResume(options) {
         super.onResume(this, options);
         document.querySelector('.skinHeader').classList.add('noHomeButtonHeader');
+
+        const apiClient = ServerConnections.currentApiClient();
+        if (apiClient) {
+            void showAdSenseInterstitial(apiClient, 'home');
+        }
     }
 
     getDefaultTabIndex() {

@@ -9,6 +9,7 @@ import People from '@mui/icons-material/People';
 import PlayCircle from '@mui/icons-material/PlayCircle';
 import Queue from '@mui/icons-material/Queue';
 import Settings from '@mui/icons-material/Settings';
+import Storage from '@mui/icons-material/Storage';
 import Collapse from '@mui/material/Collapse';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -25,6 +26,7 @@ import globalize from 'lib/globalize';
 const LIBRARY_PATHS = [
     '/dashboard/libraries',
     '/dashboard/libraries/display',
+    '/dashboard/libraries/midia-storage-online',
     '/dashboard/libraries/metadata',
     '/dashboard/libraries/nfo',
     '/dashboard/libraries/unidentified'
@@ -124,6 +126,12 @@ const ServerDrawerSection = () => {
                     </ListItemLink>
                     <ListItemLink to='/dashboard/libraries/display' sx={{ pl: 4 }}>
                         <ListItemText inset primary={globalize.translate('Display')} />
+                    </ListItemLink>
+                    <ListItemLink to='/dashboard/libraries/midia-storage-online' sx={{ pl: 4 }}>
+                        <ListItemIcon>
+                            <Storage />
+                        </ListItemIcon>
+                        <ListItemText inset primary='Midia Storage Online' />
                     </ListItemLink>
                     <ListItemLink to='/dashboard/libraries/metadata' sx={{ pl: 4 }}>
                         <ListItemText inset primary={globalize.translate('LabelMetadata')} />

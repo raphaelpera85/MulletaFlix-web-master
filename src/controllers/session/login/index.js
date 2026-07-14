@@ -18,6 +18,7 @@ import Dashboard from '../../../utils/dashboard';
 import toast from '../../../components/toast/toast';
 import dialogHelper from '../../../components/dialogHelper/dialogHelper';
 import baseAlert from '../../../components/alert';
+import { showAdSenseInterstitial } from '../../../components/branding/adsense';
 import { getDefaultBackgroundClass } from '../../../components/cardbuilder/utils/builder';
 
 import './login.scss';
@@ -360,6 +361,8 @@ export default function (view, params) {
                     elem.tabIndex = -1;
                 }
             }
+
+            void showAdSenseInterstitial(apiClient, 'login');
         });
     });
     view.addEventListener('viewhide', function () {
