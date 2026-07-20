@@ -1,6 +1,6 @@
 import type { RecommendationDto } from '@jellyfin/sdk/lib/generated-client/models/recommendation-dto';
 import { RecommendationType } from '@jellyfin/sdk/lib/generated-client/models/recommendation-type';
-import React, { type FC } from 'react';
+import React, { memo, type FC } from 'react';
 
 import { CardShape } from 'components/cardbuilder/utils/shape';
 import { useApi } from 'hooks/useApi';
@@ -60,14 +60,14 @@ const SuggestionsSectionView: FC<SuggestionsSectionViewProps> = ({
             case RecommendationType.SimilarToRecentlyPlayed:
                 title = globalize.translate(
                     'RecommendationBecauseYouWatched',
-                    recommendation.BaselineItemName
+                    recommendation.BaselineItemName ?? ''
                 );
                 break;
 
             case RecommendationType.SimilarToLikedItem:
                 title = globalize.translate(
                     'RecommendationBecauseYouLike',
-                    recommendation.BaselineItemName
+                    recommendation.BaselineItemName ?? ''
                 );
                 break;
 
@@ -75,7 +75,7 @@ const SuggestionsSectionView: FC<SuggestionsSectionViewProps> = ({
             case RecommendationType.HasLikedDirector:
                 title = globalize.translate(
                     'RecommendationDirectedBy',
-                    recommendation.BaselineItemName
+                    recommendation.BaselineItemName ?? ''
                 );
                 break;
 
@@ -83,7 +83,7 @@ const SuggestionsSectionView: FC<SuggestionsSectionViewProps> = ({
             case RecommendationType.HasLikedActor:
                 title = globalize.translate(
                     'RecommendationStarring',
-                    recommendation.BaselineItemName
+                    recommendation.BaselineItemName ?? ''
                 );
                 break;
         }
@@ -143,5 +143,5 @@ const SuggestionsSectionView: FC<SuggestionsSectionViewProps> = ({
     );
 };
 
-export default SuggestionsSectionView;
+export default memo(SuggestionsSectionView);
 

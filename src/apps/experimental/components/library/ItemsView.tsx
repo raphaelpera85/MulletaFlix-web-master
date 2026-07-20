@@ -10,7 +10,7 @@ import type { Theme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import classNames from 'classnames';
-import React, { type FC, useCallback } from 'react';
+import React, { memo, type FC, useCallback } from 'react';
 
 import { CardShape } from 'components/cardbuilder/utils/shape';
 import OffsetAppBar from 'components/OffsetAppBar';
@@ -246,8 +246,8 @@ const ItemsView: FC<ItemsViewProps> = ({
     let itemCountDisplay = '\u2219'; // Bullet "operator" character as a loading indicator
     if (!isPending) {
         itemCountDisplay = isPaginationRequired ?
-            globalize.translate('ListPaging', paginationStart, paginationEnd, totalRecordCount) :
-            totalRecordCount;
+            globalize.translate('ListPaging', String(paginationStart), String(paginationEnd), String(totalRecordCount)) :
+            String(totalRecordCount);
     }
 
     const itemsContainerClass = classNames(
@@ -430,5 +430,5 @@ const ItemsView: FC<ItemsViewProps> = ({
     );
 };
 
-export default ItemsView;
+export default memo(ItemsView);
 

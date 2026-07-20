@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { memo, FC, useCallback } from 'react';
 import Button from '@mui/material/Button';
 import PlayArrow from '@mui/icons-material/PlayArrow';
 
@@ -35,7 +35,7 @@ const PlayAllButton: FC<PlayAllButtonProps> = ({
                     SortBy: [libraryViewSettings.SortBy],
                     SortOrder: [libraryViewSettings.SortOrder]
                 }
-            }).catch(err => {
+            }).catch((err: any) => {
                 console.error('[PlayAllButton] failed to play', err);
             });
         } else {
@@ -48,7 +48,7 @@ const PlayAllButton: FC<PlayAllButtonProps> = ({
                     SortBy: [libraryViewSettings.SortBy],
                     SortOrder: [libraryViewSettings.SortOrder]
                 }
-            }).catch(err => {
+            }).catch((err: any) => {
                 console.error('[PlayAllButton] failed to play', err);
             });
         }
@@ -69,4 +69,4 @@ const PlayAllButton: FC<PlayAllButtonProps> = ({
     );
 };
 
-export default PlayAllButton;
+export default memo(PlayAllButton);

@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 import type { LogFile } from '@jellyfin/sdk/lib/generated-client/models/log-file';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -12,7 +12,7 @@ type LogItemProps = {
 
 const LogItemList: FunctionComponent<LogItemProps> = ({ logs }: LogItemProps) => {
     const getDate = (logFile: LogFile) => {
-        const date = datetime.parseISO8601Date(logFile.DateModified, true);
+        const date = datetime.parseISO8601Date(logFile.DateModified || '', true);
         return datetime.toLocaleDateString(date) + ' ' + datetime.getDisplayTime(date);
     };
 
@@ -42,5 +42,5 @@ const LogItemList: FunctionComponent<LogItemProps> = ({ logs }: LogItemProps) =>
     );
 };
 
-export default LogItemList;
+export default memo(LogItemList);
 

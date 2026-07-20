@@ -1,5 +1,5 @@
 import { ItemSortBy } from '@jellyfin/sdk/lib/generated-client/models/item-sort-by';
-import React, { FC, useCallback } from 'react';
+import React, { memo, FC, useCallback } from 'react';
 import Shuffle from '@mui/icons-material/Shuffle';
 import Button from '@mui/material/Button';
 
@@ -39,7 +39,7 @@ const ShuffleButton: FC<ShuffleButtonProps> = ({
                     ...getFiltersQuery(viewType, libraryViewSettings),
                     SortBy: [ItemSortBy.Random]
                 }
-            }).catch(err => {
+            }).catch((err: any) => {
                 console.error('[ShuffleButton] failed to play', err);
             });
         }
@@ -60,5 +60,5 @@ const ShuffleButton: FC<ShuffleButtonProps> = ({
     );
 };
 
-export default ShuffleButton;
+export default memo(ShuffleButton);
 

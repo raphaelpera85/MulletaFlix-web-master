@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { memo, FC, useCallback, useMemo } from 'react';
 import IconButton from '@mui/material/IconButton';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import ReplayIcon from '@mui/icons-material/Replay';
@@ -60,7 +60,7 @@ const PlayOrResumeButton: FC<PlayOrResumeButtonProps> = ({
             );
             playbackManager.play({
                 items: [channel]
-            }).catch(err => {
+            }).catch((err: any) => {
                 console.error('[PlayOrResumeButton] failed to play', err);
             });
             return;
@@ -69,7 +69,7 @@ const PlayOrResumeButton: FC<PlayOrResumeButtonProps> = ({
         playbackManager.play({
             items: [item],
             ...playOptions
-        }).catch(err => {
+        }).catch((err: any) => {
             console.error('[PlayOrResumeButton] failed to play', err);
         });
     }, [apiContext, item, playOptions, queryClient]);
@@ -90,4 +90,4 @@ const PlayOrResumeButton: FC<PlayOrResumeButtonProps> = ({
     );
 };
 
-export default PlayOrResumeButton;
+export default memo(PlayOrResumeButton);

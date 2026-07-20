@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { memo, FC, useCallback } from 'react';
 import Button from '@mui/material/Button';
 import Queue from '@mui/icons-material/Queue';
 
@@ -23,13 +23,13 @@ const QueueButton: FC<QueueButtonProps> = ({
         if (item && !hasFilters) {
             playbackManager.queue({
                 items: [item]
-            }).catch(err => {
+            }).catch((err: unknown) => {
                 console.error('[QueueButton] failed to add to queue', err);
             });
         } else {
             playbackManager.queue({
                 items
-            }).catch(err => {
+            }).catch((err: unknown) => {
                 console.error('[QueueButton] failed to add to queue', err);
             });
         }
@@ -50,4 +50,4 @@ const QueueButton: FC<QueueButtonProps> = ({
     );
 };
 
-export default QueueButton;
+export default memo(QueueButton);

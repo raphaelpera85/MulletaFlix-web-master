@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useRef } from 'react';
+import React, { memo, FC, useCallback, useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
 import Guide from 'components/guide/guide';
 import 'material-design-icons-iconfont';
@@ -13,11 +13,12 @@ import 'styles/scrollstyles.scss';
 import 'styles/flexstyles.scss';
 
 const GuideView: FC = () => {
-    const guideInstance = useRef<Guide | null>();
+    const guideInstance = useRef<any>();
     const tvGuideContainerRef = useRef<HTMLDivElement>(null);
+    const GuideCtor = Guide as any;
 
     const initGuide = useCallback((element: HTMLDivElement) => {
-        guideInstance.current = new Guide({
+        guideInstance.current = new GuideCtor({
             element: element,
             serverId: window.ApiClient.serverId()
         });
@@ -62,4 +63,4 @@ const GuideView: FC = () => {
     />;
 };
 
-export default GuideView;
+export default memo(GuideView);
