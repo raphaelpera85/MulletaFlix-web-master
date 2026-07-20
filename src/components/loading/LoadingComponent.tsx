@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect } from 'react';
+import { FunctionComponent, memo, useEffect } from 'react';
 
 import loading from './loading';
 
@@ -14,4 +14,4 @@ const Loading: FunctionComponent = () => {
     return null;
 };
 
-export default Loading;
+export default memo(Loading);

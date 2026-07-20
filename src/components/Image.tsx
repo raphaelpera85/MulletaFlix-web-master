@@ -2,7 +2,7 @@ import type { SvgIconComponent } from '@mui/icons-material';
 import ImageNotSupported from '@mui/icons-material/ImageNotSupported';
 import Box from '@mui/material/Box/Box';
 import Paper from '@mui/material/Paper/Paper';
-import React, { type FC } from 'react';
+import React, { type FC, memo } from 'react';
 
 import { LoadingSkeleton } from './LoadingSkeleton';
 
@@ -42,6 +42,8 @@ const Image: FC<ImageProps> = ({
                     src={url}
                     alt={alt}
                     width='100%'
+                    loading='lazy'
+                    decoding='async'
                 />
             ) : (
                 <Box
@@ -64,4 +66,4 @@ const Image: FC<ImageProps> = ({
     </Paper>
 );
 
-export default Image;
+export default memo(Image);

@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React, { type FC, memo } from 'react';
 
 import { useUserSettings } from 'hooks/useUserSettings';
 import { useBrandingOptions } from 'apps/dashboard/features/branding/api/useBrandingOptions';
@@ -46,4 +46,4 @@ const CustomCss: FC = () => {
     );
 };
 
-export default CustomCss;
+export default memo(CustomCss);

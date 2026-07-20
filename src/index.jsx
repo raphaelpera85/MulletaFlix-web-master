@@ -190,12 +190,12 @@ function loadPlatformFeatures() {
 function registerServiceWorker() {
     if (navigator.serviceWorker && window.appMode !== 'cordova' && window.appMode !== 'android') {
         navigator.serviceWorker.register('serviceworker.js').then(() =>
-            console.log('serviceWorker registered')
+            console.debug('serviceWorker registered')
         ).catch(error =>
-            console.log('error registering serviceWorker: ' + error)
+            console.warn('error registering serviceWorker: ' + error)
         );
     } else {
-        console.warn('serviceWorker unsupported');
+        console.debug('serviceWorker unsupported');
     }
 }
 
