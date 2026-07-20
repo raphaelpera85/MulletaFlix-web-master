@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React, { type FC, memo } from 'react';
 import useList from './useList';
 import ListContent from './ListContent';
 import ListWrapper from './ListWrapper';
@@ -29,4 +29,4 @@ const List: FC<ListProps> = ({ index, item, listOptions = {} }) => {
     );
 };
 
-export default List;
+export default memo(List);

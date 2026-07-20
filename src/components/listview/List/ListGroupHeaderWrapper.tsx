@@ -1,4 +1,4 @@
-import React, { type FC, type PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren, memo } from 'react';
 import Typography from '@mui/material/Typography';
 
 interface ListGroupHeaderWrapperProps {
@@ -27,4 +27,4 @@ const ListGroupHeaderWrapper: FC<PropsWithChildren<ListGroupHeaderWrapperProps>>
     }
 };
 
-export default ListGroupHeaderWrapper;
+export default memo(ListGroupHeaderWrapper);

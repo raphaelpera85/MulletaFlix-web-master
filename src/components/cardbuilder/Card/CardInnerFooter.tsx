@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React, { type FC, memo } from 'react';
 import classNames from 'classnames';
 import CardFooterText from './CardFooterText';
 
@@ -40,4 +40,4 @@ const CardInnerFooter: FC<CardInnerFooterProps> = ({
     );
 };
 
-export default CardInnerFooter;
+export default memo(CardInnerFooter);

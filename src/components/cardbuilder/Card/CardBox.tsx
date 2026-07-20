@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React, { type FC, memo } from 'react';
 
 import layoutManager from 'components/layoutManager';
 import { ItemAction } from 'constants/itemAction';
@@ -80,5 +80,5 @@ const CardBox: FC<CardBoxProps> = ({
     );
 };
 
-export default CardBox;
+export default memo(CardBox);
 

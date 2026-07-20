@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React, { type FC, memo } from 'react';
 import classNames from 'classnames';
 import { useApi } from 'hooks/useApi';
 import { getCardLogoUrl } from './cardHelper';
@@ -42,4 +42,4 @@ const CardOuterFooter: FC<CardOuterFooterProps> = ({ item, cardOptions, overlayT
     );
 };
 
-export default CardOuterFooter;
+export default memo(CardOuterFooter);

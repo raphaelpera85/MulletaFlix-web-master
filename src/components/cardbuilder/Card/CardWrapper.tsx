@@ -1,4 +1,4 @@
-import React, { type FC, type PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren, memo } from 'react';
 import layoutManager from 'components/layoutManager';
 import type { DataAttributes } from 'types/dataAttributes';
 
@@ -27,4 +27,4 @@ const CardWrapper: FC<PropsWithChildren<CardWrapperProps>> = ({
     }
 };
 
-export default CardWrapper;
+export default memo(CardWrapper);

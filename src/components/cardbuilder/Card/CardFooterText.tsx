@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React, { type FC, memo } from 'react';
 import Box from '@mui/material/Box';
 import useCardText from './useCardText';
 import layoutManager from 'components/layoutManager';
@@ -85,4 +85,4 @@ const CardFooterText: FC<CardFooterTextProps> = ({
     );
 };
 
-export default CardFooterText;
+export default memo(CardFooterText);

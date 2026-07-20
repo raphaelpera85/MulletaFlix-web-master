@@ -1,5 +1,5 @@
 import { LocationType } from '@jellyfin/sdk/lib/generated-client/models/location-type';
-import React, { type FC } from 'react';
+import React, { type FC, memo } from 'react';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import classNames from 'classnames';
 
@@ -104,5 +104,5 @@ const CardOverlayButtons: FC<CardOverlayButtonsProps> = ({
     );
 };
 
-export default CardOverlayButtons;
+export default memo(CardOverlayButtons);
 

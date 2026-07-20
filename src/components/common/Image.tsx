@@ -1,4 +1,4 @@
-import React, { type FC, useCallback, useState } from 'react';
+import React, { type FC, memo, useCallback, useState } from 'react';
 import { BlurhashCanvas } from 'react-blurhash';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
@@ -71,4 +71,4 @@ const Image: FC<ImageProps> = ({
     );
 };
 
-export default Image;
+export default memo(Image);

@@ -1,11 +1,12 @@
-import React from 'react';
-import { Navigate, RouteObject } from 'react-router-dom';
+import React, { Suspense } from 'react';
+import { Navigate, Outlet, RouteObject } from 'react-router-dom';
 
 import ConnectionRequired from 'components/ConnectionRequired';
 import { ASYNC_ADMIN_ROUTES } from './_asyncRoutes';
 import { toAsyncPageRoute } from 'components/router/AsyncRoute';
 import { toViewManagerPageRoute } from 'components/router/LegacyRoute';
 import { LEGACY_ADMIN_ROUTES } from './_legacyRoutes';
+import Loading from 'components/loading/LoadingComponent';
 import ServerContentPage from 'components/ServerContentPage';
 import ErrorBoundary from 'components/router/ErrorBoundary';
 
@@ -24,6 +25,11 @@ export const DASHBOARD_APP_ROUTES: RouteObject[] = [
                 children: [
                     {
                         path: DASHBOARD_APP_PATHS.Dashboard,
+                        element: (
+                            <Suspense fallback={<Loading />}>
+                                <Outlet />
+                            </Suspense>
+                        ),
                         children: [
                             ...ASYNC_ADMIN_ROUTES.map(toAsyncPageRoute),
                             ...LEGACY_ADMIN_ROUTES.map(toViewManagerPageRoute),

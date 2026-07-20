@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React, { type FC, memo } from 'react';
 import classNames from 'classnames';
 import { getDefaultBackgroundClass } from '../utils/builder';
 import CardImageContainer from './CardImageContainer';
@@ -53,4 +53,4 @@ const CardContent: FC<CardContentProps> = ({
     );
 };
 
-export default CardContent;
+export default memo(CardContent);

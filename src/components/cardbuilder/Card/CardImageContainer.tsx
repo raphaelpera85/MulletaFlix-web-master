@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React, { type FC, memo } from 'react';
 import Box from '@mui/material/Box';
 import classNames from 'classnames';
 import useIndicator from 'components/indicators/useIndicator';
@@ -79,4 +79,4 @@ const CardImageContainer: FC<CardImageContainerProps> = ({
     );
 };
 
-export default CardImageContainer;
+export default memo(CardImageContainer);

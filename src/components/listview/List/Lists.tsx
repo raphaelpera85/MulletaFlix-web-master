@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React, { type FC, memo } from 'react';
 import groupBy from 'lodash-es/groupBy';
 import Box from '@mui/material/Box';
 import { getIndex } from './listHelper';
@@ -52,4 +52,4 @@ const Lists: FC<ListsProps> = ({ items = [], listOptions = {} }) => {
     );
 };
 
-export default Lists;
+export default memo(Lists);

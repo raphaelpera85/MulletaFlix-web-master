@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React, { type FC, memo } from 'react';
 import Box from '@mui/material/Box';
 
 import { ensureArray } from 'utils/array';
@@ -39,4 +39,4 @@ const CardText: FC<CardTextProps> = ({ className, textLine }) => {
     );
 };
 
-export default CardText;
+export default memo(CardText);

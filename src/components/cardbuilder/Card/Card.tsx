@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React, { type FC, memo } from 'react';
 import useCard from './useCard';
 import CardWrapper from './CardWrapper';
 import CardBox from './CardBox';
@@ -22,4 +22,4 @@ const Card: FC<CardProps> = ({ item, cardOptions }) => {
     );
 };
 
-export default Card;
+export default memo(Card);

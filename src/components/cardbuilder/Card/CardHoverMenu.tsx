@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React, { type FC, memo } from 'react';
 import Box from '@mui/material/Box';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import classNames from 'classnames';
@@ -84,4 +84,4 @@ const CardHoverMenu: FC<CardHoverMenuProps> = ({
     );
 };
 
-export default CardHoverMenu;
+export default memo(CardHoverMenu);

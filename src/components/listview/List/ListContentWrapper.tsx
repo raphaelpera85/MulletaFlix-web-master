@@ -1,4 +1,4 @@
-import React, { type FC, type PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren, memo } from 'react';
 import Box from '@mui/material/Box';
 
 interface ListContentWrapperProps {
@@ -31,4 +31,4 @@ const ListContentWrapper: FC<PropsWithChildren<ListContentWrapperProps>> = ({
     }
 };
 
-export default ListContentWrapper;
+export default memo(ListContentWrapper);
