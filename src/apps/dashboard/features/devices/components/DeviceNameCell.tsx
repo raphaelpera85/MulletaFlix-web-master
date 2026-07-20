@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 
 import { DeviceInfoCell } from 'apps/dashboard/features/devices/types/deviceInfoCell';
 import { getDeviceIcon } from 'utils/image';
@@ -19,4 +19,4 @@ const DeviceNameCell: FC<DeviceInfoCell> = ({ row, renderedCellValue }) => (
     </>
 );
 
-export default DeviceNameCell;
+export default memo(DeviceNameCell);

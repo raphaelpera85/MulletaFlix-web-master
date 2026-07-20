@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { type FC, type PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren, memo } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
@@ -48,4 +48,4 @@ const ListWrapper: FC<PropsWithChildren<ListWrapperProps>> = ({
     }
 };
 
-export default ListWrapper;
+export default memo(ListWrapper);

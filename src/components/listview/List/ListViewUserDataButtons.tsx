@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React, { type FC, memo } from 'react';
 import Box from '@mui/material/Box';
 
 import itemHelper from '../../itemHelper';
@@ -85,4 +85,4 @@ const ListViewUserDataButtons: FC<ListViewUserDataButtonsProps> = ({
     );
 };
 
-export default ListViewUserDataButtons;
+export default memo(ListViewUserDataButtons);

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, memo, useState } from 'react';
 import type { SessionInfo } from '@jellyfin/sdk/lib/generated-client/models/session-info';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
@@ -268,5 +268,5 @@ const DeviceCard = ({ device }: DeviceCardProps) => {
     );
 };
 
-export default DeviceCard;
+export default memo(DeviceCard);
 

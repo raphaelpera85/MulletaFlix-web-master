@@ -1,5 +1,5 @@
 import { BaseItemKind } from '@jellyfin/sdk/lib/generated-client/models/base-item-kind';
-import React, { type FC } from 'react';
+import React, { type FC, memo } from 'react';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import Box from '@mui/material/Box';
 
@@ -106,5 +106,5 @@ const ListContent: FC<ListContentProps> = ({
     );
 };
 
-export default ListContent;
+export default memo(ListContent);
 

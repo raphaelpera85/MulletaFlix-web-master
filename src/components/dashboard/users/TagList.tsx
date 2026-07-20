@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback } from 'react';
+import React, { FunctionComponent, memo, useCallback } from 'react';
 import IconButtonElement from '../../../elements/IconButtonElement';
 
 type IProps = {
@@ -32,4 +32,4 @@ const TagList: FunctionComponent<IProps> = ({ tag, tagType, removeTagCallback }:
     );
 };
 
-export default TagList;
+export default memo(TagList);

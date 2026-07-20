@@ -1,6 +1,6 @@
 import icon from '../../assets/branding/icon.png';
 import Button from '@mui/material/Button/Button';
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useSystemInfo } from 'hooks/useSystemInfo';
@@ -35,4 +35,4 @@ const ServerButton: FC = () => {
     );
 };
 
-export default ServerButton;
+export default memo(ServerButton);

@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React, { type FC, memo } from 'react';
 import classNames from 'classnames';
 import Box from '@mui/material/Box';
 
@@ -102,4 +102,4 @@ const ListImageContainer: FC<ListImageContainerProps> = ({
     );
 };
 
-export default ListImageContainer;
+export default memo(ListImageContainer);

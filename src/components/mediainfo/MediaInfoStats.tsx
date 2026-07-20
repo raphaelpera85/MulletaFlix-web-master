@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React, { type FC, memo } from 'react';
 import classNames from 'classnames';
 import Box from '@mui/material/Box';
 import useMediaInfoStats from './useMediaInfoStats';
@@ -46,4 +46,4 @@ const MediaInfoStats: FC<MediaInfoStatsProps> = ({
     );
 };
 
-export default MediaInfoStats;
+export default memo(MediaInfoStats);
