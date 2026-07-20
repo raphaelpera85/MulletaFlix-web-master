@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React, { type FC, memo } from 'react';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import classNames from 'classnames';
@@ -38,4 +38,4 @@ const MediaInfoItem: FC<MediaInfoItemProps> = ({ className, miscInfo }) => {
     );
 };
 
-export default MediaInfoItem;
+export default memo(MediaInfoItem);

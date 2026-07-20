@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React, { type FC, memo } from 'react';
 import classNames from 'classnames';
 import Box from '@mui/material/Box';
 import useSecondaryMediaInfo from './useSecondaryMediaInfo';
@@ -52,4 +52,4 @@ const SecondaryMediaInfo: FC<SecondaryMediaInfoProps> = ({
     );
 };
 
-export default SecondaryMediaInfo;
+export default memo(SecondaryMediaInfo);

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import type { MRT_Cell, MRT_RowData } from 'material-react-table';
 import { useLocale } from 'hooks/useLocale';
 import Box from '@mui/material/Box';
@@ -24,12 +24,12 @@ const TaskTriggerCell: FC<CellProps> = ({ cell }) => {
                 <Typography variant='body2' color={'text.secondary'}>
                     {timeLimitHours == 1 ?
                         globalize.translate('ValueTimeLimitSingleHour') :
-                        globalize.translate('ValueTimeLimitMultiHour', timeLimitHours)}
+                        globalize.translate('ValueTimeLimitMultiHour', String(timeLimitHours))}
                 </Typography>
             )}
         </Box>
     );
 };
 
-export default TaskTriggerCell;
+export default memo(TaskTriggerCell);
 

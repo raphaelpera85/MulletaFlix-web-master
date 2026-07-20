@@ -1,5 +1,5 @@
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import React, { type FC, useEffect, useRef } from 'react';
+import React, { type FC, memo, useEffect, useRef } from 'react';
 
 import cardBuilder from 'components/cardbuilder/cardBuilder';
 import type { CardOptions } from 'types/cardOptions';
@@ -48,5 +48,5 @@ const SearchResultsRow: FC<SearchResultsRowProps> = ({ title, items = [], cardOp
     );
 };
 
-export default SearchResultsRow;
+export default memo(SearchResultsRow);
 

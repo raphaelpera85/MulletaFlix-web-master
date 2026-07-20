@@ -1,5 +1,5 @@
 import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { getLocaleWithSuffix } from '../../../utils/dateFnsLocale';
 import globalize from '../../../lib/globalize';
@@ -98,5 +98,5 @@ const UserCardBox: FunctionComponent<IProps> = ({ user = {} }: IProps) => {
     );
 };
 
-export default UserCardBox;
+export default memo(UserCardBox);
 

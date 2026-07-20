@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React, { type FC, memo } from 'react';
 import classNames from 'classnames';
 import StarIcon from '@mui/icons-material/Star';
 import Box from '@mui/material/Box';
@@ -30,4 +30,4 @@ const StarIcons: FC<StarIconsProps> = ({ className, communityRating }) => {
     );
 };
 
-export default StarIcons;
+export default memo(StarIcons);

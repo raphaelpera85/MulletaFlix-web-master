@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React, { type FC, memo } from 'react';
 import classNames from 'classnames';
 import Box from '@mui/material/Box';
 import usePrimaryMediaInfo from './usePrimaryMediaInfo';
@@ -116,4 +116,4 @@ const PrimaryMediaInfo: FC<PrimaryMediaInfoProps> = ({
     );
 };
 
-export default PrimaryMediaInfo;
+export default memo(PrimaryMediaInfo);

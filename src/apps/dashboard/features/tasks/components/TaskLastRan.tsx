@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useMemo } from 'react';
+import React, { FunctionComponent, memo, useMemo } from 'react';
 import { TaskProps } from '../types/taskProps';
 import { useLocale } from 'hooks/useLocale';
 import { formatDistance, formatDistanceToNow, parseISO } from 'date-fns';
@@ -27,7 +27,7 @@ const TaskLastRan: FunctionComponent<TaskProps> = ({ task }: TaskProps) => {
 
             return (
                 <Typography sx={{ lineHeight: '1.2rem', color: 'text.secondary' }} variant='body1'>
-                    {globalize.translate('LabelScheduledTaskLastRan', lastRan, timeTaken)}
+                    {globalize.translate('LabelScheduledTaskLastRan', lastRan || '', timeTaken || '')}
 
                     {lastResultStatus == 'Failed' && <Typography display='inline' color='error'>{` (${globalize.translate('LabelFailed')})`}</Typography>}
                     {lastResultStatus == 'Cancelled' && <Typography display='inline' color='blue'>{` (${globalize.translate('LabelCancelled')})`}</Typography>}
@@ -42,4 +42,4 @@ const TaskLastRan: FunctionComponent<TaskProps> = ({ task }: TaskProps) => {
     }
 };
 
-export default TaskLastRan;
+export default memo(TaskLastRan);
