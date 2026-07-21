@@ -158,7 +158,7 @@ function getMovieCount(itemMovieCount: NullableNumber) {
     if (itemMovieCount) {
         return itemMovieCount === 1 ?
             globalize.translate('ValueOneMovie') :
-            globalize.translate('ValueMovieCount', itemMovieCount);
+            globalize.translate('ValueMovieCount', String(itemMovieCount));
     }
 }
 
@@ -166,7 +166,7 @@ function getSeriesCount(itemSeriesCount: NullableNumber) {
     if (itemSeriesCount) {
         return itemSeriesCount === 1 ?
             globalize.translate('ValueOneSeries') :
-            globalize.translate('ValueSeriesCount', itemSeriesCount);
+            globalize.translate('ValueSeriesCount', String(itemSeriesCount));
     }
 }
 
@@ -174,7 +174,7 @@ function getEpisodeCount(itemEpisodeCount: NullableNumber) {
     if (itemEpisodeCount) {
         return itemEpisodeCount === 1 ?
             globalize.translate('ValueOneEpisode') :
-            globalize.translate('ValueEpisodeCount', itemEpisodeCount);
+            globalize.translate('ValueEpisodeCount', String(itemEpisodeCount));
     }
 }
 
@@ -182,7 +182,7 @@ function getAlbumCount(itemAlbumCount: NullableNumber) {
     if (itemAlbumCount) {
         return itemAlbumCount === 1 ?
             globalize.translate('ValueOneAlbum') :
-            globalize.translate('ValueAlbumCount', itemAlbumCount);
+            globalize.translate('ValueAlbumCount', String(itemAlbumCount));
     }
 }
 
@@ -190,7 +190,7 @@ function getSongCount(itemSongCount: NullableNumber) {
     if (itemSongCount) {
         return itemSongCount === 1 ?
             globalize.translate('ValueOneSong') :
-            globalize.translate('ValueSongCount', itemSongCount);
+            globalize.translate('ValueSongCount', String(itemSongCount));
     }
 }
 
@@ -198,14 +198,14 @@ function getMusicVideoCount(itemMusicVideoCount: NullableNumber) {
     if (itemMusicVideoCount) {
         return itemMusicVideoCount === 1 ?
             globalize.translate('ValueOneMusicVideo') :
-            globalize.translate('ValueMusicVideoCount', itemMusicVideoCount);
+            globalize.translate('ValueMusicVideoCount', String(itemMusicVideoCount));
     }
 }
 
 function getRecursiveItemCount(itemRecursiveItemCount: NullableNumber) {
     return itemRecursiveItemCount === 1 ?
         globalize.translate('ValueOneEpisode') :
-        globalize.translate('ValueEpisodeCount', itemRecursiveItemCount);
+        globalize.translate('ValueEpisodeCount', String(itemRecursiveItemCount));
 }
 
 function getParentTitle(
@@ -252,9 +252,9 @@ function getRunTimeTicks(itemRunTimeTicks: NullableNumber) {
 
         minutes = minutes || 1;
 
-        return globalize.translate('ValueMinutes', Math.round(minutes));
+        return globalize.translate('ValueMinutes', String(Math.round(minutes)));
     } else {
-        return globalize.translate('ValueMinutes', 0);
+        return globalize.translate('ValueMinutes', String(0));
     }
 }
 
@@ -399,7 +399,7 @@ function addOtherText(
     }
 
     if (shouldShowExtraType(item.ExtraType)) {
-        addTextLine({ title: globalize.translate(item.ExtraType) });
+        addTextLine({ title: globalize.translate(item.ExtraType || '') });
     }
 
     if (cardOptions.showItemCounts) {
@@ -470,7 +470,7 @@ function addOtherText(
         addTextLine({
             title: globalize.translate(
                 'PersonRole',
-                (item as BaseItemPerson).Role
+                (item as BaseItemPerson).Role || ''
             )
         });
     }
@@ -488,7 +488,7 @@ function getSeriesTimerTime(item: ItemDto) {
     if (item.RecordAnyTime) {
         return globalize.translate('Anytime');
     } else {
-        return datetime.getDisplayTime(item.StartDate);
+        return datetime.getDisplayTime(item.StartDate || '');
     }
 }
 
@@ -562,9 +562,7 @@ function getAdditionalLines(
 function getProductionYear(item: ItemDto) {
     const productionYear =
         item.ProductionYear
-        && datetime.toLocaleString(item.ProductionYear, {
-            useGrouping: false
-        });
+        && String(item.ProductionYear);
     if (item.Type === ItemKind.Series) {
         if (item.Status === 'Continuing') {
             return globalize.translate(
@@ -572,9 +570,8 @@ function getProductionYear(item: ItemDto) {
                 productionYear || ''
             );
         } else if (item.EndDate && item.ProductionYear) {
-            const endYear = datetime.toLocaleString(
-                datetime.parseISO8601Date(item.EndDate).getFullYear(),
-                { useGrouping: false }
+            const endYear = String(
+                datetime.parseISO8601Date(item.EndDate).getFullYear()
             );
             return (
                 productionYear

@@ -12,12 +12,12 @@ interface ScrollState {
 
 interface ScrollerItemSlideIntoViewProps {
     direction: ScrollDirection;
-    scroller: ScrollerFactory | null;
+    scroller: InstanceType<typeof ScrollerFactory> | null;
     scrollState: ScrollState;
 }
 
 interface ScrollToWindowProps {
-    scroller: ScrollerFactory;
+    scroller: InstanceType<typeof ScrollerFactory>;
     items: HTMLElement[];
     scrollState: ScrollState;
     direction: ScrollDirection
@@ -97,7 +97,6 @@ function scrollToWindow({
     if (scroller.slideTo) {
         scroller.slideTo(scrollToPosition, false, undefined);
     } else {
-        // @ts-expect-error Legacy support passes in a `scroller` that isn't a ScrollFactory
-        scroller.scrollToPosition(scrollToPosition);
+        (scroller as unknown as { scrollToPosition: (pos: number) => void }).scrollToPosition(scrollToPosition);
     }
 }

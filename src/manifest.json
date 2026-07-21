@@ -1,7 +1,7 @@
 {
     "name": "MulletaFlix",
     "description": "The Free Software Media System",
-    "lang": "en-US",
+    "lang": "pt-BR",
     "short_name": "MulletaFlix",
     "start_url": "index.html#/home",
     "theme_color": "#101010",

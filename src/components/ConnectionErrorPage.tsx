@@ -26,7 +26,7 @@ const ConnectionErrorPage: FC<ConnectionErrorPageProps> = ({
 
         try {
             const server = ServerConnections.getLastUsedServer();
-            await ServerConnections.updateSavedServerId(server);
+            await ServerConnections.updateSavedServerId(server!);
             window.location.reload();
         } catch (err) {
             console.error('[ConnectionErrorPage] Failed to force connect to server', err);

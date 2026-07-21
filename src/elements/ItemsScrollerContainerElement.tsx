@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
+import DOMPurify from 'dompurify';
 
 const createScroller = ({ scrollerclassName, dataHorizontal, dataMousewheel, dataCenterfocus, dataId, className }: IProps) => ({
-    __html: `<div is="emby-scroller"
+    __html: DOMPurify.sanitize(`<div is="emby-scroller"
     class="${scrollerclassName}"
     ${dataHorizontal}
     ${dataMousewheel}
@@ -13,7 +14,7 @@ const createScroller = ({ scrollerclassName, dataHorizontal, dataMousewheel, dat
             ${dataId}
         >
         </div>
-    </div>`
+    </div>`)
 });
 
 interface IProps {

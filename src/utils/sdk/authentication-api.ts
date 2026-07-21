@@ -1,4 +1,9 @@
-// FIXME: This file should be moved to the SDK after the 12.0 release.
+/**
+ * Authentication API wrapper.
+ * This file provides a convenience wrapper for the Jellyfin SDK AuthenticationApi.
+ * Can be removed when @jellyfin/sdk exports getAuthenticationApi directly.
+ * @see https://github.com/jellyfin/jellyfin-sdk-typescript/issues/XXX
+ */
 /**
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this

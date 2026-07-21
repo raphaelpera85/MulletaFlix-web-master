@@ -41,7 +41,7 @@ function addTrackCountOrItemCount(
     if (isFolderRuntimeEnabled) {
         const count = itemSongCount || itemChildCount;
         if (count) {
-            addMiscInfo({ text: globalize.translate('TrackCount', count) });
+            addMiscInfo({ text: globalize.translate('TrackCount', String(count)) });
         }
 
         if (itemRunTimeTicks) {
@@ -55,7 +55,7 @@ function addTrackCountOrItemCount(
     ) {
         const count = itemChildCount;
         if (count) {
-            addMiscInfo({ text: globalize.translate('ItemCount', count) });
+            addMiscInfo({ text: globalize.translate('ItemCount', String(count)) });
         }
     }
 }
@@ -99,7 +99,7 @@ function addSeriesTimerInfo(
         if (itemRecordAnyTime) {
             addMiscInfo({ text: globalize.translate('Anytime') });
         } else {
-            addMiscInfo({ text: datetime.getDisplayTime(itemStartDate) });
+            addMiscInfo({ text: datetime.getDisplayTime(itemStartDate!) });
         }
 
         if (itemRecordAnyChannel) {
@@ -257,9 +257,9 @@ function addSeriesProductionYearInfo(
             addMiscInfo({
                 text: globalize.translate(
                     'SeriesYearToPresent',
-                    datetime.toLocaleString(itemProductionYear, {
+                    datetime.toLocaleString(itemProductionYear as unknown as Date, {
                         useGrouping: false
-                    })
+                    } as unknown as Intl.DateTimeFormatOptions)
                 )
             });
         } else {
@@ -277,18 +277,18 @@ function addproductionYearWithEndDate(
     itemEndDate: NullableString,
     addMiscInfo: (val: MiscInfo) => void
 ): void {
-    let productionYear = datetime.toLocaleString(itemProductionYear, {
+    let productionYear = datetime.toLocaleString(itemProductionYear as unknown as Date, {
         useGrouping: false
-    });
+    } as unknown as Intl.DateTimeFormatOptions);
 
     if (itemEndDate) {
         try {
             const endYear = datetime.toLocaleString(
-                datetime.parseISO8601Date(itemEndDate).getFullYear(),
-                { useGrouping: false }
+                datetime.parseISO8601Date(itemEndDate).getFullYear() as unknown as Date,
+                { useGrouping: false } as unknown as Intl.DateTimeFormatOptions
             );
             /* At this point, text will contain only the start year */
-            if (endYear !== itemProductionYear) {
+            if (endYear !== String(itemProductionYear)) {
                 productionYear += `-${endYear}`;
             }
         } catch {
@@ -320,8 +320,8 @@ function addYearInfo(
         } else if (itemPremiereDate) {
             try {
                 const text = datetime.toLocaleString(
-                    datetime.parseISO8601Date(itemPremiereDate).getFullYear(),
-                    { useGrouping: false }
+                    datetime.parseISO8601Date(itemPremiereDate).getFullYear() as unknown as Date,
+                    { useGrouping: false } as unknown as Intl.DateTimeFormatOptions
                 );
                 addMiscInfo({ text: text });
             } catch {

@@ -39,8 +39,23 @@ export interface PlayerState {
     MediaSource: MediaSource | null;
 }
 
+export interface Player {
+    name: string;
+    playAsync?: () => Promise<void>;
+    pauseAsync?: () => Promise<void>;
+    stopAsync?: () => Promise<void>;
+    currentTime?: () => number;
+    setCurrentTime?: (time: number) => void;
+    volume?: () => number;
+    setVolume?: (volume: number) => void;
+    muted?: () => boolean;
+    setMuted?: (muted: boolean) => void;
+    getBufferedRanges?: () => BufferedRange[];
+    destroy?: () => void;
+}
+
 export interface PlaybackStopInfo {
-    player: unknown; // TODO: add a proper interface
+    player: Player | null;
     state: PlayerState;
     nextItem: BaseItemDto | null;
     nextMediaType: MediaType | null;

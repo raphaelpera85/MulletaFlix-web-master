@@ -62,7 +62,7 @@ const RemotePlayActiveMenu: FC<RemotePlayActiveMenuProps> = ({
                         id: 'no'
                     }
                 ],
-                text: globalize.translate('ConfirmEndPlayerSession', remotePlayerName)
+                text: globalize.translate('ConfirmEndPlayerSession', remotePlayerName ?? '')
             }).then(id => {
                 onMenuClose();
 

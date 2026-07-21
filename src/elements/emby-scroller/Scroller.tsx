@@ -41,7 +41,7 @@ const Scroller: FC<PropsWithChildren<ScrollerProps>> = ({
         scrollPos: 0,
         scrollWidth: 0
     });
-    const scrollerFactoryRef = useRef<ScrollerFactory | null>(null);
+    const scrollerFactoryRef = useRef<InstanceType<typeof ScrollerFactory> | null>(null);
 
     const getScrollSlider = useCallback(() => {
         if (scrollerFactoryRef.current) {
@@ -98,7 +98,7 @@ const Scroller: FC<PropsWithChildren<ScrollerProps>> = ({
             scrollSize -= paddingRight;
         }
 
-        const slider = getScrollSlider();
+        const slider = getScrollSlider() as HTMLElement;
         style = window.getComputedStyle(slider, null);
 
         paddingLeft = getStyleValue(style, 'padding-left');
@@ -126,8 +126,8 @@ const Scroller: FC<PropsWithChildren<ScrollerProps>> = ({
         });
     }, [getScrollPosition, getScrollSize, getScrollWidth]);
 
-    const initCenterFocus = useCallback((elem: HTMLElement, scrollerInstance: ScrollerFactory) => {
-        dom.addEventListener(elem, 'focus', function (e: FocusEvent) {
+    const initCenterFocus = useCallback((elem: HTMLElement, scrollerInstance: InstanceType<typeof ScrollerFactory>) => {
+        dom.addEventListener(elem, 'focus', function (e: Event) {
             const focused = focusManager.focusableParent(e.target);
             if (focused) {
                 scrollerInstance.toCenter(focused, false);
@@ -183,7 +183,7 @@ const Scroller: FC<PropsWithChildren<ScrollerProps>> = ({
         };
 
         // If just inserted it might not have any height yet - yes this is a hack
-        scrollerFactoryRef.current = new ScrollerFactory(frame, options);
+        scrollerFactoryRef.current = new ScrollerFactory(frame, options as any);
         scrollerFactoryRef.current.init();
         scrollerFactoryRef.current.reload();
 

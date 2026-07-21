@@ -10,10 +10,11 @@ import { getBackdropShape, getPortraitShape } from 'components/cardbuilder/utils
 import { appRouter } from 'components/router/appRouter';
 import globalize from 'lib/globalize';
 import { queryClient } from 'utils/query/queryClient';
-import type { UserSettings } from 'scripts/settings/userSettings';
 import { toApi } from 'utils/jellyfin-apiclient/compat';
 
 import type { SectionContainerElement, SectionOptions } from './section';
+
+type UserSettingsLike = Pick<typeof import('scripts/settings/userSettings'), 'useEpisodeImagesInNextUpAndResume'>;
 
 const dataMonitorHints: Record<string, string> = {
     Audio: 'audioplayback,markplayed',
@@ -89,7 +90,7 @@ export function loadResume(
     apiClient: ApiClient,
     titleLabel: string,
     mediaType: MediaType,
-    userSettings: UserSettings,
+    userSettings: UserSettingsLike,
     options: SectionOptions & { featured?: boolean, netflix?: boolean }
 ) {
     let html = '';

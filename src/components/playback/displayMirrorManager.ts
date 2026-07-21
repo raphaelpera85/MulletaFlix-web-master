@@ -11,14 +11,14 @@ async function mirrorIfEnabled(serverId: string, itemId: string) {
 
         if (playerInfo && !playerInfo.isLocalPlayer && playerInfo.supportedCommands.indexOf('DisplayContent') !== -1) {
             const apiClient = ServerConnections.getApiClient(serverId);
-            const api = toApi(apiClient);
+            const api = toApi(apiClient as any);
             const userId = apiClient.getCurrentUserId();
 
             try {
                 const item = await queryClient.fetchQuery(getItemQuery(
                     api,
                     itemId,
-                    userId));
+                    userId ?? undefined));
 
                 playbackManager.displayContent({
                     ItemName: item.Name,

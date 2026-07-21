@@ -71,9 +71,9 @@ const postJson = async <T,>(url: string, body?: unknown): Promise<T> => {
         throw new Error('Cliente de API indisponível.');
     }
 
-    return apiClient!.ajax({
+    return (apiClient as any).ajax({
         type: 'POST',
-        url: apiClient!.getUrl(url),
+        url: (apiClient as any).getUrl(url),
         data: body ? JSON.stringify(body) : undefined,
         contentType: 'application/json'
     }) as Promise<T>;
@@ -185,7 +185,7 @@ const JobsPage = () => {
                 throw new Error('Cliente de API indisponível.');
             }
 
-            return apiClient.getJSON(apiClient.getUrl('JobQueue/Status')) as Promise<JobQueueStatus>;
+            return (apiClient as any).getJSON((apiClient as any).getUrl('JobQueue/Status')) as Promise<JobQueueStatus>;
         },
         refetchInterval: 2500
     });

@@ -36,7 +36,7 @@ function CircularProgressWithLabel(
                     component='div'
                     color='text.secondary'
                 >
-                    {toPercentString(props.value / 100, getCurrentDateTimeLocale())}
+                    {toPercentString(props.value / 100, getCurrentDateTimeLocale() ?? '')}
                 </Typography>
             </Box>
         </Box>

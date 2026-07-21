@@ -16,6 +16,11 @@ export declare global {
         'viewshow': CustomEvent;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    interface Document {
+        registerElement(name: string, options: { prototype: any; extends?: string }): any;
+    }
+
     const __COMMIT_SHA__: string;
     const __JF_BUILD_VERSION__: string;
     const __PACKAGE_JSON_NAME__: string;

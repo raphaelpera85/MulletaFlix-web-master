@@ -17,20 +17,20 @@ function getSeriesImageUrl(item: ItemDto, options: ImageOptions = {}) {
     if (item.SeriesId && options.type === ImageType.Primary && item.SeriesPrimaryImageTag) {
         options.tag = item.SeriesPrimaryImageTag;
 
-        return ServerConnections.getApiClient(item.ServerId).getScaledImageUrl(item.SeriesId, options);
+        return (ServerConnections.getApiClient(item.ServerId) as any).getScaledImageUrl(item.SeriesId, options);
     }
 
     if (options.type === ImageType.Thumb) {
         if (item.SeriesId && item.SeriesThumbImageTag) {
             options.tag = item.SeriesThumbImageTag;
 
-            return ServerConnections.getApiClient(item.ServerId).getScaledImageUrl(item.SeriesId, options);
+            return (ServerConnections.getApiClient(item.ServerId) as any).getScaledImageUrl(item.SeriesId, options);
         }
 
         if (item.ParentThumbItemId && item.ParentThumbImageTag) {
             options.tag = item.ParentThumbImageTag;
 
-            return ServerConnections.getApiClient(item.ServerId).getScaledImageUrl(item.ParentThumbItemId, options);
+            return (ServerConnections.getApiClient(item.ServerId) as any).getScaledImageUrl(item.ParentThumbItemId, options);
         }
     }
 
@@ -48,12 +48,12 @@ export function getImageUrl(item: ItemDto, options: ImageOptions = {}) {
 
     if (itemId && item.ImageTags?.[options.type]) {
         options.tag = item.ImageTags[options.type] ?? undefined;
-        return ServerConnections.getApiClient(item.ServerId).getScaledImageUrl(itemId, options);
+        return (ServerConnections.getApiClient(item.ServerId) as any).getScaledImageUrl(itemId, options);
     }
 
     if (item.AlbumId && item.AlbumPrimaryImageTag) {
         options.tag = item.AlbumPrimaryImageTag;
-        return ServerConnections.getApiClient(item.ServerId).getScaledImageUrl(item.AlbumId, options);
+        return (ServerConnections.getApiClient(item.ServerId) as any).getScaledImageUrl(item.AlbumId, options);
     }
 
     return null;

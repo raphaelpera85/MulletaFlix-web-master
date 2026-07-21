@@ -12,7 +12,7 @@ import '../../../elements/emby-tabs/emby-tabs';
 import '../../../elements/emby-button/emby-button';
 import '../../../elements/emby-scroller/emby-scroller';
 
-const controllerModules = import.meta.glob('../../../controllers/*.js');
+const controllerModules = import.meta.glob('../../../controllers/*.ts');
 
 type OnResumeOptions = {
     autoFocus?: boolean;
@@ -74,7 +74,7 @@ const Home = () => {
                 depends = 'favorites';
         }
 
-        const globPath = `../../../controllers/${depends}.js`;
+        const globPath = `../../../controllers/${depends}.ts`;
         const loadFn = controllerModules[globPath];
         if (!loadFn) {
             return Promise.reject(new Error(`Controller not found in glob: ${depends}`));

@@ -14,3 +14,7 @@ self.onmessage = ({ data: { hash, width, height } }): void => {
     }
 };
 /* eslint-enable no-restricted-globals */
+
+export default null as any as {
+    new (): Worker;
+};

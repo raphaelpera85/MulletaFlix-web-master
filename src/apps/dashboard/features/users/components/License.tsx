@@ -22,6 +22,13 @@ interface LicenseProps {
     userId: string;
 }
 
+interface ApiError {
+    message?: string;
+    response?: {
+        status?: number;
+    };
+}
+
 const License = ({ userId }: LicenseProps) => {
     const { data: license, isLoading, isError, error, refetch } = useUserLicense(userId);
     const setLicenseMutation = useSetUserLicense();
@@ -31,7 +38,7 @@ const License = ({ userId }: LicenseProps) => {
     const [adminNotes, setAdminNotes] = useState<string>('');
 
     // Handle 404 as "no active license"
-    const isNoLicense = isError && (error as any)?.response?.status === 404;
+    const isNoLicense = isError && (error as ApiError)?.response?.status === 404;
     const hasLicense = !!license && !isNoLicense;
 
     const handleDurationChange = (event: SelectChangeEvent) => {
@@ -59,7 +66,7 @@ const License = ({ userId }: LicenseProps) => {
                 void refetch();
             },
             onError: (err) => {
-                toast(`Erro ao salvar licença: ${(err as any)?.message || 'Erro desconhecido'}`);
+                toast(`Erro ao salvar licença: ${(err as ApiError)?.message || 'Erro desconhecido'}`);
             }
         });
     };
@@ -77,7 +84,7 @@ const License = ({ userId }: LicenseProps) => {
                     void refetch();
                 },
                 onError: (err) => {
-                    toast(`Erro ao revogar licença: ${(err as any)?.message || 'Erro desconhecido'}`);
+                    toast(`Erro ao revogar licença: ${(err as ApiError)?.message || 'Erro desconhecido'}`);
                 }
             });
         }).catch(() => {

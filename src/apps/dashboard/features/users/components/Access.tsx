@@ -134,7 +134,7 @@ const Access = ({ userId }: AccessProps) => {
     }, []);
 
     const loadUser = useCallback((user: UserDto, mediaFolders: BaseItemDto[], channels: BaseItemDto[], devices: DeviceInfoDto[]) => {
-        void libraryMenu.then(menu => menu.setTitle(user.Name));
+        void libraryMenu.then(menu => menu.setTitle(user.Name || ''));
         loadChannels(user, channels);
         loadMediaFolders(user, mediaFolders);
         loadDevices(user, devices);

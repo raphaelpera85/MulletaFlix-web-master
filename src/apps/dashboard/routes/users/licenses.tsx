@@ -28,6 +28,13 @@ import { fetchUserLicense, type UserLicenseDto, USER_LICENSE_QUERY_KEY, useRevok
 import { useUsers } from 'hooks/useUsers';
 import { useApi } from 'hooks/useApi';
 
+interface ApiError {
+    message?: string;
+    response?: {
+        status?: number;
+    };
+}
+
 type LicenseRowStatus = {
     label: string;
     color: ChipProps['color'];
@@ -160,7 +167,7 @@ export const Component = () => {
         (users ?? []).map((user, index) => {
             const licenseQuery = licenseQueries[index];
             const license = licenseQuery?.data;
-            const licenseError = licenseQuery?.error as any;
+            const licenseError = licenseQuery?.error as ApiError | undefined;
             const isAdmin = !!user.Policy?.IsAdministrator;
             const isNoLicense = licenseQuery?.isError && licenseError?.response?.status === 404;
             const hasError = !!licenseQuery?.isError && !isNoLicense;
@@ -211,7 +218,7 @@ export const Component = () => {
                 });
             },
             onError: (error) => {
-                toast(`Erro ao salvar licença: ${(error as any)?.message || 'erro desconhecido'}`);
+                toast(`Erro ao salvar licença: ${(error as ApiError)?.message || 'erro desconhecido'}`);
             }
         });
     }, [durationDrafts, setLicenseMutation]);
@@ -230,7 +237,7 @@ export const Component = () => {
                     toast('Licença revogada com sucesso.');
                 },
                 onError: (error) => {
-                    toast(`Erro ao revogar licença: ${(error as any)?.message || 'erro desconhecido'}`);
+                    toast(`Erro ao revogar licença: ${(error as ApiError)?.message || 'erro desconhecido'}`);
                 }
             });
         }).catch(() => {

@@ -75,7 +75,7 @@ function useTextLines({ item, textLineOpts = {} }: UseTextLinesProps) {
     const addProgramDateTime = () => {
         if (showProgramDateTime) {
             const programDateTime = datetime.toLocaleString(
-                datetime.parseISO8601Date(item.StartDate),
+                datetime.parseISO8601Date(item.StartDate ?? ''),
                 {
                     weekday: 'long',
                     month: 'short',
@@ -91,7 +91,7 @@ function useTextLines({ item, textLineOpts = {} }: UseTextLinesProps) {
     const addProgramTime = () => {
         if (showProgramTime) {
             const programTime = datetime.getDisplayTime(
-                datetime.parseISO8601Date(item.StartDate)
+                datetime.parseISO8601Date(item.StartDate ?? '')
             );
             addTextLine({ title: programTime });
         }

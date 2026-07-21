@@ -182,7 +182,8 @@ export function show(options: Options) {
     const scrollClassName = layoutManager.tv ? 'scrollY smoothScrollY hiddenScrollY' : 'scrollY';
     let style = '';
 
-    // Admittedly a hack but right now the scrollbar is being factored into the width which is causing truncation
+    // WORKAROUND: Scrollbar width is factored into element width, causing truncation on long lists.
+    // TODO: Replace with CSS `scrollbar-gutter: stable` when browser support improves.
     if (options.items.length > 20) {
         const minWidth = dom.getWindowSize().innerWidth >= 300 ? 240 : 200;
         style += 'min-width:' + minWidth + 'px;';

@@ -63,7 +63,7 @@ const CheckBoxElement: FC<CheckBoxElementProps> = ({
 }) => {
     const renderContent = itemName ?
         `<span>${escapeHTML(itemName)}</span>` :
-        `<span>${globalize.translate(title)}</span>`;
+        `<span>${globalize.translate(title ?? '')}</span>`;
 
     return (
         <div

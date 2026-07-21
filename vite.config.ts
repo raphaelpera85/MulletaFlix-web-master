@@ -2,6 +2,7 @@
 /// <reference types="vite/client" />
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import path from 'path';
 import fs from 'fs';
 
 const htmlPlugin = () => ({
@@ -29,8 +30,17 @@ const htmlPlugin = () => ({
     load(id: string) {
         if (id.endsWith('?html-string')) {
             const filePath = id.replace(/\?html-string$/, '');
-            const content = fs.readFileSync(filePath, 'utf-8');
-            return `export default ${JSON.stringify(content)};`;
+            const root = process.cwd();
+            if (!path.resolve(filePath).startsWith(root)) {
+                throw new Error(`[html-plugin] path traversal blocked: ${filePath}`);
+            }
+            try {
+                const content = fs.readFileSync(filePath, 'utf-8');
+                return `export default ${JSON.stringify(content)};`;
+            } catch (err) {
+                this.warn(`[html-plugin] failed to read ${filePath}: ${err}`);
+                return `export default "";`;
+            }
         }
         return null;
     }

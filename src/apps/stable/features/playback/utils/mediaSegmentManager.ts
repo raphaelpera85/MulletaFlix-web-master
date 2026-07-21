@@ -88,7 +88,7 @@ class MediaSegmentManager extends PlaybackSubscriber {
         this.hasSegments = !!state.MediaSource?.HasSegments;
 
         const itemId = state.MediaSource?.Id;
-        const serverId = state.NowPlayingItem?.ServerId || ServerConnections.currentApiClient()?.serverId();
+        const serverId = state.NowPlayingItem?.ServerId || String((ServerConnections.currentApiClient() as any)?.serverId() ?? '');
 
         if (!this.hasSegments || !serverId || !itemId) return;
 
@@ -109,7 +109,7 @@ class MediaSegmentManager extends PlaybackSubscriber {
             return;
         }
 
-        const api = toApi(ServerConnections.getApiClient(serverId));
+        const api = toApi(ServerConnections.getApiClient(serverId) as any);
         void this.fetchMediaSegments(
             api,
             itemId,

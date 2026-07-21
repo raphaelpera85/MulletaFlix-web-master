@@ -52,7 +52,7 @@ function getIntervalTriggerTime(ticks: number) {
         case 1:
             return globalize.translate('EveryHour');
         default:
-            return globalize.translate('EveryXHours', hours);
+            return globalize.translate('EveryXHours', String(hours));
     }
 }
 

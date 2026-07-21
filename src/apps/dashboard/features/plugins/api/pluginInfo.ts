@@ -2,8 +2,10 @@ import type { PluginInfo } from '@jellyfin/sdk/lib/generated-client/models/plugi
 import { PluginStatus } from '@jellyfin/sdk/lib/generated-client/models/plugin-status';
 
 /**
- * HACK: The Plugins API is returning garbage data in some cases,
- * so we need to try to find the "best" match if multiple exist.
+ * WORKAROUND: The Plugins API sometimes returns duplicate entries for the same plugin.
+ * This function finds the "best" match by prioritizing disabled entries (which indicate
+ * a pending update) over active ones.
+ * TODO: Fix server-side to not return duplicate plugin entries.
  */
 export const findBestPluginInfo = (
     pluginId: string,

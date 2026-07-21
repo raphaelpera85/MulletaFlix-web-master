@@ -6,7 +6,7 @@ import './emby-scrollbuttons.scss';
 import { ScrollDirection, scrollerItemSlideIntoView } from './utils';
 
 interface ScrollButtonsProps {
-    scrollerFactoryRef: React.MutableRefObject<scrollerFactory | null>;
+    scrollerFactoryRef: React.MutableRefObject<InstanceType<typeof scrollerFactory> | null>;
     scrollState: {
         scrollSize: number;
         scrollPos: number;
@@ -34,7 +34,7 @@ const ScrollButtons: FC<ScrollButtonsProps> = ({ scrollerFactoryRef, scrollState
         parent.classList.add('emby-scroller-container');
 
         let localeAwarePos = scrollState.scrollPos;
-        if (globalize.getIsElementRTL(scrollButtonsRef.current)) {
+        if (scrollButtonsRef.current && globalize.getIsElementRTL(scrollButtonsRef.current)) {
             localeAwarePos *= -1;
         }
         setLocaleScrollPos(localeAwarePos);

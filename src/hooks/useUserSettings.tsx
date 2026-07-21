@@ -72,12 +72,12 @@ export const UserSettingsProvider: FC<PropsWithChildren<unknown>> = ({ children 
 
     // Update the values of the user settings
     const updateUserSettings = useCallback(() => {
-        setCustomCss(userSettings.customCss());
+        setCustomCss(userSettings.customCss() ?? undefined);
         setDisableCustomCss(userSettings.disableCustomCss());
-        setTheme(userSettings.theme());
-        setDashboardTheme(userSettings.dashboardTheme());
-        setDateTimeLocale(userSettings.dateTimeLocale());
-        setLanguage(userSettings.language());
+        setTheme(userSettings.theme() ?? undefined);
+        setDashboardTheme(userSettings.dashboardTheme() ?? undefined);
+        setDateTimeLocale(userSettings.dateTimeLocale() ?? undefined);
+        setLanguage(userSettings.language() ?? undefined);
         setLibraryPageSize(userSettings.libraryPageSize() ?? DEFAULT_LIBRARY_PAGE_SIZE);
     }, []);
 

@@ -9,16 +9,20 @@ import { getBackdropShape } from 'components/cardbuilder/utils/shape';
 import layoutManager from 'components/layoutManager';
 import { appRouter } from 'components/router/appRouter';
 import globalize from 'lib/globalize';
-import type { UserSettings } from 'scripts/settings/userSettings';
 import { toIsoDateOnlyString } from 'utils/date';
 import { toApi } from 'utils/jellyfin-apiclient/compat';
 import { queryClient } from 'utils/query/queryClient';
 
 import type { SectionContainerElement, SectionOptions } from './section';
 
+type UserSettingsLike = Pick<
+    typeof import('scripts/settings/userSettings'),
+    'useEpisodeImagesInNextUpAndResume' | 'maxDaysForNextUp' | 'enableRewatchingInNextUp'
+>;
+
 function getNextUpFetchFn(
     apiClient: ApiClient,
-    userSettings: UserSettings,
+    userSettings: UserSettingsLike,
     { enableOverflow }: SectionOptions
 ) {
     return function () {
@@ -80,7 +84,7 @@ function getNextUpItemsHtmlFn(
 export function loadNextUp(
     elem: HTMLElement,
     apiClient: ApiClient,
-    userSettings: UserSettings,
+    userSettings: UserSettingsLike,
     options: SectionOptions & { featured?: boolean, netflix?: boolean }
 ) {
     let html = '';

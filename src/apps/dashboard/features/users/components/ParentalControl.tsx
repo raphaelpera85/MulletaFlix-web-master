@@ -57,7 +57,7 @@ function handleSaveUser(
         userPolicy.AllowedTags = getAllowedTagsFromPage();
         userPolicy.BlockedTags = getBlockedTagsFromPage();
         ServerConnections.getCurrentApiClientAsync()
-            .then(apiClient => apiClient.updateUserPolicy(userId, userPolicy))
+            .then(apiClient => (apiClient as any).updateUserPolicy(userId, userPolicy))
             .then(() => onSaveComplete())
             .catch(err => {
                 console.error('[userparentalcontrol] failed to update user policy', err);
@@ -139,7 +139,7 @@ const ParentalControl = ({ userId }: ParentalControlProps) => {
             return;
         }
 
-        void libraryMenu.then(menu => menu.setTitle(user.Name));
+        void libraryMenu.then(menu => menu.setTitle(user.Name || ''));
         loadUnratedItems(user);
 
         setAllowedTags(user.Policy?.AllowedTags || []);
@@ -238,7 +238,7 @@ const ParentalControl = ({ userId }: ParentalControlProps) => {
                         index = schedules.length;
                     }
 
-                    schedules[index] = updatedSchedule;
+                    schedules[index] = updatedSchedule as AccessSchedule;
                     setAccessSchedules(schedules);
                 }).catch(() => {
                     // access schedule closed
@@ -251,7 +251,7 @@ const ParentalControl = ({ userId }: ParentalControlProps) => {
         const getSchedulesFromPage = () => {
             return Array.prototype.map.call(page.querySelectorAll('.liSchedule'), function (elem) {
                 return {
-                    DayOfWeek: elem.getAttribute('data-day'),
+                    DayOfWeek: elem.getAttribute('data-day') as DynamicDayOfWeek,
                     StartHour: elem.getAttribute('data-start'),
                     EndHour: elem.getAttribute('data-end')
                 };

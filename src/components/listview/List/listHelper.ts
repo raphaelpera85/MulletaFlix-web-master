@@ -63,7 +63,7 @@ export function getIndex(item: ItemDto, listOptions: ListOptions): string {
     if (listOptions.index === 'disc') {
         return item.ParentIndexNumber == null ?
             '' :
-            globalize.translate('ValueDiscNumber', item.ParentIndexNumber);
+            globalize.translate('ValueDiscNumber', String(item.ParentIndexNumber));
     }
 
     const sortBy = (listOptions.sortBy ?? '').toLowerCase();

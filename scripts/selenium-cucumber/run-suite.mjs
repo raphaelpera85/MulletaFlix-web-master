@@ -2,6 +2,7 @@
 import { existsSync } from 'node:fs';
 import { mkdir, readFile, writeFile, rm } from 'node:fs/promises';
 import path from 'node:path';
+import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { spawn, spawnSync } from 'node:child_process';
 import fg from 'fast-glob';
@@ -18,6 +19,8 @@ const legacyStageDataDir = path.join(workspaceRoot, 'stage', 'data', 'jellyfin-t
 const localStageDataDir = path.join(localAppDataRoot, 'MulletaFlix');
 const localJellyfinDataDir = path.join(localAppDataRoot, 'jellyfin');
 const cucumberBin = path.join(repoRoot, 'node_modules', '@cucumber', 'cucumber', 'bin', 'cucumber-js');
+const tscBin = path.join(repoRoot, 'node_modules', 'typescript', 'bin', 'tsc');
+const seleniumBuildDir = path.join(os.tmpdir(), 'mulletaflix-selenium-cucumber-ts');
 const stageDatabaseTargets = [
     path.join(workspaceRoot, 'stage', 'data'),
     localStageDataDir,
@@ -260,6 +263,8 @@ async function main() {
     console.error('[selenium-cucumber] runner started');
     await mkdir(args.reportDir, { recursive: true });
     await resetStageWorkspace();
+    await rm(seleniumBuildDir, { recursive: true, force: true });
+    await mkdir(seleniumBuildDir, { recursive: true });
 
     const cucumberJson = args.rawReportFile;
     const featureFiles = await fg('tests/selenium-cucumber/features/**/*.feature', {
@@ -267,15 +272,42 @@ async function main() {
         absolute: true,
         onlyFiles: true
     });
-    const supportFiles = await fg([
-        'tests/selenium-cucumber/support/world.js',
-        'tests/selenium-cucumber/support/hooks.js',
-        'tests/selenium-cucumber/steps/**/*.js'
+    const sourceFiles = await fg([
+        'tests/selenium-cucumber/**/*.ts'
     ], {
         cwd: repoRoot,
         absolute: true,
         onlyFiles: true
     });
+    const compileResult = spawnSync(process.execPath, [
+        tscBin,
+        '--target',
+        'ES2020',
+        '--module',
+        'commonjs',
+        '--moduleResolution',
+        'node',
+        '--esModuleInterop',
+        '--skipLibCheck',
+        '--noEmitOnError',
+        '--rootDir',
+        repoRoot,
+        '--outDir',
+        seleniumBuildDir,
+        ...sourceFiles
+    ], {
+        cwd: repoRoot,
+        stdio: 'inherit'
+    });
+
+    if (compileResult.status !== 0) {
+        process.exitCode = compileResult.status || 1;
+        return;
+    }
+
+    const supportFiles = sourceFiles
+        .filter(file => file.includes(`${path.sep}support${path.sep}`) || file.includes(`${path.sep}steps${path.sep}`))
+        .map(file => path.join(seleniumBuildDir, path.relative(repoRoot, file)).replace(/\.ts$/, '.js'));
 
     const stageProbe = await startStageAndWaitClean(args.baseUrl);
     console.error(`[selenium-cucumber] stage probe: StartupWizardCompleted=${String(stageProbe.StartupWizardCompleted)} Id=${String(stageProbe.Id || '')}`);

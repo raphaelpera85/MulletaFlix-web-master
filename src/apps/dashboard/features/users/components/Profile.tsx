@@ -170,7 +170,7 @@ const Profile = ({ userDto }: ProfileProps) => {
         txtUserName.disabled = false;
         txtUserName.removeAttribute('disabled');
 
-        void libraryMenu.then(menu => menu.setTitle(userDto.Name));
+        void libraryMenu.then(menu => menu.setTitle(userDto.Name || ''));
 
         (page.querySelector('#txtUserName') as HTMLInputElement).value = userDto.Name || '';
         (page.querySelector('.chkIsAdmin') as HTMLInputElement).checked = !!userDto.Policy?.IsAdministrator;

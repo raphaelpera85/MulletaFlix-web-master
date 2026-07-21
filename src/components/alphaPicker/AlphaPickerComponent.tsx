@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
+import React, { FunctionComponent, useEffect, useRef } from 'react';
 
 import AlphaPicker from './alphaPicker';
 
@@ -9,19 +9,24 @@ type AlphaPickerProps = {
 // React compatibility wrapper component for alphaPicker.js
 // eslint-disable-next-line no-empty-function
 const AlphaPickerComponent: FunctionComponent<AlphaPickerProps> = ({ onAlphaPicked = () => {} }: AlphaPickerProps) => {
-    const [ alphaPicker, setAlphaPicker ] = useState<AlphaPicker>();
     const element = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        setAlphaPicker(new AlphaPicker({
-            element: element.current,
-            mode: 'keyboard'
-        }));
+        const pickerElement = element.current;
+        if (!pickerElement) {
+            return undefined;
+        }
 
-        element.current?.addEventListener('alphavalueclicked', onAlphaPicked);
+        const alphaPicker = new AlphaPicker({
+            element: pickerElement,
+            mode: 'keyboard'
+        });
+
+        pickerElement.addEventListener('alphavalueclicked', onAlphaPicked);
 
         return () => {
-            alphaPicker?.destroy();
+            pickerElement.removeEventListener('alphavalueclicked', onAlphaPicked);
+            alphaPicker.destroy();
         };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- Disabled for wrapper components
     }, []);

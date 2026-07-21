@@ -151,7 +151,7 @@ async function saveDisplaySettings({
     layoutManager.setLayout(normalizeValue(newDisplaySettings.layout));
 
     const promises = [
-        themeManager.setTheme(userSettings.theme())
+        themeManager.setTheme(userSettings.theme() ?? '')
     ];
 
     if (user.Id && user.Configuration) {

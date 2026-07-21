@@ -34,20 +34,20 @@ interface ViewOptions {
 }
 
 const dashboardControllers = import.meta.glob([
-    '../../apps/dashboard/controllers/**/*.js',
     '../../apps/dashboard/controllers/**/*.ts',
+    '../../apps/dashboard/controllers/**/*.tsx',
     '../../apps/dashboard/controllers/**/*.html'
 ]);
 
 const wizardControllers = import.meta.glob([
-    '../../apps/wizard/controllers/**/*.js',
     '../../apps/wizard/controllers/**/*.ts',
+    '../../apps/wizard/controllers/**/*.tsx',
     '../../apps/wizard/controllers/**/*.html'
 ]);
 
 const defaultControllers = import.meta.glob([
-    '../../controllers/**/*.js',
     '../../controllers/**/*.ts',
+    '../../controllers/**/*.tsx',
     '../../controllers/**/*.html'
 ]);
 
@@ -66,7 +66,7 @@ const defaultViews = import.meta.glob([
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const resolveModule = (glob: Record<string, () => Promise<any>>, basePath: string, name: string) => {
-    const extensions = ['', '.js', '.ts', '.html'];
+    const extensions = ['', '.ts', '.tsx', '.html'];
     for (const ext of extensions) {
         const path = `${basePath}/${name}${ext}`;
         const loadFn = glob[path];

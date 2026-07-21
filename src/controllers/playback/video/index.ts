@@ -1956,7 +1956,7 @@ export default function (this: { touchHelper?: { destroy(): void } }, view: HTML
     view.querySelector('.btnAudio').addEventListener('click', showAudioTrackSelection);
     view.querySelector('.btnSubtitles').addEventListener('click', showSubtitleTrackSelection);
 
-    // HACK: Remove `emby-button` from the rating button to make it look like the other buttons
+    // WORKAROUND: Remove emby-button class from rating button for consistent styling with other player controls
     view.querySelector('.btnUserRating').classList.remove('emby-button');
 
     // Register to SyncPlay playback events and show big animated icon

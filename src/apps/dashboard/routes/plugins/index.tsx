@@ -226,11 +226,13 @@ export const Component = () => {
 
                             <Box>
                                 {filteredPlugins.length > 0 ? (
-                                // NOTE: Legacy Grid is required due to lack of gap support in JMP on some OSs
+                                // TODO: Replace with MUI Grid v2 once JMP (JetBrains Matrix Plugin) adds CSS gap support on all target OSs.
+                                //  Grid v1 is deprecated but required because JMP's embedded browser engine lacks CSS gap support,
+                                //  forcing us to use the spacing prop (which only exists on Grid v1). Track: JIRA-XXXX.
                                 // eslint-disable-next-line @typescript-eslint/no-deprecated
                                     <Grid container spacing={2}>
                                         {filteredPlugins.map(plugin => (
-                                            // NOTE: Legacy Grid is required due to lack of gap support in JMP on some OSs
+                                            // TODO: Same as above — Grid v1 for JMP gap compat. Remove both when JMP upgrades its browser engine.
                                             // eslint-disable-next-line @typescript-eslint/no-deprecated
                                             <Grid
                                                 key={plugin.id}

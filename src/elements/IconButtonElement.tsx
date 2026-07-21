@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from 'react';
+import DOMPurify from 'dompurify';
 
 import globalize from 'lib/globalize';
 
@@ -15,7 +16,7 @@ type IProps = {
 };
 
 const createIconButtonElement = ({ is, id, className, title, icon, dataIndex, dataTag, dataProfileid }: IProps) => ({
-    __html: `<button
+    __html: DOMPurify.sanitize(`<button
         is="${is}"
         type="button"
         ${id}
@@ -26,7 +27,7 @@ const createIconButtonElement = ({ is, id, className, title, icon, dataIndex, da
         ${dataProfileid}
     >
         <span class="material-icons ${icon}" aria-hidden="true"></span>
-    </button>`
+    </button>`)
 });
 
 const IconButtonElement: FunctionComponent<IProps> = ({ is, id, className, title, icon, dataIndex, dataTag, dataProfileid, onClick }: IProps) => {

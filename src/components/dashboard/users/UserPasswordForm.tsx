@@ -30,7 +30,7 @@ const UserPasswordForm: FunctionComponent<IProps> = ({ user }: IProps) => {
             throw new Error('Unexpected null user policy or configuration');
         }
 
-        (await libraryMenu).setTitle(user.Name);
+        (await libraryMenu).setTitle(user.Name || '');
 
         if (user.HasConfiguredPassword) {
             if (!user.Policy?.IsAdministrator) {
@@ -42,7 +42,7 @@ const UserPasswordForm: FunctionComponent<IProps> = ({ user }: IProps) => {
             (page.querySelector('#fldCurrentPassword') as HTMLDivElement).classList.add('hide');
         }
 
-        const canChangePassword = loggedInUser?.Policy?.IsAdministrator || user.Policy.EnableUserPreferenceAccess;
+        const canChangePassword = (loggedInUser as unknown as { Policy?: { IsAdministrator?: boolean } })?.Policy?.IsAdministrator || (user as unknown as { Policy?: { EnableUserPreferenceAccess?: boolean } }).Policy?.EnableUserPreferenceAccess;
         (page.querySelector('.passwordSection') as HTMLDivElement).classList.toggle('hide', !canChangePassword);
 
         import('../../autoFocuser').then(({ default: autoFocuser }) => {

@@ -19,8 +19,8 @@ function getLatestRecordingsFetchFn(
 ) {
     return function () {
         const apiClient = ServerConnections.getApiClient(serverId);
-        return queryClient.fetchQuery(getRecordingsQuery(toApi(apiClient), {
-            userId: apiClient.getCurrentUserId(),
+        return queryClient.fetchQuery(getRecordingsQuery(toApi(apiClient as any), {
+            userId: apiClient.getCurrentUserId() ?? undefined,
             limit: enableOverflow ? 12 : 5,
             fields: [ ItemFields.PrimaryImageAspectRatio ],
             enableTotalRecordCount: false,

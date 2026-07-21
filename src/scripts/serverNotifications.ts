@@ -1,0 +1,242 @@
+import alert from 'components/alert';
+import focusManager from 'components/focusManager';
+import { playbackManager } from 'components/playback/playbackmanager';
+import { pluginManager } from 'components/pluginManager';
+import { appRouter } from 'components/router/appRouter';
+import toast from 'components/toast/toast';
+import { ServerConnections } from 'lib/jellyfin-apiclient';
+import inputManager from 'scripts/inputManager';
+import Events from 'utils/events';
+import { PluginType } from 'types/plugin';
+import { OutboundWebSocketMessageType } from '@jellyfin/sdk/lib/websocket';
+
+interface CommandData {
+    Arguments: {
+        ItemId?: string;
+        Header?: string;
+        Text?: string;
+        TimeoutMs?: number;
+        RepeatMode?: any;
+        ShuffleMode?: any;
+        Volume?: number;
+        Index?: string;
+        String?: string;
+        [key: string]: any;
+    };
+    Name: string;
+}
+
+interface PlayData {
+    PlayCommand: string;
+    ItemIds: string[];
+    StartPositionTicks?: number;
+    MediaSourceId?: string;
+    AudioStreamIndex?: number;
+    SubtitleStreamIndex?: number;
+    StartIndex?: number;
+    [key: string]: any;
+}
+
+interface PlaystateData {
+    Command: string;
+    SeekPositionTicks?: number;
+    [key: string]: any;
+}
+
+const serverNotifications: Record<string, any> = {};
+
+function notifyApp(): void {
+    inputManager.notify();
+}
+
+function displayMessage(cmd: CommandData): void {
+    const args = cmd.Arguments;
+    if (args.TimeoutMs) {
+        (toast as any)({ title: args.Header ?? '', text: args.Text ?? '' });
+    } else {
+        (alert as any)({ title: args.Header ?? '', text: args.Text ?? '' });
+    }
+}
+
+function displayContent(cmd: CommandData, apiClient: any): void {
+    if (!playbackManager.isPlayingLocally(['Video', 'Book'])) {
+        appRouter.showItem(cmd.Arguments.ItemId!, apiClient.serverId());
+    }
+}
+
+function playTrailers(apiClient: any, itemId: string): void {
+    apiClient.getItem(apiClient.getCurrentUserId(), itemId).then(function (item: any) {
+        playbackManager.playTrailers(item);
+    });
+}
+
+function processGeneralCommand(cmd: CommandData, apiClient: any): void {
+    console.debug('Received command: ' + cmd.Name);
+    switch (cmd.Name) {
+        case 'Select':
+            inputManager.handleCommand('select');
+            return;
+        case 'Back':
+            inputManager.handleCommand('back');
+            return;
+        case 'MoveUp':
+            inputManager.handleCommand('up');
+            return;
+        case 'MoveDown':
+            inputManager.handleCommand('down');
+            return;
+        case 'MoveLeft':
+            inputManager.handleCommand('left');
+            return;
+        case 'MoveRight':
+            inputManager.handleCommand('right');
+            return;
+        case 'PageUp':
+            inputManager.handleCommand('pageup');
+            return;
+        case 'PageDown':
+            inputManager.handleCommand('pagedown');
+            return;
+        case 'PlayTrailers':
+            playTrailers(apiClient, cmd.Arguments.ItemId!);
+            break;
+        case 'SetRepeatMode':
+            playbackManager.setRepeatMode(cmd.Arguments.RepeatMode);
+            break;
+        case 'SetShuffleQueue':
+            playbackManager.setQueueShuffleMode(cmd.Arguments.ShuffleMode);
+            break;
+        case 'VolumeUp':
+            inputManager.handleCommand('volumeup');
+            return;
+        case 'VolumeDown':
+            inputManager.handleCommand('volumedown');
+            return;
+        case 'ChannelUp':
+            inputManager.handleCommand('channelup');
+            return;
+        case 'ChannelDown':
+            inputManager.handleCommand('channeldown');
+            return;
+        case 'Mute':
+            inputManager.handleCommand('mute');
+            return;
+        case 'Unmute':
+            inputManager.handleCommand('unmute');
+            return;
+        case 'ToggleMute':
+            inputManager.handleCommand('togglemute');
+            return;
+        case 'SetVolume':
+            notifyApp();
+            playbackManager.setVolume(cmd.Arguments.Volume);
+            break;
+        case 'SetAudioStreamIndex':
+            notifyApp();
+            playbackManager.setAudioStreamIndex(parseInt(cmd.Arguments.Index!, 10));
+            break;
+        case 'SetSubtitleStreamIndex':
+            notifyApp();
+            playbackManager.setSubtitleStreamIndex(parseInt(cmd.Arguments.Index!, 10));
+            break;
+        case 'ToggleFullscreen':
+            inputManager.handleCommand('togglefullscreen');
+            return;
+        case 'GoHome':
+            inputManager.handleCommand('home');
+            return;
+        case 'GoToSettings':
+            inputManager.handleCommand('settings');
+            return;
+        case 'DisplayContent':
+            displayContent(cmd, apiClient);
+            break;
+        case 'GoToSearch':
+            inputManager.handleCommand('search');
+            return;
+        case 'DisplayMessage':
+            displayMessage(cmd);
+            break;
+        case 'ToggleOsd':
+        case 'ToggleContextMenu':
+        case 'SendKey':
+            // todo
+            break;
+        case 'SendString':
+            focusManager.sendText(cmd.Arguments.String!);
+            break;
+        default:
+            console.debug('processGeneralCommand does not recognize: ' + cmd.Name);
+            break;
+    }
+
+    notifyApp();
+}
+
+function onPlay({ Data }: { Data: PlayData }, apiClient: any): void {
+    notifyApp();
+    const serverId = apiClient.serverInfo().Id;
+    if (Data.PlayCommand === 'PlayNext') {
+        playbackManager.queueNext({ ids: Data.ItemIds, serverId });
+    } else if (Data.PlayCommand === 'PlayLast') {
+        playbackManager.queue({ ids: Data.ItemIds, serverId });
+    } else {
+        playbackManager.play({
+            ids: Data.ItemIds,
+            startPositionTicks: Data.StartPositionTicks,
+            mediaSourceId: Data.MediaSourceId,
+            audioStreamIndex: Data.AudioStreamIndex,
+            subtitleStreamIndex: Data.SubtitleStreamIndex,
+            startIndex: Data.StartIndex,
+            serverId
+        });
+    }
+}
+
+function onPlaystate({ Data }: { Data: PlaystateData }): void {
+    if (Data.Command === 'Stop') {
+        inputManager.handleCommand('stop');
+    } else if (Data.Command === 'Pause') {
+        inputManager.handleCommand('pause');
+    } else if (Data.Command === 'Unpause') {
+        inputManager.handleCommand('play');
+    } else if (Data.Command === 'PlayPause') {
+        inputManager.handleCommand('playpause');
+    } else if (Data.Command === 'Seek') {
+        playbackManager.seek(Data.SeekPositionTicks);
+    } else if (Data.Command === 'NextTrack') {
+        inputManager.handleCommand('next');
+    } else if (Data.Command === 'PreviousTrack') {
+        inputManager.handleCommand('previous');
+    } else if (Data.Command === 'Rewind') {
+        inputManager.handleCommand('rewind');
+    } else if (Data.Command === 'FastForward') {
+        inputManager.handleCommand('fastforward');
+    } else {
+        notifyApp();
+    }
+}
+
+function subscribeToApiClient(apiClient: any): void {
+    apiClient.subscribe([OutboundWebSocketMessageType.Play], (msg: any) => onPlay(msg, apiClient));
+    apiClient.subscribe([OutboundWebSocketMessageType.Playstate], (msg: any) => onPlaystate(msg));
+    apiClient.subscribe([OutboundWebSocketMessageType.GeneralCommand], ({ Data }: { Data: CommandData }) => processGeneralCommand(Data, apiClient));
+    apiClient.subscribe([OutboundWebSocketMessageType.SyncPlayCommand], ({ Data }: { Data: any }) => {
+        pluginManager.firstOfType(PluginType.SyncPlay)?.instance.Manager.processCommand(Data, apiClient);
+    });
+    apiClient.subscribe([OutboundWebSocketMessageType.SyncPlayGroupUpdate], ({ Data }: { Data: any }) => {
+        pluginManager.firstOfType(PluginType.SyncPlay)?.instance.Manager.processGroupUpdate(Data, apiClient);
+        Events.trigger(serverNotifications, OutboundWebSocketMessageType.SyncPlayGroupUpdate, [apiClient, Data]);
+    });
+}
+
+export function initializeServerConnections(): void {
+    ServerConnections.getApiClients().forEach(subscribeToApiClient);
+    Events.on(ServerConnections, 'apiclientcreated', function (e: any, newApiClient: any) {
+        subscribeToApiClient(newApiClient);
+    });
+}
+
+(window as any).ServerNotifications = serverNotifications;
+
+export default serverNotifications;

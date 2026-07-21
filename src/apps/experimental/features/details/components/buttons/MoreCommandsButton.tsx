@@ -160,11 +160,7 @@ const MoreCommandsButton: FC<MoreCommandsButtonProps> = ({
                 })
                 .then(async function (result) {
                     if (result.command === 'playallfromhere') {
-                        console.log('handleItemClick', {
-                            item,
-                            items: items || [],
-                            serverId: item?.ServerId
-                        });
+                        console.debug('handleItemClick: playallfromhere', item?.Id);
                         playAllFromHere({
                             item: item,
                             items: items || [],

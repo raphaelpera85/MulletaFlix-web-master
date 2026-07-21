@@ -14,7 +14,7 @@ function getItemsSplit(apiClient: ApiClient, userId: string, options: GetItemsRe
     const results = [];
     const limit = options.Limit ?? Infinity;
 
-    let end;
+    let end = 0;
     for (let start = 0; start < ids.length && start < limit; start = end) {
         end = start + ITEMS_PER_REQUEST_LIMIT;
         if (end > limit) {
@@ -38,15 +38,15 @@ function mergeResults(results: BaseItemDtoQueryResult[]) {
 
     for (const result of results) {
         if (!result.Items) {
-            console.log('[getItems] Retrieved Items array is invalid', result.Items);
+            console.warn('[getItems] Retrieved Items array is invalid', result.Items);
             continue;
         }
-        if (!result.TotalRecordCount) {
-            console.log('[getItems] Retrieved TotalRecordCount is invalid', result.TotalRecordCount);
+        if (result.TotalRecordCount === undefined || result.TotalRecordCount === null) {
+            console.warn('[getItems] Retrieved TotalRecordCount is invalid', result.TotalRecordCount);
             continue;
         }
         if (typeof result.StartIndex === 'undefined') {
-            console.log('[getItems] Retrieved StartIndex is invalid', result.StartIndex);
+            console.warn('[getItems] Retrieved StartIndex is invalid', result.StartIndex);
             continue;
         }
         merged.Items = merged.Items?.concat(result.Items);

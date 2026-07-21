@@ -94,9 +94,13 @@ const LibraryCard = ({ virtualFolder }: LibraryCardProps) => {
         setAnchorEl(null);
         setIsMenuOpen(false);
 
+        if (!virtualFolder.ItemId) {
+            return;
+        }
+
         void new RefreshDialog({
             itemIds: [ virtualFolder.ItemId ],
-            serverId: ServerConnections.currentApiClient()?.serverId(),
+            serverId: (ServerConnections.currentApiClient() as any)?.serverId(),
             mode: 'scan'
         }).show();
     }, [ virtualFolder ]);
@@ -106,7 +110,7 @@ const LibraryCard = ({ virtualFolder }: LibraryCardProps) => {
         setIsMenuOpen(false);
 
         const mediaLibraryEditor = new MediaLibraryEditor({
-            library: virtualFolder,
+            library: virtualFolder as any,
             refresh: true
         }) as Promise<boolean>;
 
@@ -123,9 +127,13 @@ const LibraryCard = ({ virtualFolder }: LibraryCardProps) => {
         setAnchorEl(null);
         setIsMenuOpen(false);
 
+        if (!virtualFolder.ItemId) {
+            return;
+        }
+
         void imageeditor.show({
             itemId: virtualFolder.ItemId,
-            serverId: ServerConnections.currentApiClient()?.serverId()
+            serverId: (ServerConnections.currentApiClient() as any)?.serverId()
         }).then(() => {
             void queryClient.invalidateQueries({
                 queryKey: ['VirtualFolders']

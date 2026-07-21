@@ -88,7 +88,7 @@ function createPlaylist(dlg: DialogElement) {
     if (isBlank(name)) return Promise.reject(new Error('Playlist name should not be blank'));
 
     const apiClient = ServerConnections.getApiClient(currentServerId);
-    const api = toApi(apiClient);
+    const api = toApi(apiClient as any);
 
     const itemIds = dlg.querySelector<HTMLInputElement>('.fldSelectedItemIds')?.value || undefined;
 
@@ -120,7 +120,7 @@ function updatePlaylist(dlg: DialogElement) {
     if (isBlank(name)) return Promise.reject(new Error('Playlist name should not be blank'));
 
     const apiClient = ServerConnections.getApiClient(currentServerId);
-    const api = toApi(apiClient);
+    const api = toApi(apiClient as any);
 
     return getPlaylistsApi(api)
         .updatePlaylist({
@@ -138,14 +138,14 @@ function updatePlaylist(dlg: DialogElement) {
 
 function addToPlaylist(dlg: DialogElement, id: string) {
     const apiClient = ServerConnections.getApiClient(currentServerId);
-    const api = toApi(apiClient);
+    const api = toApi(apiClient as any);
     const itemIds = dlg.querySelector<HTMLInputElement>('.fldSelectedItemIds')?.value || '';
 
     if (id === 'queue') {
         playbackManager.queue({
             serverId: currentServerId,
             ids: itemIds.split(',')
-        }).catch(err => {
+        }).catch((err: any) => {
             console.error('[PlaylistEditor] failed to add to queue', err);
         });
         dlg.submitted = true;
@@ -157,7 +157,7 @@ function addToPlaylist(dlg: DialogElement, id: string) {
         .addItemToPlaylist({
             playlistId: id,
             ids: itemIds.split(','),
-            userId: apiClient.getCurrentUserId()
+            userId: apiClient.getCurrentUserId() ?? undefined
         })
         .then(() => {
             dlg.submitted = true;
@@ -181,12 +181,12 @@ function populatePlaylists(editorOptions: PlaylistEditorOptions, panel: DialogEl
     panel.querySelector('.newPlaylistInfo')?.classList.add('hide');
 
     const apiClient = ServerConnections.getApiClient(currentServerId);
-    const api = toApi(apiClient);
+    const api = toApi(apiClient as any);
     const SyncPlay = pluginManager.firstOfType(PluginType.SyncPlay)?.instance;
 
     return getItemsApi(api)
         .getItems({
-            userId: apiClient.getCurrentUserId(),
+            userId: apiClient.getCurrentUserId() ?? undefined,
             includeItemTypes: [ BaseItemKind.Playlist ],
             sortBy: [ ItemSortBy.SortName ],
             recursive: true,
@@ -204,7 +204,7 @@ function populatePlaylists(editorOptions: PlaylistEditorOptions, panel: DialogEl
                 return getPlaylistsApi(api)
                     .getPlaylistUser({
                         playlistId: item.Id,
-                        userId: apiClient.getCurrentUserId()
+                        userId: apiClient.getCurrentUserId() ?? ''
                     })
                     .then(({ data: permissions }) => ({
                         ...playlist,
@@ -330,7 +330,7 @@ function initEditor(content: DialogElement, options: PlaylistEditorOptions, item
         }
 
         const apiClient = ServerConnections.getApiClient(currentServerId);
-        const api = toApi(apiClient);
+        const api = toApi(apiClient as any);
         Promise.all([
             getUserLibraryApi(api)
                 .getItem({ itemId: options.id }),

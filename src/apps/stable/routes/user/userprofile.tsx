@@ -36,7 +36,7 @@ const UserProfile: FunctionComponent = () => {
             throw new Error('Unexpected null user name or id');
         }
 
-        void libraryMenu.then(menu => menu.setTitle(user.Name));
+        void libraryMenu.then(menu => menu.setTitle(user.Name ?? null));
 
         let imageUrl = 'assets/img/avatar.png';
         if (user.PrimaryImageTag) {
@@ -48,7 +48,7 @@ const UserProfile: FunctionComponent = () => {
         const userImage = (page.querySelector('#image') as HTMLDivElement);
         userImage.style.backgroundImage = 'url(' + imageUrl + ')';
 
-        Dashboard.getCurrentUser().then(function (loggedInUser: UserDto) {
+        (Dashboard.getCurrentUser() as Promise<UserDto>).then(function (loggedInUser: UserDto) {
             if (!user.Policy) {
                 throw new Error('Unexpected null user.Policy');
             }
@@ -60,7 +60,7 @@ const UserProfile: FunctionComponent = () => {
                 (page.querySelector('#btnDeleteImage') as HTMLButtonElement).classList.add('hide');
                 (page.querySelector('#btnAddImage') as HTMLButtonElement).classList.remove('hide');
             }
-        }).catch(err => {
+        }).catch((err: unknown) => {
             console.error('[userprofile] failed to get current user', err);
         });
     }, [user, libraryMenu]);

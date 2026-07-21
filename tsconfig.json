@@ -10,14 +10,17 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
     "outDir": "./dist/",
     "checkJs": false,
     "strictNullChecks": true,
     "jsx": "react-jsx",
     "downlevelIteration": true,
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+    "noEmitOnError": true,
+    "isolatedModules": true
   },
   "include": [
     "src"

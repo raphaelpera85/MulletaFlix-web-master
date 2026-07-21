@@ -29,23 +29,23 @@ const getNowPlayingName = (session: SessionInfo): NowPlayingInfo => {
 
     if (nowPlayingItem.Artists?.length) {
         bottomText = topText;
-        topText = nowPlayingItem.Artists[0];
+        topText = nowPlayingItem.Artists[0] || '';
     } else if (nowPlayingItem.SeriesName || nowPlayingItem.Album) {
         bottomText = topText;
-        topText = nowPlayingItem.SeriesName || nowPlayingItem.Album;
+        topText = nowPlayingItem.SeriesName || nowPlayingItem.Album || '';
     } else if (nowPlayingItem.ProductionYear) {
         bottomText = nowPlayingItem.ProductionYear.toString();
     }
 
     if (nowPlayingItem.ImageTags?.Logo) {
-        imgUrl = ServerConnections.getApiClient(session.ServerId!).getScaledImageUrl(nowPlayingItem.Id!, {
+        imgUrl = (ServerConnections.getApiClient(session.ServerId!) as any).getScaledImageUrl(nowPlayingItem.Id!, {
             tag: nowPlayingItem.ImageTags.Logo,
             maxHeight: 24,
             maxWidth: 130,
             type: 'Logo'
         });
     } else if (nowPlayingItem.ParentLogoImageTag) {
-        imgUrl = ServerConnections.getApiClient(session.ServerId!).getScaledImageUrl(nowPlayingItem.ParentLogoItemId!, {
+        imgUrl = (ServerConnections.getApiClient(session.ServerId!) as any).getScaledImageUrl(nowPlayingItem.ParentLogoItemId!, {
             tag: nowPlayingItem.ParentLogoImageTag,
             maxHeight: 24,
             maxWidth: 130,
