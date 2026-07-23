@@ -28,5 +28,11 @@ export default defineConfig({
             name: 'chromium',
             use: { ...devices['Desktop Chrome'] }
         }
-    ]
+    ],
+    webServer: {
+        command: 'npm run serve',
+        url: stageUrl,
+        reuseExistingServer: !process.env.CI,
+        timeout: 120_000
+    }
 });
